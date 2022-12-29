@@ -1,0 +1,276 @@
+[
+  {
+    "fieldName": "firstName",
+    "dataType": "string",
+    "inputType": "textInput",
+    "label": "First Name",
+    "position": 1,
+    "groupTitle": "Personal Details",
+    "defaultValue": "",
+    "list": {
+      "sourceType": "database / manual",
+      "listSource": "asdasd, asdasd, asdasd",
+      "listSources": "UserTable"
+    },
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "lastName",
+    "dataType": "string",
+    "inputType": "textInput",
+    "label": "Last Name",
+    "position": 2,
+    "groupTitle": "Personal Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "phone",
+    "dataType": "string",
+    "inputType": "numberInput",
+    "label": "Phone",
+    "position": 4,
+    "groupTitle": "Personal Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "birthday",
+    "dataType": "date",
+    "inputType": "dateTimeInput",
+    "label": "birthday",
+    "position": 5,
+    "groupTitle": "Personal Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "avatar",
+    "dataType": "file",
+    "inputType": "fileInput",
+    "label": "Face Photo",
+    "position": 3,
+    "groupTitle": "Personal Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "street",
+    "dataType": "string",
+    "inputType": "selectInput",
+    "label": "Street",
+    "position": 6,
+    "groupTitle": "Address",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "appartment",
+    "dataType": "string",
+    "inputType": "numberInput",
+    "label": "Appartment/Suite Number",
+    "position": 7,
+    "groupTitle": "Address",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "zip",
+    "dataType": "string",
+    "inputType": "numberInput",
+    "label": "Zip Code",
+    "position": 8,
+    "groupTitle": "Address",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "state",
+    "dataType": "string",
+    "inputType": "selectInput",
+    "label": "State",
+    "position": 9,
+    "groupTitle": "Address",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "companyName",
+    "dataType": "string",
+    "inputType": "textInput",
+    "label": "Company Name",
+    "position": 1,
+    "groupTitle": "Company Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "sector",
+    "dataType": "string",
+    "inputType": "textInput",
+    "label": "Sector",
+    "position": 2,
+    "groupTitle": "Company Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "compnayLogo",
+    "dataType": "string",
+    "inputType": "fileInput",
+    "label": "Comapny Logo",
+    "position": 3,
+    "groupTitle": "Company Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "officePhone",
+    "dataType": "string",
+    "inputType": "numberInput",
+    "label": "Phone Number",
+    "position": 4,
+    "groupTitle": "Company Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "officeEmail",
+    "dataType": "string",
+    "inputType": "textInput",
+    "label": "Office Email Address",
+    "position": 4,
+    "groupTitle": "Company Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "officeStreet",
+    "dataType": "string",
+    "inputType": "selectInput",
+    "label": "Street",
+    "position": 6,
+    "groupTitle": "Company Address",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "officeAppartment",
+    "dataType": "string",
+    "inputType": "textInput",
+    "label": "Appartment/Suite Number",
+    "position": 7,
+    "groupTitle": "Company Address",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "officeZip",
+    "dataType": "string",
+    "inputType": "textInput",
+    "label": "Zip Code",
+    "position": 8,
+    "groupTitle": "Company Address",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "officeState",
+    "dataType": "string",
+    "inputType": "selectInput",
+    "label": "State",
+    "position": 9,
+    "groupTitle": "Company Address",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  }
+]

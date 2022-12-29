@@ -1,0 +1,26 @@
+{
+  "frontend": {
+    "admin": {
+      "documents": {
+        "index": "Overview"
+      },
+      "users": {
+        "title": "Account Management",
+        "index": "List Of Accounts",
+        "edit": "Edit Account",
+        "create": "Add Account",
+        "twofa": "2FA Settings"
+      },
+      "roles": {
+        "index": "Role of Account Management",
+        "create": "Add Role",
+        "edit": "Edit Role",
+        "role": "Decentralization Role"
+      },
+      "application": {
+        "index": "Application",
+        "title": "Application"
+      }
+    }
+  }
+}
