@@ -109,13 +109,6 @@ const DynamicFormPage = () => {
 };
 
 export default DynamicFormPage;
-function notify(arg0: any, arg1: string, arg2: string) {
-  throw new Error("Function not implemented.");
-}
-
-// function redirect(arg0: string) {
-//   throw new Error("Function not implemented.");
-// }
 
 const TabComment = (item) => {
   return (
