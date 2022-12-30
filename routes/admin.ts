@@ -24,6 +24,7 @@ Route.group(() => {
     let name = 'application'
     Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
     Route.get(`/${name}/create`, `pages/admin/${name}/create`).name(`${name}.create`).parent(`${name}.index`).sidebar(`${name}.index`)
+    Route.get(`/${name}/edit/:id`, `pages/admin/${name}/edit`).name(`${name}.edit`).parent(`${name}.index`).sidebar(`${name}.index`);
   }
   {
     let name = 'users'

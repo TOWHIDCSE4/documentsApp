@@ -1,70 +1,130 @@
 import React, { FC, useState, useEffect } from "react";
-import { Input, InputNumber, DatePicker, FieldLabel, Select, ImageUploader, DragDrop,TextArea } from "@src/components/controls";
+import {
+	// Input,
+	InputNumber,
+	FieldLabel,
+	ImageUploader,
+	DragDrop,
+} from "@src/components/controls";
 import { useFormContext } from "react-hook-form";
-import { Row, Col } from "antd";
+import { Row, Col, Form, Input,DatePicker} from "antd";
+import { Select } from 'antd';
+const { TextArea } = Input;
 interface CommonFormProps {
-  formField: any;
+	formField: any;
 }
 export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
-  const { control, setValue } = useFormContext();
-  const { fieldName, label, inputType, options, defaultValue, validation, col, position } = formField || {};
+	// const { control, setValue } = useFormContext();
+	const {
+		fieldName,
+		label,
+		inputType,
+		options,
+		defaultValue,
+		validation,
+		col,
+		position,
+	} = formField || {};
 
-  useEffect(() => {
-    setValue(fieldName, defaultValue);
-  }, [formField, setValue]);
+	console.log('formField', formField)
 
-  if (inputType === "textInput") {
+
+	// useEffect(() => {
+	// 	setValue(fieldName, defaultValue);
+	// }, [formField, setValue]);
+
+	if (inputType === "textInput") {
 		return (
-			<div>
-				<FieldLabel name={fieldName} label={label} />
+			<Form.Item name={fieldName} label={label}>
 				<Input
-					control={control}
-					name={fieldName}
-					type={inputType}
+					// control={control}
+					name={"data.firstName"}
+					type={'text'}
 					size="large"
 				/>
-			</div>
+			</Form.Item>
+			// <div>
+			// 	<FieldLabel name={fieldName} label={label} />
+			// 	<Input
+			// 		control={control}
+			// 		name={fieldName}
+			// 		type={inputType}
+			// 		size="large"
+			// 	/>
+			// </div>
 		);
-  } else if (inputType === "numberInput") {
+	} 
+	else if (inputType === "numberInput") {
 		return (
-			<div>
-				<FieldLabel name={fieldName} label={label} />
-				<InputNumber control={control} name={fieldName} />
-			</div>
-		);
-  } else if (inputType === "textAreaInput") {
-		return (
-			<div>
-				<FieldLabel name={fieldName} label={label} />
-				<TextArea control={control} name={fieldName} />
-			</div>
-		);
-  } else if (inputType === "selectInput") {
-		return (
-			<div>
-				<FieldLabel name={fieldName} label={label} />
-				<Select control={control} name={fieldName} options={options} />
-			</div>
-		);
-  } else if (inputType === "dateTimeInput") {
-		return (
-			<div>
-				<FieldLabel name={fieldName} label={label} />
-				<DatePicker control={control} name={fieldName} />
-			</div>
-		);
-  } else if (inputType === "fileInput") {
-		return (
-			<div>
-				<FieldLabel name={fieldName} label={label} />
-				<DragDrop
-					control={control}
-					name={fieldName}
-					onRemoveFile={() => {}}
+		<div>
+			<Form.Item name={fieldName} label={label}>
+				<Input
+					// control={control}
+					name={"data.numberInput"}
+					type={'number'}
+					size="large"
 				/>
+			 </Form.Item>
+		</div>
+		);
+
+	
+	} 
+
+	else if (inputType === "textAreaInput") {
+		return (
+			<div>
+			<Form.Item name={fieldName} label={label}>
+			 <Input
+					// control={control}
+					name={"data.textAreaInput"}
+					type={'text'}
+					size="large"
+				/>
+			 </Form.Item>
+		 </div>
+		);
+	} 
+	
+	else if (inputType === "selectInput") {
+		return (
+			<div>
+     <Form.Item name={fieldName} label={label}>
+			 <Select
+				// name={"data.selectInput"}
+				// type={'sle'}
+				size="large"
+				options={options} 
+				/>
+			 </Form.Item>
 			</div>
 		);
-  } else {
+	} 
+	else if (inputType === "dateTimeInput") {
+		return (
+			<div>
+			 {/* <Form.Item name={fieldName} label={label}> */}
+			 <DatePicker
+			  name={"data.dateTimeInput"}
+				/>
+			{/* </Form.Item> */}
+			 </div>
+		);
+	} 
+
+	// else if (inputType === "fileInput") {
+	// 	return (
+	// 		<div>
+	// 			<FieldLabel name={fieldName} label={label} />
+	// 			<DragDrop
+	// 				control={control}
+	// 				name={fieldName}
+	// 				onRemoveFile={() => {}}
+	// 			/>
+	// 		</div>
+	// 	);
+	// } 
+	else {
 		return <></>;
-  }
+	}
 };
