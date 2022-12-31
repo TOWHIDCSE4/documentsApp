@@ -3,7 +3,7 @@ const roleKey = {
   ministry: 'ministry',
   lecturers: 'lecturers'
 }
-const documentStatus = {
+export const documentStatus = {
   1: 'Approve',
   2: 'To Be Reviewed',
   3: 'Rejected',

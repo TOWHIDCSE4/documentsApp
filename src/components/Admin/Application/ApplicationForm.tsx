@@ -3,6 +3,7 @@ import useBaseHooks from '@root/src/hooks/BaseHook';
 import { Button, Card, Col, Row, Space, Statistic, Input, Table, PaginationProps, Pagination } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import React from 'react';
+import useStatusCount from '@root/src/hooks/StatusCount';
 
 const { Search } = Input;
 
@@ -10,7 +11,8 @@ const onSearch = (value: string) => console.log(value);
 
 
 const ApplicationForm = () => {
-    const {t, redirect} = useBaseHooks()
+    const {t, redirect, notify} = useBaseHooks();
+    const status = useStatusCount();
     
     return <>
         <Row gutter={16}>
@@ -18,23 +20,23 @@ const ApplicationForm = () => {
                 <Card type="inner" title="Form List" onClick={() => redirect("frontend.admin.documentTemplate")} extra={<a>{t('pages:application.applicationForm.view')}</a>}>
                     <Row>
                         <Col span={6}>
-                            <Statistic title={t('pages:application.applicationForm.submitted')} value={15} />
+                            <Statistic title={t('pages:application.applicationForm.submitted')} value={status.total} />
                         </Col>
                         <Col span={6}>
-                            <Statistic title={t('pages:application.applicationForm.approve')} value={8} />
+                            <Statistic title={t('pages:application.applicationForm.approve')} value={status["Approve"]} />
                         </Col>
                         <Col span={6}>
-                            <Statistic title={t('pages:application.applicationForm.inReview')} value={5} />
+                            <Statistic title={t('pages:application.applicationForm.inReview')} value={status["To Be Reviewed"]} />
                         </Col>
                         <Col span={6}>
-                            <Statistic title={t('pages:application.applicationForm.rejected')} value={2} />
+                            <Statistic title={t('pages:application.applicationForm.rejected')} value={status["Rejected"]} />
                         </Col>
                     </Row>
                 </Card>
             </Col>
             <Col span={12}>
                 <Card type="inner" title="Form Draft" extra={<a>{t('pages:application.applicationForm.view')}</a>}>
-                    <Statistic title={t('pages:application.applicationForm.draft')} value={3} />
+                    <Statistic title={t('pages:application.applicationForm.draft')} value={status["null"]} />
                 </Card>
             </Col>
         </Row>
