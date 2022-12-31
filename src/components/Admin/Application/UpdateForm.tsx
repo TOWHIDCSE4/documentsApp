@@ -9,25 +9,26 @@ import _ from "lodash";
 
 const DynamicFormPage = ({ documentData }) => {
 	const { t, notify, redirect, router } = useBaseHook();
-  const { query } = router;
+	const { query } = router;
 	const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
 	const [loading, setLoading] = useState(false);
+	let buttonId = 6;
 
 	const onFinish = async (data: any): Promise<void> => {
 		setLoading(true);
-    let idError: any = null;
+		let idError: any = null;
 
-    if (!query.id) {
-      idError = {
-        code: 9996,
-        message: "missing ID",
-      };
-    }
+		if (!query.id) {
+			idError = {
+				code: 9996,
+				message: "missing ID",
+			};
+		}
 
-    if (idError) return notify(t(`errors:${idError.code}`), "", "error");
+		if (idError) return notify(t(`errors:${idError.code}`), "", "error");
 
 		const documentReqBody = {
-      id: query.id,
+			id: query.id,
 			formId: null,
 			formName: "Staff Insurance FormStaff Insurance 2022",
 			data: JSON.stringify(data),
@@ -36,7 +37,7 @@ const DynamicFormPage = ({ documentData }) => {
 			submitter: null,
 			company: null,
 			tenant: null,
-			status: null,
+			status: buttonId,
 			createdBy: null,
 			updatedBy: null,
 		};
@@ -112,6 +113,33 @@ const DynamicFormPage = ({ documentData }) => {
 					<Button type="primary" htmlType="submit">
 						Submit
 					</Button>
+
+					<Button
+						onClick={() => (buttonId = 1)}
+						style={{ marginLeft: 10 }}
+						type="primary"
+						htmlType="submit"
+					>
+						Approve
+					</Button>
+
+					<Button
+						onClick={() => (buttonId = 3)}
+						style={{ marginLeft: 10 }}
+						type="primary"
+						htmlType="submit"
+					>
+						Rejected
+					</Button>
+
+					<Button
+						onClick={() => (buttonId = 2)}
+						style={{ marginLeft: 10 }}
+						type="primary"
+						htmlType="submit"
+					>
+						To Be Reviewed
+					</Button>
 				</Form.Item>
 			</Form>
 		</div>
@@ -121,76 +149,76 @@ const DynamicFormPage = ({ documentData }) => {
 export default DynamicFormPage;
 
 const TabComment = (item) => {
-  return (
-    <>
-      <Tabs
-        defaultActiveKey="1"
-        items={[
-          {
-            label: `Issuer Comment`,
-            key: "1",
-            children: (
-              <CommonForm
-                formField={{
-                  fieldName: "issueComment",
-                  dataType: "text",
-                  inputType: "textAreaInput",
-                  position: 6,
-                  defaultValue: "",
-                  list: {},
-                  col: {
-                    xs: 2,
-                    lg: 3,
-                  },
-                  validation: [],
-                }}
-              />
-            ),
-          },
-          {
-            label: `Tenant Admin Comment`,
-            key: "2",
-            children: (
-              <CommonForm
-                formField={{
-                  fieldName: "adminComment",
-                  dataType: "text",
-                  inputType: "textAreaInput",
-                  position: 6,
-                  defaultValue: "",
-                  list: {},
-                  col: {
-                    xs: 2,
-                    lg: 3,
-                  },
-                  validation: [],
-                }}
-              />
-            ),
-          },
-          {
-            label: `Individual Comment`,
-            key: "3",
-            children: (
-              <CommonForm
-                formField={{
-                  fieldName: "individualComment",
-                  dataType: "text",
-                  inputType: "textAreaInput",
-                  position: 6,
-                  defaultValue: "",
-                  list: {},
-                  col: {
-                    xs: 2,
-                    lg: 3,
-                  },
-                  validation: [],
-                }}
-              />
-            ),
-          },
-        ]}
-      />
-    </>
-  );
+	return (
+		<>
+			<Tabs
+				defaultActiveKey="1"
+				items={[
+					{
+						label: `Issuer Comment`,
+						key: "1",
+						children: (
+							<CommonForm
+								formField={{
+									fieldName: "issueComment",
+									dataType: "text",
+									inputType: "textAreaInput",
+									position: 6,
+									defaultValue: "",
+									list: {},
+									col: {
+										xs: 2,
+										lg: 3,
+									},
+									validation: [],
+								}}
+							/>
+						),
+					},
+					{
+						label: `Tenant Admin Comment`,
+						key: "2",
+						children: (
+							<CommonForm
+								formField={{
+									fieldName: "adminComment",
+									dataType: "text",
+									inputType: "textAreaInput",
+									position: 6,
+									defaultValue: "",
+									list: {},
+									col: {
+										xs: 2,
+										lg: 3,
+									},
+									validation: [],
+								}}
+							/>
+						),
+					},
+					{
+						label: `Individual Comment`,
+						key: "3",
+						children: (
+							<CommonForm
+								formField={{
+									fieldName: "individualComment",
+									dataType: "text",
+									inputType: "textAreaInput",
+									position: 6,
+									defaultValue: "",
+									list: {},
+									col: {
+										xs: 2,
+										lg: 3,
+									},
+									validation: [],
+								}}
+							/>
+						),
+					},
+				]}
+			/>
+		</>
+	);
 };
