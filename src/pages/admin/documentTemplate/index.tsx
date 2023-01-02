@@ -92,35 +92,7 @@ const Index = () => {
 	};
 
 	const generatePdf = (rowInfo: any) => {
-		const doc = new jsPDF("portrait", "px", "a4") as jsPDFWithPlugin;
-		const tableTitle = [
-			"Form Name",
-			"Form ID",
-			"Issued By",
-			"Issued Date",
-			"Submitter",
-			"Submit Date",
-			"Status",
-			"Updated Date",
-		];
-
-		const tableRow = [
-			rowInfo.formName,
-			rowInfo.formId,
-			rowInfo.issuedBy,
-			moment(rowInfo.issuedDate).format("LL"),
-			rowInfo.submitter,
-			moment(rowInfo.submitDate).format("LL"),
-			rowInfo.status,
-			moment(rowInfo.updatedDate).format("LL"),
-		];
-
-		doc.autoTable({
-			head: [tableTitle],
-			body: [tableRow],
-		});
-
-		doc.save(rowInfo.formId);
+		return redirect("frontend.admin.application.documentpdf", { id: rowInfo.id });
 	};
 
 	const columns = [
@@ -309,11 +281,11 @@ const Index = () => {
 					addIndexCol={false}
 					selectableRowsHighlight
 					onRow={(record, rowIndex) => {
-						return {
-							onClick: (event) => {
-								redirect("frontend.admin.application.edit", { id: record.id });
-							},
-						};
+						// return {
+						// 	onClick: (event) => {
+						// 		redirect("frontend.admin.application.edit", { id: record.id });
+						// 	},
+						// };
 					}}
 				/>
 			</div>
