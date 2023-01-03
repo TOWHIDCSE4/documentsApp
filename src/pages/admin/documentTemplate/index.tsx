@@ -281,11 +281,11 @@ const Index = () => {
 					addIndexCol={false}
 					selectableRowsHighlight
 					onRow={(record, rowIndex) => {
-						// return {
-						// 	onClick: (event) => {
-						// 		redirect("frontend.admin.application.edit", { id: record.id });
-						// 	},
-						// };
+						return {
+							onClick: (event) => {
+								redirect("frontend.admin.application.edit", { id: record.id });
+							},
+						};
 					}}
 				/>
 			</div>

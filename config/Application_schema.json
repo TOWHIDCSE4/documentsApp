@@ -52,7 +52,7 @@
     "fieldName": "birthday",
     "dataType": "date",
     "inputType": "dateTimeInput",
-    "label": "birthday",
+    "label": "Date Of Birth",
     "position": 5,
     "groupTitle": "Personal Details",
     "defaultValue": "",
@@ -79,19 +79,22 @@
     "validation": []
   },
   {
-    "fieldName": "street",
-    "dataType": "string",
-    "inputType": "selectInput",
-    "label": "Street",
-    "position": 6,
-    "groupTitle": "Address",
-    "defaultValue": "",
-    "list": {},
-    "col": {
-      "xs": 2,
-      "lg": 3
-    },
-    "validation": []
+		"fieldName": "street",
+		"dataType": "string",
+		"inputType": "selectInput",
+		"label": "Street",
+		"position": 6,
+		"groupTitle": "Address",
+		"defaultValue": "",
+		"list": {
+			"sourceType": "manual",
+			"listSource": "Dhaka, Chattogram, Sylhet"
+		},
+		"col": {
+			"xs": 2,
+			"lg": 3
+		},
+		"validation": []
   },
   {
     "fieldName": "appartment",
@@ -124,19 +127,22 @@
     "validation": []
   },
   {
-    "fieldName": "state",
-    "dataType": "string",
-    "inputType": "selectInput",
-    "label": "State",
-    "position": 9,
-    "groupTitle": "Address",
-    "defaultValue": "",
-    "list": {},
-    "col": {
-      "xs": 2,
-      "lg": 3
-    },
-    "validation": []
+		"fieldName": "state",
+		"dataType": "string",
+		"inputType": "selectInput",
+		"label": "State",
+		"position": 9,
+		"groupTitle": "Address",
+		"defaultValue": "",
+		"list": {
+			"sourceType": "manual",
+			"listSource": "Dhaka, Chattogram, Sylhet"
+		},
+		"col": {
+			"xs": 2,
+			"lg": 3
+		},
+		"validation": []
   },
   {
     "fieldName": "companyName",
@@ -214,19 +220,22 @@
     "validation": []
   },
   {
-    "fieldName": "officeStreet",
-    "dataType": "string",
-    "inputType": "selectInput",
-    "label": "Street",
-    "position": 6,
-    "groupTitle": "Company Address",
-    "defaultValue": "",
-    "list": {},
-    "col": {
-      "xs": 2,
-      "lg": 3
-    },
-    "validation": []
+		"fieldName": "officeStreet",
+		"dataType": "string",
+		"inputType": "selectInput",
+		"label": "Street",
+		"position": 6,
+		"groupTitle": "Company Address",
+		"defaultValue": "",
+		"list": {
+			"sourceType": "manual",
+			"listSource": "Dhaka, Chattogram, Sylhet"
+		},
+		"col": {
+			"xs": 2,
+			"lg": 3
+		},
+		"validation": []
   },
   {
     "fieldName": "officeAppartment",
@@ -259,18 +268,21 @@
     "validation": []
   },
   {
-    "fieldName": "officeState",
-    "dataType": "string",
-    "inputType": "selectInput",
-    "label": "State",
-    "position": 9,
-    "groupTitle": "Company Address",
-    "defaultValue": "",
-    "list": {},
-    "col": {
-      "xs": 2,
-      "lg": 3
-    },
-    "validation": []
+		"fieldName": "officeState",
+		"dataType": "string",
+		"inputType": "selectInput",
+		"label": "State",
+		"position": 9,
+		"groupTitle": "Company Address",
+		"defaultValue": "",
+		"list": {
+			"sourceType": "manual",
+			"listSource": "Dhaka, Chattogram, Sylhet"
+		},
+		"col": {
+			"xs": 2,
+			"lg": 3
+		},
+		"validation": []
   }
 ]

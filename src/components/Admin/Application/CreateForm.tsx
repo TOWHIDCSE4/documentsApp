@@ -9,10 +9,10 @@ import documentsService from "@root/src/services/documentService";
 import _ from "lodash";
 
 const DynamicFormPage = () => {
-	const { t, notify, redirect } = useBaseHook();
+	const { t, notify, redirect, router } = useBaseHook();
 	const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
 	const [loading, setLoading] = useState(false);
-  let buttonId = 6;
+	let buttonId = 6;
 
 	const onFinish = async (data: any): Promise<void> => {
 		setLoading(true);
@@ -105,7 +105,15 @@ const DynamicFormPage = () => {
 				</div>
 
 				<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-					<Button type="primary" htmlType="submit">
+					<Button type="primary" onClick={() => router.back()}>
+						{t("buttons:back")}
+					</Button>
+
+					<Button
+						type="primary"
+						style={{ marginLeft: 10 }}
+						htmlType="submit"
+					>
 						Submit
 					</Button>
 

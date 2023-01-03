@@ -17,11 +17,12 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		fieldName,
 		label,
 		inputType,
-		options,
+		// options,
 		defaultValue,
 		validation,
 		col,
 		position,
+		list,
 	} = formField || {};
 
 	// useEffect(() => {
@@ -75,6 +76,15 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 			</div>
 		);
 	} else if (inputType === "selectInput") {
+		let options: any = [];
+
+		if (list?.sourceType === "manual") {
+			const optionData = list?.listSource?.split(", ");
+			options = optionData?.map((item: any) => {
+				return { label: item, value: item };
+			});
+		}
+
 		return (
 			<div>
 				<Form.Item name={fieldName} label={label}>
@@ -90,25 +100,25 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 	} else if (inputType === "dateTimeInput") {
 		return (
 			<div>
-				{/* <Form.Item name={fieldName} label={label}> */}
-				<DatePicker name={"data.dateTimeInput"} />
-				{/* </Form.Item> */}
+				<Form.Item name={fieldName} label={label}>
+					<DatePicker name={"data.dateTimeInput"} />
+				</Form.Item>
 			</div>
 		);
 	}
 
-	// else if (inputType === "fileInput") {
-	// 	return (
-	// 		<div>
-	// 			<FieldLabel name={fieldName} label={label} />
-	// 			<DragDrop
-	// 				control={control}
-	// 				name={fieldName}
-	// 				onRemoveFile={() => {}}
-	// 			/>
-	// 		</div>
-	// 	);
-	// }
+	else if (inputType === "fileInput") {
+		return (
+			<div>
+				<FieldLabel name={fieldName} label={label} />
+				{/* <DragDrop
+					control={control}
+					name={fieldName}
+					onRemoveFile={() => {}}
+				/> */}
+			</div>
+		);
+	}
 	else {
 		return <></>;
 	}

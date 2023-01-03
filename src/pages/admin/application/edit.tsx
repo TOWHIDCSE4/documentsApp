@@ -5,13 +5,14 @@ import { Row, Col } from "antd";
 import to from "await-to-js";
 import UpdateForm from "@root/src/components/Admin/Application/UpdateForm";
 import documentsService from "@root/src/services/documentService";
+import dayjs from 'dayjs';
 
 const Layout = dynamic(() => import("@src/layouts/Admin"), { ssr: false });
 
 const Edit = () => {
 	const { t, notify, redirect, router } = useBaseHook();
 	const { query } = router;
-	const [documentData, setDocumentData]: any[] = useState();
+	const [documentData, setDocumentData] = useState(null);
 
 	const fetchData = async () => {
 		let idError: any = null;
@@ -30,7 +31,9 @@ const Edit = () => {
 		);
 
 		if (error) return notify(t(`errors:${error.code}`), "", "error");
-		setDocumentData(document.data);
+		const documentDataObject = document?.["data"];
+		documentDataObject.birthday = dayjs(documentDataObject?.["birthday"]);
+		setDocumentData(documentDataObject);
 	};
 
 	useEffect(() => {

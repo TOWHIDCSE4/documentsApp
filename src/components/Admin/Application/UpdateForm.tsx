@@ -110,7 +110,15 @@ const DynamicFormPage = ({ documentData }) => {
 				</div>
 
 				<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-					<Button type="primary" htmlType="submit">
+					<Button type="primary" onClick={() => router.back()}>
+						{t("buttons:back")}
+					</Button>
+
+					<Button
+						type="primary"
+						style={{ marginLeft: 10 }}
+						htmlType="submit"
+					>
 						Submit
 					</Button>
 
