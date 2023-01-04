@@ -36,7 +36,7 @@
   {
     "fieldName": "phone",
     "dataType": "string",
-    "inputType": "numberInput",
+    "inputType": "textInput",
     "label": "Phone",
     "position": 4,
     "groupTitle": "Personal Details",
