@@ -8,6 +8,9 @@ class PermissionModel extends BaseModel {
   id: number;
   name: string;
   description: any;
+  value: number;
+  key: string;
+  createdBy: number;
 
   static get relationMappings() {
     return {

@@ -4,12 +4,14 @@ class RoleModel extends BaseModel {
   static tableName = "roles"
 
   //fields
-  id: number;
-  name: string;
-  parentId: number;
-  key: string;
+  id: number;  
   code: string;
-  description: any;
+  name: string;
+  description: string;
+  key: string;
+  others: any;  
+  parentId: number;
+  tenantId: number;
   createdBy: number;
   updatedBy: number;
 

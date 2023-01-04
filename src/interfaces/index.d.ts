@@ -15,6 +15,10 @@ interface User {
   email: string;
   roleId: number;
   createdAt: string;
+  code: string;
+  twofa: boolean;
+  twofaKey: string;
+  isFirst: number;
 }
 
 interface Role {

@@ -15,7 +15,8 @@ import {
   HistoryOutlined,
   CommentOutlined,
   FileTextOutlined,
-  DashboardOutlined
+  DashboardOutlined,
+  PlusSquareOutlined
 } from "@ant-design/icons";
 import auth from "@src/helpers/auth";
 const user = auth().user;
@@ -33,6 +34,13 @@ const sidebar = [
     icon: <FileTextOutlined />,
     permissions: {
       application: "R",
+    },
+  },
+  {
+    routeName: "frontend.admin.documentTemplates.index",
+    icon: <HomeOutlined />,
+    permissions: {
+      documentTemplates: "R",
     },
   },
   {

@@ -36,6 +36,8 @@ Route.group(() => {
     Route.post("/auth/getPermissionBot", "AuthController.getPermissionBot").name('auth.getPermissionBot')
     Route.post("/refreshToken", "AuthController.refreshToken").name('auth.refreshToken')
     Route.post("/auth/getRoleBotUser", "AuthController.getRoleBotUser").name('auth.getRoleBotUser')
+    Route.post("/AuthTwofa", "AuthController.AuthTwofa").name('auth.AuthTwofa')
+    
     // ---------------------------------- User Routes ---------------------------------------//
     Route.resource("/users", "UserController").name('users') // CRUD
     Route.get("/users/generateOTP", "UserController.generateOTP").name('users.generateOTP')

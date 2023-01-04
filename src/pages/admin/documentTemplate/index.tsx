@@ -17,44 +17,11 @@ import auth from "@src/helpers/auth";
 import React, { useState, useRef } from "react";
 import documentService from "@root/src/services/documentService";
 import constantConfig from "@config/constant";
+import { checkStatusByName, checkStatusColor, getCountByStatus } from "@root/src/helpers/utils";
 const { documentStatus } = constantConfig;
 
 interface jsPDFWithPlugin extends jsPDF {
 	autoTable: (options: UserOptions) => jsPDF;
-}
-
-function checkStatus(status: string) {
-	let colorObj = {
-		padding: "4px 8px",
-		borderRadius: "5px",
-		color: "#b22222",
-		backgroundColor: "#fff6f6",
-		width: "75px",
-	};
-	if (status === "Approve") {
-		colorObj = {
-			...colorObj,
-			color: "#17B169",
-			backgroundColor: "#cefad0",
-			width: "70px",
-		};
-	} else if (status === "To Be Reviewed") {
-		colorObj = {
-			...colorObj,
-			color: "#DAA520",
-			backgroundColor: "#FFF8DC",
-			width: "120px",
-		};
-	} else if (status == "Rejected") {
-		colorObj = {
-			...colorObj,
-			color: "#b22222",
-			backgroundColor: "#fff6f6",
-			width: "75px",
-		};
-	}
-
-	return colorObj;
 }
 
 const Index = () => {
@@ -89,10 +56,25 @@ const Index = () => {
 		if (documents) {
 			const resultObj = JSON.parse(JSON.stringify(documents));
 			const result = _.countBy(resultObj.data, "status");
-			setStatusCount(result);
 			setDocuments(resultObj);
 		}
+		const countbystatus =  await getCountByStatus(documents?.data);
+		// const len = Object.keys(countbystatus).filter(item =>item != null)
+		Object.keys(countbystatus).map((item) => {
+			if(documentStatus.hasOwnProperty(item)){
+				// re-name object keys
+				countbystatus[documentStatus[item]] = countbystatus[item];
+				// delete previous key
+				delete countbystatus[item];
 
+			}
+			
+			
+		});
+
+		setStatusCount(countbystatus);
+		console.log(documents);
+		
 		return documents;
 	};
 
@@ -110,35 +92,7 @@ const Index = () => {
 	};
 
 	const generatePdf = (rowInfo: any) => {
-		const doc = new jsPDF("portrait", "px", "a4") as jsPDFWithPlugin;
-		const tableTitle = [
-			"Form Name",
-			"Form ID",
-			"Issued By",
-			"Issued Date",
-			"Submitter",
-			"Submit Date",
-			"Status",
-			"Updated Date",
-		];
-
-		const tableRow = [
-			rowInfo.formName,
-			rowInfo.formId,
-			rowInfo.issuedBy,
-			moment(rowInfo.issuedDate).format("LL"),
-			rowInfo.submitter,
-			moment(rowInfo.submitDate).format("LL"),
-			rowInfo.status,
-			moment(rowInfo.updatedDate).format("LL"),
-		];
-
-		doc.autoTable({
-			head: [tableTitle],
-			body: [tableRow],
-		});
-
-		doc.save(rowInfo.formId);
+		return redirect("frontend.admin.application.documentpdf", { id: rowInfo.id });
 	};
 
 	const columns = [
@@ -205,8 +159,8 @@ const Index = () => {
 			filterable: true,
 			render: (text, record) => {
 				return (
-					<div style={checkStatus(documentStatus[text])}>
-						{documentStatus[text]}
+					<div style={checkStatusColor(text)}>
+						{checkStatusByName(text)}
 					</div>
 				);
 			},

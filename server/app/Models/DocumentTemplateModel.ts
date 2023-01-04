@@ -9,9 +9,9 @@ class DocumentTemplateModel extends BaseModel {
 	description: string;
 	content: Array<string>;
 	locale: string;
-	status: number;
+	others: any;
 	createdBy: number;
-    updatedBy: number;
+	updatedBy: number;
 	createdAt: Date;
 	updatedAt: Date;
 }

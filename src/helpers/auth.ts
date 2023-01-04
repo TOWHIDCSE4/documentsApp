@@ -19,6 +19,10 @@ export interface AuthInterface {
     groupId: number,
     roleGroupId: number,
     type: string;
+    code: string;
+    twofa: string;
+    twofaKey: string;
+    isFirst: number;
   }
 }
 
@@ -45,15 +49,6 @@ export default (context?: any): AuthInterface => {
       path: "/"
     })
     cookies.remove("user", {
-      path: "/"
-    })
-    cookies.remove("botObj", {
-      path: "/"
-    })
-    cookies.remove("botRoleUser", {
-      path: "/"
-    })
-    cookies.remove("botId", {
       path: "/"
     })
   }

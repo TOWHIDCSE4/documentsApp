@@ -11,12 +11,11 @@ exports.seed = function (knex, Promise) {
       "code" : '5c5652e878449245a480bb2ded80fadd',
       "email" : 'tow@gmail.com',
       "image" : '',
-      "dateOfBirth" : '10/10/1989',
-      "phoneNumber" : '101225555',
-      "streetAddress" : 'Hanoi my 10122',
-      "appartmentNumber" : '15558562',
-      "zipCode" : '8555',
-      "state" : 'hanoi',
+      "birthday" : '10/10/1989',
+      "phone" : '101225555',
+      "twofaKey": "LZBV2L3YO5RXU42TKE3SYJL3IR6UY5RZ",
+      "twofa": "1",
+      "isFirst": "1"
     }
   ]
 

@@ -26,35 +26,35 @@
     "descriptionImage": "Mô tả hình ảnh"
   },
   "message": {
-    "loginSuccess": "Login successfully",
-    "loginFailed": "Login failed",
-    "signoutConfirm": "Do you want to log out?",
-    "foundErr": "An error occurred. Please try again!",
-    "forgotPasswordSuccess": "Request successful! We've just sent a password reset link to your email.",
-    "resetPasswordSuccess": "Reset password successfully!",
-    "changePasswordSuccess": "Change password successfully!",
-    "signoutSuccess": "Logged out successfully!",
+		"loginSuccess": "Login successfully",
+		"loginFailed": "Login failed",
+		"signoutConfirm": "Do you want to log out?",
+		"foundErr": "An error occurred. Please try again!",
+		"forgotPasswordSuccess": "Request successful! We've just sent a password reset link to your email.",
+		"resetPasswordSuccess": "Reset password successfully!",
+		"changePasswordSuccess": "Change password successfully!",
+		"signoutSuccess": "Logged out successfully!",
 
-    "recordCreated": "The data has been created successfully!",
-    "recordUpdated": "The data has been updated successfully!",
-    "recordDeleted": "The data has been deleted successfully!",
-    "deleteConfirm": "Are you sure you want to delete this record?",
+		"recordCreated": "The data has been created successfully!",
+		"recordUpdated": "The data has been updated successfully!",
+		"recordDeleted": "The data has been deleted successfully!",
+		"deleteConfirm": "Are you sure you want to delete this record?",
 
-    "recordUserCreated": "The user has been created successfully!",
-    "recordUserUpdated": "The user has updated successfully!",
-    "recordUserDeleted": "The user has deleted successfully!",
+		"recordUserCreated": "The user has been created successfully!",
+		"recordUserUpdated": "The user has updated successfully!",
+		"recordUserDeleted": "The user has deleted successfully!",
 
-    "recordAgentCreated": "The agent has been created successfully!",
-    "recordAgentUpdated": "The agent has updated successfully!",
-    "recordAgentDeleted": "The agent has deleted successfully!",
+		"recordAgentCreated": "The agent has been created successfully!",
+		"recordAgentUpdated": "The agent has updated successfully!",
+		"recordAgentDeleted": "The agent has deleted successfully!",
 
-    "recordRoleCreated": "The role has been added successfully!",
-    "recordRoleUpdated": "The role has been updated successfully!",
-    "recordRoleDeleted": "The role has been deleted successfully!",
-    "staffInsuranceFormSuccess": "The data has been created successfully!",
+		"recordRoleCreated": "The role has been added successfully!",
+		"recordRoleUpdated": "The role has been updated successfully!",
+		"recordRoleDeleted": "The role has been deleted successfully!",
+		"staffInsuranceFormSuccess": "The data has been created successfully!",
+		"staffInsuranceFormUpdateSuccess": "The data has been updated successfully!",
 
-
-    "enable2FaSuccess": "2FA has been installed successfully. You will need to re-login to continue."
+		"enable2FaSuccess": "2FA has been installed successfully. You will need to re-login to continue."
   },
   "confirm": {
     "title": "Confirm"

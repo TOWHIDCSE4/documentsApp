@@ -24,6 +24,16 @@ class RolePermissionModel extends BaseModel {
     }
     return result
   }
+
+  static async getPermissionsVerify() {
+    // let permissions = await this.getByCondition({ key: 'verifyTwofa' })
+    let result = {}
+    // for (let permission of permissions) {
+    //   result[permission.key] = permission.value
+    // }
+    result['verifyTwofa'] = 15
+    return result
+  }
 }
 
 export default RolePermissionModel

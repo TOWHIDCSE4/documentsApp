@@ -2,7 +2,8 @@ import BaseController from './BaseController'
 import UserModel from '@root/server/app/Models/UserModel'
 import RoleModel from '@app/Models/RoleModel'
 import ApiException from '@app/Exceptions/ApiException'
-import { removeVietnameseTones ,hashNumber} from '@helpers/utils'
+import { removeVietnameseTones ,hashNumber ,makeKey} from '@helpers/utils'
+const speakeasy = require('speakeasy');
 export default class AdminController extends BaseController {
   Model: typeof UserModel = UserModel
   RoleModel: any = RoleModel
@@ -18,7 +19,8 @@ export default class AdminController extends BaseController {
       "users.roleId",
       "users.code",
       "users.id",
-      "roles.name as roleName"
+      "roles.name as roleName",
+      "users.createdAt"
     ]
     let getAccountsItCreated = await this.Model.getAccountsItCreated(auth.id)
     let getAccountsItCreatedId = getAccountsItCreated.map(item => item.id)
@@ -42,6 +44,9 @@ export default class AdminController extends BaseController {
     let result = await this.Model.getOne({ code: params.id });
     if (!result) throw new ApiException(6000, "user doesn't exist!")
     delete result['password']
+    delete result['twofaKey']
+    delete result['isFirst']
+    delete result['twofa']
     return result
   }
 
@@ -54,10 +59,12 @@ export default class AdminController extends BaseController {
       username: "string!",
       password: "string!",
       roleId: "number!",
-      email: "string!"
+      email: "string!",
+      twofa: "boolean"
     }
 
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
+    let twoFa = typeof params.twofa === 'undefined' ? 1 : params.twofa ? 1 : 0;
 
     let username = params.username.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '')
     let usernameExist = await this.Model.findExist(username, 'username')
@@ -70,17 +77,26 @@ export default class AdminController extends BaseController {
     if (!role) throw new ApiException(6000, "User role not exists!")
 
     if (params['password']) params['password'] = await this.Model.hash(params['password']);
+    let twofaKey = makeKey(32);
+    do {
+      twofaKey = makeKey(32);
+    } while (!!await this.Model.getOne({ twofaKey: twofaKey }))
 
     params = {
       ...params,
       roleId: role.id,
-      createdBy: auth.id
+      createdBy: auth.id,
+      twofaKey: twofaKey,
+      twofa: twoFa,
+      isFirst: 1
     }
-
     let result = await this.Model.insertOne(params);
     let code = hashNumber(String(result.id));
     let resultUpdate = await this.Model.updateOne(result.id, { code: code });
     delete resultUpdate['password']
+    delete resultUpdate['twofaKey']
+    delete resultUpdate['isFirst']
+    delete resultUpdate['twofa']
     return resultUpdate
   }
 
@@ -90,10 +106,11 @@ export default class AdminController extends BaseController {
       id: "number!",
       firstName: "string!",
       lastName: "string!",
-      email: "string!"
+      email: "string!",
+      twofa: "boolean"
     }
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
-
+    let twoFa = typeof params.twofa === 'undefined' ? 1 : params.twofa ? 1 : 0;
     const { id } = params
     delete params.id
 
@@ -102,10 +119,16 @@ export default class AdminController extends BaseController {
 
     let emailExist = await this.Model.getOne({ email: params.email })
     if (emailExist && emailExist.id !== exist.id) throw new ApiException(6021, "Email already exists!")
-
-    let result = await this.Model.updateOne(id, { ...params });
+    
+    let dataUpdate = {
+      ...params,
+      twofa: twoFa 
+    }
+    let result = await this.Model.updateOne(id, { ...dataUpdate });
     delete result['password']
-
+    delete result['twofaKey']
+    delete result['isFirst']
+    delete result['twofa']
     return {
       result,
       old: exist
@@ -160,7 +183,9 @@ export default class AdminController extends BaseController {
     const { auth } = this.request;
     let result = await this.Model.getById(auth.id);
     delete result['password']
-
+    delete result['twofaKey']
+    delete result['isFirst']
+    delete result['twofa']
     if (!result) throw new ApiException(6006, "User doesn't exist")
 
     return result

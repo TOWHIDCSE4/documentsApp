@@ -1,5 +1,7 @@
-import _ from 'lodash'
-export const xoaDau =(str) => {
+import _ from 'lodash';
+import {documentStatus} from '@config/constant';
+
+export const removeVietnameseTones =(str) => {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
   str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
@@ -41,4 +43,71 @@ export const getMinQuantitySet = (items) => {
     if (minQuantity > item.minQuantity) minQuantity = item.minQuantity
   })
   return minQuantity
+}
+
+
+export const getCountByStatus = (data:any) => {
+  return _.countBy(data, 'status');
+}
+
+export const checkStatusColor = (status:any) => {
+  
+  const colorObj = {
+		padding: "4px 8px",
+		borderRadius: "5px",
+		color: "#b22222",
+		backgroundColor: "#fff6f6",
+		width: "75px",
+	};
+
+  switch (status) {
+    case "Approve":
+    case "1":
+      return {
+        ...colorObj,
+			color: "#17B169",
+			backgroundColor: "#cefad0",
+			width: "70px",
+      };
+
+    case "To Be Reviewed":
+    case "2":
+      return {
+        ...colorObj,
+			color: "#DAA520",
+			backgroundColor: "#FFF8DC",
+			width: "120px",
+      };
+    case "Rejected":
+    case "3":
+      return {
+        ...colorObj,
+			color: "#b22222",
+			backgroundColor: "#fff6f6",
+			width: "75px",
+      };
+  
+    default:
+      return ;
+  }
+}
+
+export const checkStatusByName = (status:any) => {
+  
+
+  switch (status) {
+    case "Approve":
+    case "1":
+      return documentStatus[status];
+    case "To Be Reviewed":
+    case "2":
+      return documentStatus[status];
+    case "Rejected":
+    case "3":
+      return documentStatus[status];
+
+    
+    default:
+      return ;
+  }
 }

@@ -13,6 +13,8 @@
   "6012": "The token has expired",
   "6021": "Email already exists!",
   "6022": "You can not remove your account.",
+  "6023": "Code verify is not correct",
+  
 
   "7000": "The account or password is incorrect",
   "7002": "The data does not exist",

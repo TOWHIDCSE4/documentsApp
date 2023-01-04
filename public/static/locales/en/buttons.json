@@ -37,5 +37,6 @@
   "downloadError": "Download error logs",
   "text": "Text",
   "image": "Image",
-  "addButton": "+ Add Button"
+  "addButton": "+ Add Button",
+  "verify": "Verify"
 }

@@ -3,16 +3,16 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-  return knex.schema.createTable('documents', function (table) {
+  return knex.schema.createTable('document_templates', function (table) {
     table.increments();
     table.string('name').nullable();
+    table.string('description').nullable();
     table.jsonb('content').nullable();
-    table.integer('status').nullable();
-    table.integer('documentTemplateId').index().references('id').inTable('document_templates')
-      .onUpdate('CASCADE')
-      .onDelete('CASCADE');
+    table.string('locale').nullable();
 
-      
+    table.jsonb('others').defaultTo('{}').comment("more information");
+
+
     table.integer('createdBy').nullable().index().references('id').inTable('users')
       .onUpdate('CASCADE')
       .onDelete('SET NULL');
@@ -29,5 +29,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
- return knex.schema.dropTable('documents');
+  return knex.schema.dropTable('document_templates');
 };

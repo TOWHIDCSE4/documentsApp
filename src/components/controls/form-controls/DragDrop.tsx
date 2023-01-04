@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Upload } from "antd";
 import { Controller } from "react-hook-form";
-import { AiOutlineCloudUpload } from "react-icons/ai";
+import { AiOutlineCloudUpload } from "react-icons/ai"; 
 const { Dragger } = Upload;
 interface DragDropProps {
   control: any;

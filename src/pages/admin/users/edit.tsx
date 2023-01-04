@@ -34,6 +34,7 @@ const Edit = () => {
     }
     if(idError) return notify(t(`errors:${idError.code}`), '', 'error')
     let [adminError, admin]: [any, User] = await to(userService().withAuth().detail({ id: query.id }));
+    admin.twofa = admin.twofa ? true : false
     if(adminError) return notify(t(`errors:${adminError.code}`), '', 'error')
     setAdmin(admin)
   }

@@ -22,10 +22,12 @@ const Login = () => {
     if (error) return notify(t('messages:message.loginFailed'), t(`errors:${error.code}`), 'error')
 
     auth().setAuth(result)
-
     notify(t('messages:message.loginSuccess'))
-    redirect('frontend.admin.documents.index')
-
+    if(result && result.user && !result.user.twofa) {
+      redirect('frontend.admin.documents.index')
+    }else {
+      redirect('frontend.admin.login.twofa')
+    }
     return result
   }
 

@@ -10,8 +10,6 @@ import moment from 'moment'
 import useBaseHook from '@src/hooks/BaseHook'
 import { PlusCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import usePermissionHook from "@src/hooks/PermissionHook";
-import arrayToTree from "array-to-tree";
-import _ from "lodash";
 
 const Layout = dynamic(() => import('@src/layouts/Admin'), { ssr: false })
 
@@ -104,19 +102,15 @@ const Index = () => {
         { field: "roles.id", direction: "desc" },
       ]
     }
-    values['pageSize'] = -1;
+
     let [error, roles]: [any, Role[]] = await to(roleService().withAuth().index(values))
     if (error) {
       const { code, message } = error
       notify(t(`errors:${code}`), '', 'error')
       return {}
     }
-    let data: any[] = _.get(roles, "data", []);
-    data = arrayToTree(data, { parentProperty: "parentId" });
-    return {
-      ...roles,
-      data: data,
-    }
+
+    return roles
   }
 
   const onDelete = async () => {
@@ -136,7 +130,7 @@ const Index = () => {
   return (
     <div className="content">
       <Button hidden={!createPer}
-        onClick={() => redirect("frontend.admin.roles.create")}
+        onClick={() => redirect("frontend.admin.documentTemplates.create")}
         type="primary"
         className='btn-top'
       >
@@ -162,13 +156,8 @@ const Index = () => {
         ref={tableRef}
         columns={columns}
         fetchData={fetchData}
-        rowSelection={{ 
-          selectedRowKeys: selectedIds, 
-          onChange: (data: any[]) => onChangeSelection(data),
-          checkStrictly: true, 
-        }}
+        rowSelection={{ selectedRowKeys: selectedIds, onChange: (data: any[]) => onChangeSelection(data) }}
         addIndexCol={false}
-        rowKey={'id'}
       />
     </div>
   )

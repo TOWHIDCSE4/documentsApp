@@ -17,9 +17,18 @@
         "edit": "Edit Role",
         "role": "Decentralization Role"
       },
+      
       "application": {
         "index": "Application",
-        "title": "Application"
+        "title": "Application",
+        "staffInsurance": "Staff Insurance 2022",
+        "createModel": "Create Model"
+      },
+
+      "documentTemplates": {
+        "index": "Document Templates",
+        "title": "Document Templates",
+        "create": "Create Document Templates"
       }
     }
   }

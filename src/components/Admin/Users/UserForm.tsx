@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Row, Col, Select } from "antd";
+import { Form, Input, Row, Col, Select,Switch } from "antd";
 import useBaseHook from "@src/hooks/BaseHook";
 import validatorHook from "@src/hooks/ValidatorHook";
 import { LockOutlined } from "@ant-design/icons";
@@ -39,7 +39,19 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
           />
         </Form.Item>
       </Col>
-
+      
+      {/* <Col md={2}>
+        <Form.Item
+          label={t("pages:users.form.twofa")}
+          name="twofa"
+          valuePropName="checked"
+          rules={[
+            { required: true, message: t('messages:form.required', { name: t('pages:users.form.twofa') }) },
+          ]}
+        >
+          <Switch />
+        </Form.Item>
+      </Col> */}
       {!isEdit ? (
         <>
           <Col md={12}>
@@ -124,7 +136,6 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
           />
         </Form.Item>
       </Col>
-
       {!isEdit ? (
         <>
           <Col md={24}>

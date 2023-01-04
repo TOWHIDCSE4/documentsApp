@@ -8,7 +8,10 @@
     "forgotPassword": "Forgot password?",
     "username": "Username",
     "password": "Password",
-    "otp": "OTP"
+    "otp": "OTP",
+    "titleVerify": "Use google authenticator to scan and get the code",
+    "Verify": "Enter the code here",
+    "tokenVerify": "Token Verify"
   },
   "forgotPassword": {
     "title": "Forgot Password",
@@ -27,6 +30,7 @@
     "title": "Dashboard",
     "description": ""
   },
+
   "application": {
     "index": {
       "title": "Application Form",
@@ -47,6 +51,36 @@
       "firstName": "First Name"
     }
   },
+
+  "documentTemplates": {
+    "index": {
+      "title": "Document Templates",
+      "description": "Document Templates"
+    },
+    "create": {
+      "title": "Create Document Templates",
+      "description": "Create Document Templates",
+      "fieldInformation": {
+        "title": "Field Information",
+        "fieldName": "Field Name",
+        "dataType": "Data Type",
+        "inputType": "Input Type",
+        "sourceType": "List source type",
+        "source": "List source",
+        "templatesName": "Templates Name",
+        "language": "Language",
+        "lable": "Label",
+        "position": "Position",
+        "groupTitle": "Group Title",
+        "col-xs": "Col-xs",
+        "col-sm": "Col-sm",
+        "col-lg": "Col-lg",
+        "col-md": "Col-md",
+        "validations": "Validations"
+      }
+    }
+  },
+  
   "changePassword": {
     "title": "Change Password",
     "password": "Password",
@@ -87,7 +121,8 @@
       "parent": "Parent",
       "email": "Email",
       "createdAt": "Created At",
-      "role": "Role"
+      "role": "Role",
+      "twofa": "2FA"
     },
     "form": {
       "username": "Username",
@@ -102,7 +137,8 @@
       "qrcode": "QR Code",
       "enable2fa": "Enable",
       "enterCode": "Enter Code",
-      "role": "Role"
+      "role": "Role",
+      "twofa":"2FA"
     }
   },
 

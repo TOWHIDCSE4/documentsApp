@@ -7,6 +7,7 @@ const config = {
   DISABLE_2FA: process.env.DISABLE_2FA,
   VERSION: process.env.VERSION,
   DOMAIN: process.env.DOMAIN,
+  LABEL2FA: process.env.LABEL2FA || "App_platform",
 };
 
 module.exports = config

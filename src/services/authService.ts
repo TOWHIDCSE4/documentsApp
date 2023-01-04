@@ -20,6 +20,20 @@ class AuthService extends Base {
     });
   };
 
+  AuthTwofa = async ({
+    code,
+    tokenVerify,
+  }: {
+    tokenVerify: string;
+    code: string;
+  }) => {
+    return this.request({
+      url: "/api/v1/AuthTwofa",
+      method: "POST",
+      data: { code, tokenVerify},
+    });
+  };
+
   logout = async ({ username }: { username: string }) => {
     auth().logout();
     return this.request({

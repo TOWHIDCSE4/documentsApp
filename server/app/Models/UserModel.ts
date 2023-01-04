@@ -3,19 +3,30 @@ import ApiException from '@app/Exceptions/ApiException'
 import RoleModel from "./RoleModel"
 const bcrypt = require("bcrypt")
 const authConfig = require("@config/auth")
-
+import redis from '@app/Services/Redis/index'
+const speakeasy = require('speakeasy');
 class UserModel extends BaseModel {
   static tableName = "users"
 
   //fields
   id: number;
+  code: string;
   username: string;
   password: string;
-  roleId: number;
   firstName: string;
   lastName: string;
   email: string;
+  image: string;
+  birthday: any;
+  phone: number;
+  others:any;
+  twofa: number;
+  twofaKey: string;
+  isFirst: number;
+  roleId: number;
+  tenantId: number;
   createdBy: number;
+  updatedBy: number;
 
   static get relationMappings() {
     return {
@@ -36,8 +47,30 @@ class UserModel extends BaseModel {
 
     let checkPassword = await this.compare(password, user.password);
     delete user.password;
-
     if (checkPassword) return user;
+    return false;
+  }
+
+  static async veriy2FA({ code, tokenVerify }: { code: string, tokenVerify: string }) {
+    const user = await this.query().findOne({ code: code });
+    if (!user) return false;
+    let checkInRedis = await redis.get(`2FA:${code}`)
+    if (!checkInRedis) throw new ApiException(401, "Need login first", {})
+    let verified = speakeasy.totp.verify({
+      secret: user.twofaKey,
+      encoding: 'ascii',
+      token: tokenVerify,
+      window: 1,
+    });
+    delete user.password;
+    delete user.twofaKey;
+    delete user.twofa;
+    delete user.isFirst;
+    if(verified){
+      await redis.del(`2FA:${code}`)
+      await this.query().where('id',user.id).update({isFirst:0})
+      return user;
+    } 
     return false;
   }
 

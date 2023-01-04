@@ -5,17 +5,13 @@ class DocumentModel extends BaseModel {
 
   //fields
   id: number;
-  formId: string;
-  formName: string;
-  data: Array<string>;
-  issuedBy: string;
-  issuedDate: Date;
-  submitter: string;
-  company: string;
-  tenant: string;
-  status: string;
-  updatedDate: Date;
+  name: string;
+  content: Array<string>;
+  status: number;
+  documentTemplateId: number;
   createdBy: number;
   updatedBy: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 export default DocumentModel

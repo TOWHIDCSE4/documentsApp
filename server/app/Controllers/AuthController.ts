@@ -7,6 +7,7 @@ import Auth from '@libs/Auth'
 import authConfig from '@config/auth'
 import to from 'await-to-js'
 import redis from '@app/Services/Redis/index'
+const speakeasy = require('speakeasy');
 
 export default class AuthController extends BaseController {
   Model: any = Model
@@ -25,13 +26,86 @@ export default class AuthController extends BaseController {
       username: data.username,
       password: data.password
     })
-    if (!user) throw new ApiException(7000, "Can not login")
 
+    if (!user) throw new ApiException(7000, "Can not login")
+    if (!user.twofa) {
+      let role = await this.RoleModel.getById(user.roleId)
+      if (!role) throw new ApiException(6000, "User role doesn't exist!")
+
+      let permissions = await this.RolePermissionModel.getPermissions(role.id);
+
+      let token = Auth.generateJWT({
+        id: user.id,
+        username: user.username,
+        permissions: permissions,
+        roleId: user.roleId
+      }, {
+        key: authConfig['SECRET_KEY_ADMIN'],
+        expiresIn: authConfig['JWT_EXPIRE_ADMIN']
+      });
+      delete user.twofaKey;
+      delete user.isFirst;
+      return {
+        token,
+        user: {
+          ...user,
+          permissions
+        }
+      }
+    }
+    else {
+      redis.set(`2FA:${user.code}`, `${user.code}`, "EX", authConfig['JWT_EXPIRE_2FA'])
+      let permissions = await this.RolePermissionModel.getPermissionsVerify();
+      let token = Auth.generateJWT({
+        id: user.id,
+        username: user.username,
+        permissions: permissions,
+        roleId: user.roleId
+      }, {
+        key: authConfig['SECRET_KEY_ADMIN'],
+        expiresIn: authConfig['JWT_EXPIRE_2FA']
+      });
+      if (user.isFirst) {
+        return {
+          token,
+          user: {
+            code: user.code,
+            twofa: user.twofa,
+            twofaKey: user.twofaKey,
+            isFirst: user.isFirst,
+            permissions
+          }
+        }
+      } else {
+        return {
+          token,
+          user: {
+            code: user.code,
+            twofa: user.twofa,
+            isFirst: user.isFirst,
+            permissions
+          }
+        }
+      }
+    }
+  }
+
+  async AuthTwofa() {
+    const inputs = this.request.all();
+    const allowFields = {
+      code: "string!",
+      tokenVerify: "string!"
+    }
+
+    const data = this.validate(inputs, allowFields, { removeNotAllow: true });
+    let user = await this.Model.veriy2FA({
+      code: data.code,
+      tokenVerify: data.tokenVerify
+    })
+    if (!user) throw new ApiException(6023, "Code verify is not correct")
     let role = await this.RoleModel.getById(user.roleId)
     if (!role) throw new ApiException(6000, "User role doesn't exist!")
-
     let permissions = await this.RolePermissionModel.getPermissions(role.id);
-
     let token = Auth.generateJWT({
       id: user.id,
       username: user.username,
@@ -41,7 +115,8 @@ export default class AuthController extends BaseController {
       key: authConfig['SECRET_KEY_ADMIN'],
       expiresIn: authConfig['JWT_EXPIRE_ADMIN']
     });
-
+    delete user.twofaKey;
+    delete user.isFirst;
     return {
       token,
       user: {

@@ -42,7 +42,7 @@ export const removeVietnameseTones = (str) => {
   return str;
 }
 
-export const makeid = (length) => {
+export const makeKey = (length) => {
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let charactersLength = characters.length;
