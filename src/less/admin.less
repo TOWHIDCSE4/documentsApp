@@ -881,6 +881,20 @@
     
   }  
 
+  .form-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 10px;
+    margin-bottom: 10px;
+
+    .row-span-2{
+      grid-row-start: span 2;
+      align-self: end;
+    }
+    .col-span-full {
+      grid-column: 1 / -1;
+    }
+  }
 }
 
 
