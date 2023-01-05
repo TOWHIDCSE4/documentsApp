@@ -5,8 +5,8 @@ import {
 	ImageUploader,
 	DragDrop,
 } from "@src/components/controls";
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import { Form, Input, DatePicker,Button,Upload} from "antd";
+import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
+import { Form, Input, DatePicker, Button, Upload } from "antd";
 import { Select } from "antd";
 const { TextArea } = Input;
 interface CommonFormProps {
@@ -106,28 +106,27 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 				</Form.Item>
 			</div>
 		);
-	}
-
-	else if (inputType === "fileInput") {
+	} else if (inputType === "fileInput") {
 		return (
 			<Form.Item>
-        <Form.Item 
-			  name={fieldName} label={label}
-				// control={control}
-				onRemoveFile={() => {}}
-				 noStyle>
-          <Upload.Dragger name={fieldName} action="/upload.do">
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">Upload Picture</p>
-            {/* <p className="ant-upload-hint">Single </p> */}
-          </Upload.Dragger>
-        </Form.Item>
-      </Form.Item>
+				<Form.Item
+					name={fieldName}
+					label={label}
+					// control={control}
+					// onRemoveFile={() => {}}
+					// noStyle
+				>
+					<Upload.Dragger name={fieldName} action="/upload.do">
+						<p className="ant-upload-drag-icon">
+							<InboxOutlined />
+						</p>
+						<p className="ant-upload-text">Upload Picture</p>
+						{/* <p className="ant-upload-hint">Single </p> */}
+					</Upload.Dragger>
+				</Form.Item>
+			</Form.Item>
 		);
-	}
-	else {
+	} else {
 		return <></>;
 	}
 };

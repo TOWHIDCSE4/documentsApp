@@ -31,7 +31,7 @@ const Edit = () => {
 		);
 
 		if (error) return notify(t(`errors:${error.code}`), "", "error");
-		const documentDataObject = document?.["data"];
+		const documentDataObject = document?.["content"];
 		documentDataObject.birthday = dayjs(documentDataObject?.["birthday"]);
 		setDocumentData(documentDataObject);
 	};

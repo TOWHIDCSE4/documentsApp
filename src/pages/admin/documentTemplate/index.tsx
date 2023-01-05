@@ -17,7 +17,11 @@ import auth from "@src/helpers/auth";
 import React, { useState, useRef } from "react";
 import documentService from "@root/src/services/documentService";
 import constantConfig from "@config/constant";
-import { checkStatusByName, checkStatusColor, getCountByStatus } from "@root/src/helpers/utils";
+import {
+	checkStatusByName,
+	checkStatusColor,
+	getCountByStatus,
+} from "@root/src/helpers/utils";
 const { documentStatus } = constantConfig;
 
 interface jsPDFWithPlugin extends jsPDF {
@@ -58,23 +62,19 @@ const Index = () => {
 			const result = _.countBy(resultObj.data, "status");
 			setDocuments(resultObj);
 		}
-		const countbystatus =  await getCountByStatus(documents?.data);
+		const countbystatus = await getCountByStatus(documents?.data);
 		// const len = Object.keys(countbystatus).filter(item =>item != null)
 		Object.keys(countbystatus).map((item) => {
-			if(documentStatus.hasOwnProperty(item)){
+			if (documentStatus.hasOwnProperty(item)) {
 				// re-name object keys
 				countbystatus[documentStatus[item]] = countbystatus[item];
 				// delete previous key
 				delete countbystatus[item];
-
 			}
-			
-			
 		});
 
 		setStatusCount(countbystatus);
-		console.log(documents);
-		
+
 		return documents;
 	};
 
@@ -92,7 +92,9 @@ const Index = () => {
 	};
 
 	const generatePdf = (rowInfo: any) => {
-		return redirect("frontend.admin.application.documentpdf", { id: rowInfo.id });
+		return redirect("frontend.admin.application.documentpdf", {
+			id: rowInfo.id,
+		});
 	};
 
 	const columns = [
@@ -283,7 +285,9 @@ const Index = () => {
 					onRow={(record, rowIndex) => {
 						return {
 							onClick: (event) => {
-								redirect("frontend.admin.application.edit", { id: record.id });
+								redirect("frontend.admin.application.edit", {
+									id: record.id,
+								});
 							},
 						};
 					}}

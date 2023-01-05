@@ -26,15 +26,10 @@ const DynamicFormPage = () => {
 		};
 
 		const documentReqBody = {
-			formId: null,
-			formName: "Staff Insurance FormStaff Insurance 2022",
-			data: JSON.stringify(data),
-			issuedBy: null,
-			issuedDate: null,
-			submitter: null,
-			company: null,
-			tenant: null,
+			name: "Staff Insurance FormStaff Insurance 2022",
+			content: JSON.stringify(data),
 			status: buttonId,
+			documentTemplateId: null,
 			createdBy: null,
 			updatedBy: null,
 		};

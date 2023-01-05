@@ -36,6 +36,7 @@ import moment from "moment";
 import to from "await-to-js";
 import auth from "@src/helpers/auth";
 import React, { useState, useRef, useEffect } from "react";
+import knex from "knex";
 
 interface jsPDFWithPlugin extends jsPDF {
 	autoTable: (options: UserOptions) => jsPDF;
@@ -106,9 +107,7 @@ const Index = () => {
 
 		if (documents) {
 			const resultObj = JSON.parse(JSON.stringify(documents));
-			console.log("documents are ", documents);
 			let result = _.countBy(resultObj.data, "status");
-			console.log("result is ", result);
 			setStatusCount(result);
 			setDocuments(resultObj);
 		}
