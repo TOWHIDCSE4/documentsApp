@@ -36,7 +36,7 @@ const ApplicationForm = () => {
             </Col>
             <Col span={12}>
                 <Card type="inner" title="Form Draft" extra={<a>{t('pages:application.applicationForm.view')}</a>}>
-                    <Statistic title={t('pages:application.applicationForm.draft')} value={status["null"]} />
+                    <Statistic title={t('pages:application.applicationForm.draft')} value={status["Draft"]} />
                 </Card>
             </Col>
         </Row>
