@@ -37,6 +37,7 @@ import to from "await-to-js";
 import auth from "@src/helpers/auth";
 import React, { useState, useRef, useEffect } from "react";
 import knex from "knex";
+import { checkStatusByName, checkStatusColor } from "@root/src/helpers/utils";
 
 interface jsPDFWithPlugin extends jsPDF {
 	autoTable: (options: UserOptions) => jsPDF;
@@ -158,8 +159,8 @@ const Index = () => {
 	const columns = [
 		{
 			title: t("pages:documents.table.formName"),
-			dataIndex: "formName",
-			key: "documents.formName",
+			dataIndex: "name",
+			key: "documents.name",
 			sorter: true,
 			filterable: true,
 			render: (text, record) => {
@@ -199,13 +200,17 @@ const Index = () => {
 			sorter: true,
 			filterable: true,
 			render: (text, record) => {
-				return <div style={checkStatus(text)}>{text}</div>;
+				return (
+					<div style={checkStatusColor(text)}>
+						{checkStatusByName(text)}
+					</div>
+				);
 			},
 		},
 		{
 			title: t("pages:documents.table.updatedDate"),
-			dataIndex: "updatedDate",
-			key: "documents.updatedDate",
+			dataIndex: "updatedAt",
+			key: "documents.updatedAt",
 			sorter: true,
 			filterable: true,
 			render: (text: string, record: any) =>
