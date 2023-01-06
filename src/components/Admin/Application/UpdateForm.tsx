@@ -6,6 +6,7 @@ import { Button, Row, Col, Tabs, Form } from "antd";
 import to from "await-to-js";
 import documentsService from "@root/src/services/documentService";
 import _ from "lodash";
+import clsx from "clsx";
 
 const DynamicFormPage = ({ documentData }) => {
 	const { t, notify, redirect, router } = useBaseHook();
@@ -75,7 +76,7 @@ const DynamicFormPage = ({ documentData }) => {
 							<>
 								<div className="form-group">
 									<h2>{item[0]}</h2>
-									<Row className="container-one-third">
+									<Row className="form-container">
 										{item[1].map((fieldValue, i) => {
 											return (
 												<>
@@ -86,6 +87,11 @@ const DynamicFormPage = ({ documentData }) => {
 														order={
 															fieldValue.position
 														}
+														className={clsx({
+															'row-span-2' : fieldValue.inputType === 'fileInput',
+															'col-span-full': fieldValue.fieldName === 'street' || fieldValue.fieldName === 'officeStreet',
+															
+														})}
 													>
 														<CommonForm
 															formField={
