@@ -106,9 +106,7 @@ const Index = () => {
 
 		if (documents) {
 			const resultObj = JSON.parse(JSON.stringify(documents));
-			console.log("documents are ", documents);
 			let result = _.countBy(resultObj.data, "status");
-			console.log("result is ", result);
 			setStatusCount(result);
 			setDocuments(resultObj);
 		}
