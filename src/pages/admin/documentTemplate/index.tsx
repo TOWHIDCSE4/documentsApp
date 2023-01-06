@@ -59,21 +59,19 @@ const Index = () => {
 
 		if (documents) {
 			const resultObj = JSON.parse(JSON.stringify(documents));
-			const result = _.countBy(resultObj.data, "status");
 			setDocuments(resultObj);
 		}
-		const countbystatus = await getCountByStatus(documents?.data);
-		// const len = Object.keys(countbystatus).filter(item =>item != null)
-		Object.keys(countbystatus).map((item) => {
+		
+		const countByStatus = await getCountByStatus(documents?.data);
+
+		Object.keys(countByStatus).map((item) => {
 			if (documentStatus.hasOwnProperty(item)) {
-				// re-name object keys
-				countbystatus[documentStatus[item]] = countbystatus[item];
-				// delete previous key
-				delete countbystatus[item];
+				countByStatus[documentStatus[item]] = countByStatus[item];
+				delete countByStatus[item];
 			}
 		});
 
-		setStatusCount(countbystatus);
+		setStatusCount(countByStatus);
 
 		return documents;
 	};
@@ -100,8 +98,8 @@ const Index = () => {
 	const columns = [
 		{
 			title: t("pages:documents.table.formName"),
-			dataIndex: "formName",
-			key: "documents.formName",
+			dataIndex: "name",
+			key: "documents.name",
 			sorter: true,
 			filterable: true,
 			render: (text, record) => {
@@ -136,15 +134,15 @@ const Index = () => {
 		},
 		{
 			title: t("pages:documentsTemplate.table.submitter"),
-			dataIndex: "submitter",
-			key: "documents.submitter",
+			dataIndex: "createdBy",
+			key: "documents.createdBy",
 			sorter: true,
 			filterable: true,
 		},
 		{
 			title: t("pages:documentsTemplate.table.submitDate"),
-			dataIndex: "submitDate",
-			key: "documents.submitDate",
+			dataIndex: "createdAt",
+			key: "documents.createdAt",
 			sorter: true,
 			filterable: true,
 			render: (text: string, record: any) =>
