@@ -13,6 +13,7 @@ const DynamicFormPage = ({ documentData }) => {
 	const { query } = router;
 	const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
 	const [loading, setLoading] = useState(false);
+	const [form] = Form.useForm();
 	let buttonId = 6;
 
 	const onFinish = async (data: any): Promise<void> => {
@@ -69,6 +70,7 @@ const DynamicFormPage = ({ documentData }) => {
 				onFinishFailed={onFinishFailed}
 				autoComplete="off"
 				initialValues={documentData}
+				form={form}
 			>
 				{Object.entries(_.groupBy(formJsonSchema, "groupTitle")).map(
 					(item, i) => {
