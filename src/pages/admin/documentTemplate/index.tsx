@@ -138,6 +138,9 @@ const Index = () => {
 			key: "documents.createdBy",
 			sorter: true,
 			filterable: true,
+			render: (text, record) => {
+				return <strong>{record?.firstName} {record?.lastName}</strong>;
+			}
 		},
 		{
 			title: t("pages:documentsTemplate.table.submitDate"),

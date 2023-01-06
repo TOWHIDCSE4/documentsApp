@@ -12,7 +12,10 @@ export default class DocumentController extends BaseController {
 
   async index() {
     const data = this.request.all()
-    let result = await this.Model.query().getForGridTable(data);
+    let query = this.Model.query()
+		.leftJoin("users", "users.id", "documents.createdBy")
+		.select("*");
+    let result = await query.getForGridTable(data);
     return result;
   }
 
