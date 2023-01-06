@@ -10,6 +10,7 @@ import _ from "lodash";
 import { CommonForm } from "@root/src/components/Admin/Application/CommonForm";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import clsx from "clsx";
 
 const Layout = dynamic(() => import("@src/layouts/Admin"), { ssr: false });
 
@@ -17,6 +18,7 @@ const DocumentPDF = () => {
     const { t, notify, redirect, router } = useBaseHook();
     const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
     const [loading, setLoading] = useState(false);
+	const [form] = Form.useForm();
     let buttonId = 6;
 	const { query } = router;
 	const [documentData, setDocumentData]: any[] = useState();
@@ -68,16 +70,24 @@ const DocumentPDF = () => {
         const hide = document.querySelectorAll(".ToHide");
         const width = document.getElementById("content").offsetWidth;
         const height = document.getElementById("content").offsetHeight;
+        const pdfcanvas = document.createElement('canvas');
+        const pdfcontext = pdfcanvas.getContext('2d');
         hide.forEach((element) => {
             element.style.visibility = "hidden";
         });
         await html2canvas(document.querySelector(".App"), { useCORS: true, dpi: 300, scale: 3 }).then((canvas) => {
             const contentDataURL = canvas.toDataURL('image/jpeg', 1)
-            let pdf = new jsPDF('l', 'px', [width, height]);
+            let pdf = new jsPDF('p', 'mm', "a4");
             let pdfWidth = pdf.internal.pageSize.getWidth()
             let pdfHeight = pdf.internal.pageSize.getHeight()
-            pdf.addImage(contentDataURL, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-            // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank')
+            // pdf.addImage(contentDataURL, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            // // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank')
+            // pdf.save("application.pdf");
+            pdfcanvas.width = canvas.width/2
+            pdfcanvas.height = canvas.height/2
+            pdfcontext.drawImage(canvas, 0,0, canvas.width/2, canvas.height/2)
+            const frame = pdfcanvas.toDataURL('image/png')
+            pdf.addImage(frame, 'JPEG',0,0,pdfWidth, pdfHeight);
             pdf.save("application.pdf");
         });
 
@@ -107,7 +117,7 @@ const DocumentPDF = () => {
 		fetchData();
 	}, []);
 
-    if (!documentData) return <></>;
+    // if (!documentData) return <></>;
     return (
         <>
 
@@ -119,6 +129,8 @@ const DocumentPDF = () => {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                         initialValues={documentData}
+				        form={form}
+                        layout="vertical"
                     >
                         {Object.entries(_.groupBy(formJsonSchema, "groupTitle")).map(
                             (item, i) => {
@@ -126,7 +138,7 @@ const DocumentPDF = () => {
                                     <>
                                         <div className="form-group">
                                             <h2>{item[0]}</h2>
-                                            <Row className="container-one-third">
+                                            <Row className="form-container">
                                                 {item[1].map((fieldValue, i) => {
                                                     return (
                                                         <>
@@ -137,6 +149,11 @@ const DocumentPDF = () => {
                                                                 order={
                                                                     fieldValue.position
                                                                 }
+                                                                className={clsx({
+                                                                    'row-span-2' : fieldValue.inputType === 'fileInput',
+                                                                    'col-span-full': fieldValue.fieldName === 'street' || fieldValue.fieldName === 'officeStreet',
+                                                                    
+                                                                })}
                                                             >
                                                                 <CommonForm
                                                                     formField={

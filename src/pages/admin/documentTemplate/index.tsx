@@ -101,8 +101,8 @@ const Index = () => {
   const columns = [
     {
       title: t("pages:documents.table.formName"),
-      dataIndex: "formName",
-      key: "documents.formName",
+      dataIndex: "name",
+      key: "documents.name",
       sorter: true,
       filterable: true,
       render: (text, record) => {
