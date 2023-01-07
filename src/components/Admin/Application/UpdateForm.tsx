@@ -71,6 +71,7 @@ const DynamicFormPage = ({ documentData }) => {
 				autoComplete="off"
 				initialValues={documentData}
 				form={form}
+				layout="vertical"
 			>
 				{Object.entries(_.groupBy(formJsonSchema, "groupTitle")).map(
 					(item, i) => {

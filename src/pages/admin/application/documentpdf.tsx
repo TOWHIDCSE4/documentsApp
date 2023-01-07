@@ -6,11 +6,13 @@ import { Button, Row, Col, Tabs, Form } from "antd";
 import to from "await-to-js";
 import documentTemplateService from "@root/src/services/documentTemplateService";
 import documentsService from "@root/src/services/documentService";
+import PdfForm from "@root/src/components/Admin/Application/PdfForm";
 import _ from "lodash";
 import { CommonForm } from "@root/src/components/Admin/Application/CommonForm";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import clsx from "clsx";
+import dayjs from 'dayjs';
 
 const Layout = dynamic(() => import("@src/layouts/Admin"), { ssr: false });
 
@@ -21,50 +23,42 @@ const DocumentPDF = () => {
 	const [form] = Form.useForm();
     let buttonId = 6;
 	const { query } = router;
-	const [documentData, setDocumentData]: any[] = useState();
+	const [documentData, setDocumentData] = useState(null);
 
-    const onFinish = async (data: any): Promise<void> => {
-        setLoading(true);
-        const templateReqBody = {
-            name: "Staff Insurance FormStaff Insurance 2022",
-            description: null,
-            content: JSON.stringify(schemaData),
-            locale: null,
-            createdBy: null,
-            updatedBy: null,
-        };
 
-        const documentReqBody = {
-            formId: null,
-            formName: "Staff Insurance FormStaff Insurance 2022",
-            data: JSON.stringify(data),
-            issuedBy: null,
-            issuedDate: null,
-            submitter: null,
-            company: null,
-            tenant: null,
-            status: buttonId,
-            createdBy: null,
-            updatedBy: null,
-        };
+    const fetchData = async () => {
+		let idError: any = null;
 
-        let [error, result]: any[] = await to(
-            documentTemplateService().create(templateReqBody),
-            documentsService().create(documentReqBody)
-        );
+		if (!query.id) {
+			idError = {
+				code: 9996,
+				message: "missing ID",
+			};
+		}
 
-        if (error) return notify(t(`errors:${error.code}`), "", "error");
+		if (idError) return notify(t(`errors:${idError.code}`), "", "error");
 
-        setLoading(false);
-        notify(t("messages:message.staffInsuranceFormSuccess"));
-        redirect("frontend.admin.application.index");
+		let [error, document]: [any, any] = await to(
+			documentsService().withAuth().detail({ id: query.id })
+		);
 
-        return result;
-    };
-
-    const onFinishFailed = (errorInfo: any): void => {
-        console.log("Failed:", errorInfo);
-    };
+		if (error) return notify(t(`errors:${error.code}`), "", "error");
+		const documentDataObject = document && {
+			documentTemplateId:document.documentTemplateId,
+			createdAt: document.createdAt,
+			createdBy: document.createdBy,
+			id: document.id,
+			name: document.name,
+			status: document.status,
+			updatedAt: document.updatedAt,
+			updatedBy: document.updatedBy,
+			...document.content
+		};
+		console.log(documentDataObject);
+		
+		documentDataObject.birthday = dayjs(documentDataObject?.["birthday"]);
+		setDocumentData(documentDataObject);
+	};
 
     const exportPdf = async () => {
         const hide = document.querySelectorAll(".ToHide");
@@ -93,37 +87,18 @@ const DocumentPDF = () => {
 
     };
 
-    const fetchData = async () => {
-		let idError: any = null;
-
-		if (!query.id) {
-			idError = {
-				code: 9996,
-				message: "missing ID",
-			};
-		}
-
-		if (idError) return notify(t(`errors:${idError.code}`), "", "error");
-
-		let [error, document]: [any, any] = await to(
-			documentsService().withAuth().detail({ id: query.id })
-		);
-
-		if (error) return notify(t(`errors:${error.code}`), "", "error");
-		setDocumentData(document.data);
-	};
-
 	useEffect(() => {
 		fetchData();
 	}, []);
 
-    // if (!documentData) return <></>;
+    if (!documentData) return <></>;
     return (
         <>
 
             <div className="content App" id="content">
+            <PdfForm documentData={documentData} />
 
-                <div className="content-documents">
+                {/* <div className="content-documents">
                     <Form
                         onFinish={onFinish}
                         onFinishFailed={onFinishFailed}
@@ -189,7 +164,7 @@ const DocumentPDF = () => {
                             </Form.Item>
                         </div>
                     </Form>
-                </div>
+                </div> */}
             </div>
         </>
     );
