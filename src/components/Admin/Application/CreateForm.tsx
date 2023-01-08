@@ -15,7 +15,6 @@ const DynamicFormPage = () => {
 	let buttonId = 6;
 
 	const onFinish = async (data: any): Promise<void> => {
-		console.log("🚀 ~ file: CreateForm.tsx:18 ~ onFinish ~ data", data)
 		setLoading(true);
 		const templateReqBody = {
 			name: "Staff Insurance FormStaff Insurance 2022",
