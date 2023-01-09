@@ -10,6 +10,9 @@ Route.group(() => {
   {
     let name = 'documentTemplate'
     Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}`).parent(`${name}.index`)
+    Route.get(`/${name}/draft`, `pages/admin/${name}/draft`).name(
+		`${name}.draft`
+	);
   }
   {
     let name = 'documents'

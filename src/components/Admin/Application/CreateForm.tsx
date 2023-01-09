@@ -7,11 +7,13 @@ import to from "await-to-js";
 import documentTemplateService from "@root/src/services/documentTemplateService";
 import documentsService from "@root/src/services/documentService";
 import _ from "lodash";
+import clsx from 'clsx';
 
 const DynamicFormPage = () => {
 	const { t, notify, redirect, router } = useBaseHook();
 	const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
 	const [loading, setLoading] = useState(false);
+	const [form] = Form.useForm();
 	let buttonId = 6;
 
 	const onFinish = async (data: any): Promise<void> => {
@@ -26,18 +28,14 @@ const DynamicFormPage = () => {
 		};
 
 		const documentReqBody = {
-			formId: null,
-			formName: "Staff Insurance FormStaff Insurance 2022",
-			data: JSON.stringify(data),
-			issuedBy: null,
-			issuedDate: null,
-			submitter: null,
-			company: null,
-			tenant: null,
+			name: "Staff Insurance FormStaff Insurance 2022",
+			content: JSON.stringify(data),
 			status: buttonId,
+			documentTemplateId: null,
 			createdBy: null,
 			updatedBy: null,
 		};
+
 
 		let [error, result]: any[] = await to(
 			documentTemplateService().create(templateReqBody),
@@ -63,6 +61,8 @@ const DynamicFormPage = () => {
 				onFinish={onFinish}
 				onFinishFailed={onFinishFailed}
 				autoComplete="off"
+				layout="vertical"
+				form={form}
 			>
 				{Object.entries(_.groupBy(formJsonSchema, "groupTitle")).map(
 					(item, i) => {
@@ -70,7 +70,7 @@ const DynamicFormPage = () => {
 							<>
 								<div className="form-group">
 									<h2>{item[0]}</h2>
-									<Row className="container-one-third">
+									<Row className="form-container">
 										{item[1].map((fieldValue, i) => {
 											return (
 												<>
@@ -81,6 +81,11 @@ const DynamicFormPage = () => {
 														order={
 															fieldValue.position
 														}
+														className={clsx({
+															'row-span-2' : fieldValue.inputType === 'fileInput',
+															'col-span-full': fieldValue.fieldName === 'street' || fieldValue.fieldName === 'officeStreet',
+															
+														})}
 													>
 														<CommonForm
 															formField={

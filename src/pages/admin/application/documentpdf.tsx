@@ -6,10 +6,13 @@ import { Button, Row, Col, Tabs, Form } from "antd";
 import to from "await-to-js";
 import documentTemplateService from "@root/src/services/documentTemplateService";
 import documentsService from "@root/src/services/documentService";
+import PdfForm from "@root/src/components/Admin/Application/PdfForm";
 import _ from "lodash";
 import { CommonForm } from "@root/src/components/Admin/Application/CommonForm";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import clsx from "clsx";
+import dayjs from 'dayjs';
 
 const Layout = dynamic(() => import("@src/layouts/Admin"), { ssr: false });
 
@@ -17,162 +20,83 @@ const DocumentPDF = () => {
     const { t, notify, redirect, router } = useBaseHook();
     const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
     const [loading, setLoading] = useState(false);
+    const [form] = Form.useForm();
     let buttonId = 6;
-	const { query } = router;
-	const [documentData, setDocumentData]: any[] = useState();
+    const { query } = router;
+    const [documentData, setDocumentData] = useState(null);
 
-    const onFinish = async (data: any): Promise<void> => {
-        setLoading(true);
-        const templateReqBody = {
-            name: "Staff Insurance FormStaff Insurance 2022",
-            description: null,
-            content: JSON.stringify(schemaData),
-            locale: null,
-            createdBy: null,
-            updatedBy: null,
-        };
 
-        const documentReqBody = {
-            formId: null,
-            formName: "Staff Insurance FormStaff Insurance 2022",
-            data: JSON.stringify(data),
-            issuedBy: null,
-            issuedDate: null,
-            submitter: null,
-            company: null,
-            tenant: null,
-            status: buttonId,
-            createdBy: null,
-            updatedBy: null,
-        };
+    const fetchData = async () => {
+        let idError: any = null;
 
-        let [error, result]: any[] = await to(
-            documentTemplateService().create(templateReqBody),
-            documentsService().create(documentReqBody)
+        if (!query.id) {
+            idError = {
+                code: 9996,
+                message: "missing ID",
+            };
+        }
+
+        if (idError) return notify(t(`errors:${idError.code}`), "", "error");
+
+        let [error, document]: [any, any] = await to(
+            documentsService().withAuth().detail({ id: query.id })
         );
 
         if (error) return notify(t(`errors:${error.code}`), "", "error");
+        const documentDataObject = document && {
+            documentTemplateId: document.documentTemplateId,
+            createdAt: document.createdAt,
+            createdBy: document.createdBy,
+            id: document.id,
+            name: document.name,
+            status: document.status,
+            updatedAt: document.updatedAt,
+            updatedBy: document.updatedBy,
+            ...document.content
+        };
+        console.log(documentDataObject);
 
-        setLoading(false);
-        notify(t("messages:message.staffInsuranceFormSuccess"));
-        redirect("frontend.admin.application.index");
-
-        return result;
-    };
-
-    const onFinishFailed = (errorInfo: any): void => {
-        console.log("Failed:", errorInfo);
+        documentDataObject.birthday = dayjs(documentDataObject?.["birthday"]);
+        setDocumentData(documentDataObject);
     };
 
     const exportPdf = async () => {
         const hide = document.querySelectorAll(".ToHide");
         const width = document.getElementById("content").offsetWidth;
         const height = document.getElementById("content").offsetHeight;
+        const pdfcanvas = document.createElement('canvas');
+        const pdfcontext = pdfcanvas.getContext('2d');
         hide.forEach((element) => {
             element.style.visibility = "hidden";
         });
         await html2canvas(document.querySelector(".App"), { useCORS: true, dpi: 300, scale: 3 }).then((canvas) => {
             const contentDataURL = canvas.toDataURL('image/jpeg', 1)
-            let pdf = new jsPDF('l', 'px', [width, height]);
+            let pdf = new jsPDF('p', 'mm', "a4");
             let pdfWidth = pdf.internal.pageSize.getWidth()
             let pdfHeight = pdf.internal.pageSize.getHeight()
-            pdf.addImage(contentDataURL, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-            // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank')
+            // pdf.addImage(contentDataURL, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            // // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank')
+            // pdf.save("application.pdf");
+            pdfcanvas.width = canvas.width / 2
+            pdfcanvas.height = canvas.height / 2
+            pdfcontext.drawImage(canvas, 0, 0, canvas.width / 2, canvas.height / 2)
+            const frame = pdfcanvas.toDataURL('image/png')
+            pdf.addImage(frame, 'JPEG', 0, 0, pdfWidth, pdfHeight);
             pdf.save("application.pdf");
         });
 
     };
 
-    const fetchData = async () => {
-		let idError: any = null;
-
-		if (!query.id) {
-			idError = {
-				code: 9996,
-				message: "missing ID",
-			};
-		}
-
-		if (idError) return notify(t(`errors:${idError.code}`), "", "error");
-
-		let [error, document]: [any, any] = await to(
-			documentsService().withAuth().detail({ id: query.id })
-		);
-
-		if (error) return notify(t(`errors:${error.code}`), "", "error");
-		setDocumentData(document.data);
-	};
-
-	useEffect(() => {
-		fetchData();
-	}, []);
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     if (!documentData) return <></>;
     return (
         <>
 
             <div className="content App" id="content">
-
-                <div className="content-documents">
-                    <Form
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                        autoComplete="off"
-                        initialValues={documentData}
-                    >
-                        {Object.entries(_.groupBy(formJsonSchema, "groupTitle")).map(
-                            (item, i) => {
-                                return (
-                                    <>
-                                        <div className="form-group">
-                                            <h2>{item[0]}</h2>
-                                            <Row className="container-one-third">
-                                                {item[1].map((fieldValue, i) => {
-                                                    return (
-                                                        <>
-                                                            <Col
-                                                                key={i}
-                                                                xs="field.Col.xs"
-                                                                lg="field.Col.lg"
-                                                                order={
-                                                                    fieldValue.position
-                                                                }
-                                                            >
-                                                                <CommonForm
-                                                                    formField={
-                                                                        fieldValue
-                                                                    }
-                                                                />
-                                                            </Col>
-                                                        </>
-                                                    );
-                                                })}
-                                            </Row>
-                                        </div>
-                                    </>
-                                );
-                            }
-                        )}
-
-                        <div style={{ paddingTop: 10, paddingBottom: 10 }}>
-                            <fieldset className="fieldset">
-                                <TabComment />
-                            </fieldset>
-                        </div>
-                        <div className="ToHide">
-
-                            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                                <Button
-                                    onClick={exportPdf}
-                                    style={{ marginLeft: 10 }}
-                                    type="primary"
-                                >
-                                    Export PDF
-                                </Button>
-                            </Form.Item>
-                        </div>
-                    </Form>
-                </div>
+                <PdfForm documentData={documentData} />
             </div>
         </>
     );

@@ -34,36 +34,6 @@
     "validation": []
   },
   {
-    "fieldName": "phone",
-    "dataType": "string",
-    "inputType": "numberInput",
-    "label": "Phone",
-    "position": 4,
-    "groupTitle": "Personal Details",
-    "defaultValue": "",
-    "list": {},
-    "col": {
-      "xs": 2,
-      "lg": 3
-    },
-    "validation": []
-  },
-  {
-    "fieldName": "birthday",
-    "dataType": "date",
-    "inputType": "dateTimeInput",
-    "label": "Date Of Birth",
-    "position": 5,
-    "groupTitle": "Personal Details",
-    "defaultValue": "",
-    "list": {},
-    "col": {
-      "xs": 2,
-      "lg": 3
-    },
-    "validation": []
-  },
-  {
     "fieldName": "avatar",
     "dataType": "file",
     "inputType": "fileInput",
@@ -78,6 +48,52 @@
     },
     "validation": []
   },
+  {
+    "fieldName": "email",
+    "dataType": "string",
+    "inputType": "textInput",
+    "label": "Email Address",
+    "position": 4,
+    "groupTitle": "Personal Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "phone",
+    "dataType": "string",
+    "inputType": "numberInput",
+    "label": "Phone",
+    "position": 5,
+    "groupTitle": "Personal Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  {
+    "fieldName": "birthday",
+    "dataType": "date",
+    "inputType": "dateTimeInput",
+    "label": "Date Of Birth",
+    "position": 6,
+    "groupTitle": "Personal Details",
+    "defaultValue": "",
+    "list": {},
+    "col": {
+      "xs": 2,
+      "lg": 3
+    },
+    "validation": []
+  },
+  
   {
 		"fieldName": "street",
 		"dataType": "string",
@@ -99,7 +115,7 @@
   {
     "fieldName": "appartment",
     "dataType": "string",
-    "inputType": "numberInput",
+    "inputType": "textInput",
     "label": "Appartment/Suite Number",
     "position": 7,
     "groupTitle": "Address",
@@ -114,7 +130,7 @@
   {
     "fieldName": "zip",
     "dataType": "string",
-    "inputType": "numberInput",
+    "inputType": "textInput",
     "label": "Zip Code",
     "position": 8,
     "groupTitle": "Address",
@@ -194,7 +210,7 @@
     "dataType": "string",
     "inputType": "numberInput",
     "label": "Phone Number",
-    "position": 4,
+    "position": 5,
     "groupTitle": "Company Details",
     "defaultValue": "",
     "list": {},

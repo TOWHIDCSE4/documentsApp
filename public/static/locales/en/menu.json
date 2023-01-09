@@ -19,16 +19,17 @@
       },
       
       "application": {
-        "index": "Application",
+        "index": "Application Form",
         "title": "Application",
         "staffInsurance": "Staff Insurance 2022",
         "createModel": "Create Model"
       },
 
       "documentTemplates": {
-        "index": "Document Templates",
+        "index": "List of Document Template",
         "title": "Document Templates",
-        "create": "Create Document Templates"
+        "create": "Create Document Templates",
+        "draft": "List of Draft"
       }
     }
   }

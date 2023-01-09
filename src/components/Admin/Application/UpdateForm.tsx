@@ -6,12 +6,14 @@ import { Button, Row, Col, Tabs, Form } from "antd";
 import to from "await-to-js";
 import documentsService from "@root/src/services/documentService";
 import _ from "lodash";
+import clsx from "clsx";
 
 const DynamicFormPage = ({ documentData }) => {
 	const { t, notify, redirect, router } = useBaseHook();
 	const { query } = router;
 	const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
 	const [loading, setLoading] = useState(false);
+	const [form] = Form.useForm();
 	let buttonId = 6;
 
 	const onFinish = async (data: any): Promise<void> => {
@@ -29,15 +31,10 @@ const DynamicFormPage = ({ documentData }) => {
 
 		const documentReqBody = {
 			id: query.id,
-			formId: null,
-			formName: "Staff Insurance FormStaff Insurance 2022",
-			data: JSON.stringify(data),
-			issuedBy: null,
-			issuedDate: null,
-			submitter: null,
-			company: null,
-			tenant: null,
+			name: "Staff Insurance FormStaff Insurance 2022",
+			content: JSON.stringify(data),
 			status: buttonId,
+			documentTemplateId: null,
 			createdBy: null,
 			updatedBy: null,
 		};
@@ -68,6 +65,8 @@ const DynamicFormPage = ({ documentData }) => {
 				onFinishFailed={onFinishFailed}
 				autoComplete="off"
 				initialValues={documentData}
+				form={form}
+				layout="vertical"
 			>
 				{Object.entries(_.groupBy(formJsonSchema, "groupTitle")).map(
 					(item, i) => {
@@ -75,7 +74,7 @@ const DynamicFormPage = ({ documentData }) => {
 							<>
 								<div className="form-group">
 									<h2>{item[0]}</h2>
-									<Row className="container-one-third">
+									<Row className="form-container">
 										{item[1].map((fieldValue, i) => {
 											return (
 												<>
@@ -86,6 +85,11 @@ const DynamicFormPage = ({ documentData }) => {
 														order={
 															fieldValue.position
 														}
+														className={clsx({
+															'row-span-2': fieldValue.inputType === 'fileInput',
+															'col-span-full': fieldValue.fieldName === 'street' || fieldValue.fieldName === 'officeStreet',
+
+														})}
 													>
 														<CommonForm
 															formField={
@@ -110,7 +114,15 @@ const DynamicFormPage = ({ documentData }) => {
 				</div>
 
 				<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-					<Button type="primary" htmlType="submit">
+					<Button type="primary" onClick={() => router.back()}>
+						{t("buttons:back")}
+					</Button>
+
+					<Button
+						style={{ marginLeft: 10 }}
+						type="primary"
+						htmlType="submit"
+					>
 						Submit
 					</Button>
 

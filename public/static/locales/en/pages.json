@@ -232,6 +232,14 @@
       "issuedDate": "Issued Date",
       "status": "Satus",
       "updatedAt": "Updated Date"
+    },
+    "draftList": {
+      "title": "Draft List",
+      "description": "Draft List"
+    },
+    "SubmittedList": {
+      "title": "Submitted Form List",
+      "description": "View submitted forms"
     }
   },
 

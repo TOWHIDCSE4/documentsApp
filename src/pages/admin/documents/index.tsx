@@ -106,9 +106,9 @@ const Index = () => {
 
 		if (documents) {
 			const resultObj = JSON.parse(JSON.stringify(documents));
-			console.log("documents are ", documents);
+			// console.log("documents are ", documents);
 			let result = _.countBy(resultObj.data, "status");
-			console.log("result is ", result);
+			// console.log("result is ", result);
 			setStatusCount(result);
 			setDocuments(resultObj);
 		}
@@ -130,11 +130,6 @@ const Index = () => {
 	};
 
 	const generatePdf = (rowInfo: any) => {
-		console.log(
-			"🚀 ~ file: index.tsx:130 ~ generatePdf ~ rowInfo",
-			rowInfo
-		);
-
 		const doc = new jsPDF("portrait", "px", "a4") as jsPDFWithPlugin;
 		const tableTitle = [
 			"Form Name",
