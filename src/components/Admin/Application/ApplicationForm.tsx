@@ -20,18 +20,52 @@ import documentTemplateService from "@root/src/services/documentTemplateService"
 
 const { Search } = Input;
 
-const onSearch = (value: string) => console.log(value);
-
 const ApplicationForm = () => {
 	const { t, redirect, notify } = useBaseHooks();
 	const status = useStatusCount();
 	const [documentTemplateFrom, setDocumentTemplateFrom] = useState(null);
+	const [loading, setLoading] = useState(false);
 
-	const fetchData = async () => {
+	const onSearch = async (value: string) => {
+		setLoading(true);
+		setDocumentTemplateFrom(null);
+
 		const values: any = {};
+
 		values.sorting = [
 			{ field: "document_templates.id", direction: "desc" },
 		];
+
+		// values.filter = [
+		// 	{
+		// 		name: {
+		// 			like: `%${value}%`,
+		// 		},
+		// 	},
+		// ];
+		values.filter = [
+			{ field: "document_templates.name", operator: "like", value: `%${value}%` },
+		];
+
+		values.pageSize = 4;
+
+		let [error, documentTemplateFromObject]: [any, any] = await to(
+			documentTemplateService().withAuth().index(values)
+		);
+
+		if (error) return notify(t(`errors:${error.code}`), "", "error");
+		setDocumentTemplateFrom(documentTemplateFromObject?.data);
+	};
+
+	const fetchData = async () => {
+		const values: any = {};
+
+		values.sorting = [
+			{ field: "document_templates.id", direction: "desc" },
+		];
+
+		values.pageSize = 4;
+
 		let [error, documentTemplateFromObject]: [any, any] = await to(
 			documentTemplateService().withAuth().index(values)
 		);
@@ -161,7 +195,6 @@ const ApplicationForm = () => {
 							</Card>
 						);
 					})}
-					
 				</Row>
 			</Card>
 			<br />

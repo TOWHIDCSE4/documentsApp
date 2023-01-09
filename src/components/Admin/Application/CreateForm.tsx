@@ -23,7 +23,7 @@ const DynamicFormPage = () => {
 			description: null,
 			content: JSON.stringify(schemaData),
 			locale: null,
-			createdBy: null,
+			createdBy: 1,
 			updatedBy: null,
 		};
 
@@ -32,7 +32,7 @@ const DynamicFormPage = () => {
 			content: JSON.stringify(data),
 			status: buttonId,
 			documentTemplateId: null,
-			createdBy: null,
+			createdBy: 1,
 			updatedBy: null,
 		};
 

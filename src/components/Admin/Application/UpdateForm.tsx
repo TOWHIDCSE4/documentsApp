@@ -35,8 +35,7 @@ const DynamicFormPage = ({ documentData }) => {
 			content: JSON.stringify(data),
 			status: buttonId,
 			documentTemplateId: null,
-			createdBy: null,
-			updatedBy: null,
+			updatedBy: 1,
 		};
 
 		let [error, result]: any[] = await to(

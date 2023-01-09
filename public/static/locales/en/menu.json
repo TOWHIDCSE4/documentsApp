@@ -2,7 +2,10 @@
   "frontend": {
     "admin": {
       "documents": {
-        "index": "Overview"
+        "index": "List of Document Template",
+        "title": "Document Templates",
+        "create": "Create Document Templates",
+        "draft": "List of Draft"
       },
       "users": {
         "title": "Account Management",
@@ -30,7 +33,10 @@
         "title": "Document Templates",
         "create": "Create Document Templates",
         "draft": "List of Draft"
-      }
+      },
+      "documentTemplate": {
+			"draft": "List of Draft"
+		}
     }
   }
 }

@@ -5,7 +5,8 @@ import { Row, Col } from "antd";
 import to from "await-to-js";
 import UpdateForm from "@root/src/components/Admin/Application/UpdateForm";
 import documentsService from "@root/src/services/documentService";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
+import moment from "moment";
 
 const Layout = dynamic(() => import("@src/layouts/Admin"), { ssr: false });
 
@@ -32,7 +33,7 @@ const Edit = () => {
 
 		if (error) return notify(t(`errors:${error.code}`), "", "error");
 		const documentDataObject = document && {
-			documentTemplateId:document.documentTemplateId,
+			documentTemplateId: document.documentTemplateId,
 			createdAt: document.createdAt,
 			createdBy: document.createdBy,
 			id: document.id,
@@ -40,11 +41,12 @@ const Edit = () => {
 			status: document.status,
 			updatedAt: document.updatedAt,
 			updatedBy: document.updatedBy,
-			...document.content
+			...document.content,
 		};
-		console.log(documentDataObject);
-		
-		documentDataObject.birthday = dayjs(documentDataObject?.["birthday"]);
+
+		documentDataObject.birthday = documentDataObject?.["birthday"]
+			? moment(documentDataObject?.["birthday"])
+			: null;
 		setDocumentData(documentDataObject);
 	};
 
