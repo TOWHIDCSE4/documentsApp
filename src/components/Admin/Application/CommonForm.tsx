@@ -30,6 +30,9 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 	// 	setValue(fieldName, defaultValue);
 	// }, [formField, setValue]);
 
+	const onChangeImage = (info) => {}
+	const onDropImage = (e) => {}
+
 	if (inputType === "textInput") {
 		return (
 			<Form.Item name={fieldName} label={label} rules={[
@@ -122,7 +125,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 					// control={control}
 					onRemoveFile={() => { }}
 					noStyle>
-					<Upload.Dragger name={fieldName} action="/upload.do">
+					<Upload.Dragger name={fieldName} action="/upload.do" onChange={onChangeImage} onDrop={onDropImage}>
 						<p className="ant-upload-drag-icon">
 							<InboxOutlined />
 						</p>

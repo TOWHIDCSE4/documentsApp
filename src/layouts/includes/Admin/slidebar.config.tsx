@@ -23,7 +23,7 @@ const user = auth().user;
 
 const sidebar = [
   {
-    routeName: "frontend.admin.documents.index",
+    routeName: "frontend.admin.documentTemplate.index",
     icon: <DashboardOutlined />,
     permissions: {
       dashboard: "R",
