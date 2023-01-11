@@ -72,7 +72,8 @@ const Index = () => {
 		});
 
 		setStatusCount(countByStatus);
-
+		console.log(documents,'dd');
+		
 		return documents;
 	};
 
@@ -113,7 +114,7 @@ const Index = () => {
 			sorter: true,
 			filterable: true,
 			render: (text, record) => {
-				return <strong>{record?.firstName} {record?.lastName}</strong>;
+				return <strong>{record?.content.firstName} {record?.content.lastName}</strong>;
 			}
 		},
 		{

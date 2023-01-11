@@ -51,5 +51,7 @@ Route.group(() => {
     Route.get(`/${name}/:id/edit`, `pages/admin/${name}/edit`).name(`${name}.edit`).parent(`${name}.index`).sidebar(`${name}.index`)
     Route.get(`/${name}/:id/role`, `pages/admin/${name}/role`).name(`${name}.role`).parent(`${name}.index`).sidebar(`${name}.index`)
   }
+  
+  Route.get("/test", "pages/admin/test").name("test.index").parent(`roles.index`).sidebar('test.index')
 
 }).name("frontend.admin").prefix("/admin").middleware([AuthAdminMiddleware])
