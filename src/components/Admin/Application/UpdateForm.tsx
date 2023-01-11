@@ -14,7 +14,7 @@ const DynamicFormPage = ({ documentData }) => {
 	const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
 	const [loading, setLoading] = useState(false);
 	const [form] = Form.useForm();
-	let buttonId = 6;
+	const [buttonId, setButtonId] = useState(6);
 
 	const onFinish = async (data: any): Promise<void> => {
 		setLoading(true);
@@ -86,9 +86,14 @@ const DynamicFormPage = ({ documentData }) => {
 															fieldValue.position
 														}
 														className={clsx({
-															'row-span-2': fieldValue.inputType === 'fileInput',
-															'col-span-full': fieldValue.fieldName === 'street' || fieldValue.fieldName === 'officeStreet',
-
+															"row-span-2":
+																fieldValue.inputType ===
+																"fileInput",
+															"col-span-full":
+																fieldValue.fieldName ===
+																	"street" ||
+																fieldValue.fieldName ===
+																	"officeStreet",
 														})}
 													>
 														<CommonForm
@@ -127,7 +132,7 @@ const DynamicFormPage = ({ documentData }) => {
 					</Button>
 
 					<Button
-						onClick={() => (buttonId = 1)}
+						onClick={() => setButtonId(1)}
 						style={{ marginLeft: 10 }}
 						type="primary"
 						htmlType="submit"
@@ -136,7 +141,7 @@ const DynamicFormPage = ({ documentData }) => {
 					</Button>
 
 					<Button
-						onClick={() => (buttonId = 3)}
+						onClick={() => (setButtonId(3))}
 						style={{ marginLeft: 10 }}
 						type="primary"
 						htmlType="submit"
@@ -145,7 +150,7 @@ const DynamicFormPage = ({ documentData }) => {
 					</Button>
 
 					<Button
-						onClick={() => (buttonId = 2)}
+						onClick={() => (setButtonId(2))}
 						style={{ marginLeft: 10 }}
 						type="primary"
 						htmlType="submit"
