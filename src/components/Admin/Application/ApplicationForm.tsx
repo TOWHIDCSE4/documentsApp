@@ -72,6 +72,8 @@ const ApplicationForm = () => {
 
 		if (error) return notify(t(`errors:${error.code}`), "", "error");
 		setDocumentTemplateFrom(documentTemplateFromObject?.data);
+console.log(documentTemplateFromObject,'dto');
+
 	};
 
 	useEffect(() => {

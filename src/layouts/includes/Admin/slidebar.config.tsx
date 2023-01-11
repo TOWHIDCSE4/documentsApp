@@ -30,11 +30,35 @@ const sidebar = [
     },
   },
   {
-    routeName: "frontend.admin.application.index",
+    routeName: "frontend.admin.application.title",
     icon: <FileTextOutlined />,
     permissions: {
       application: "R",
     },
+    type: "sub",
+    children: [
+      {
+        routeName: "frontend.admin.application.index",
+        icon: <TeamOutlined />,
+        permissions: {
+          users: "R",
+        },
+      },
+      {
+        routeName: "frontend.admin.documents.index",
+        icon: <TeamOutlined />,
+        permissions: {
+          users: "R",
+        },
+      },
+      {
+        routeName: "frontend.admin.documentTemplates.draft",
+        icon: <ApartmentOutlined />,
+        permissions: {
+          roles: "R",
+        },
+      }
+    ]
   },
   {
     routeName: "frontend.admin.documentTemplates.index",
