@@ -58,10 +58,14 @@ const Index = () => {
 		}
 
 		if (documents) {
+			documents.data = documents.data.filter(
+				(item: any) => item.status !== 7
+			);
+			documents.total = documents.data.length;
 			const resultObj = JSON.parse(JSON.stringify(documents));
 			setDocuments(resultObj);
 		}
-		
+
 		const countByStatus = await getCountByStatus(documents?.data);
 
 		Object.keys(countByStatus).map((item) => {
@@ -72,8 +76,7 @@ const Index = () => {
 		});
 
 		setStatusCount(countByStatus);
-		console.log(documents,'dd');
-		
+
 		return documents;
 	};
 
@@ -114,8 +117,12 @@ const Index = () => {
 			sorter: true,
 			filterable: true,
 			render: (text, record) => {
-				return <strong>{record?.content.firstName} {record?.content.lastName}</strong>;
-			}
+				return (
+					<strong>
+						{record?.content.firstName} {record?.content.lastName}
+					</strong>
+				);
+			},
 		},
 		{
 			title: t("pages:documentsTemplate.table.submitDate"),
@@ -163,8 +170,9 @@ const Index = () => {
 					<Space size="middle">
 						<span
 							onClick={(e) => {
-                e.stopPropagation();
-                generatePdf(record)}}
+								e.stopPropagation();
+								generatePdf(record);
+							}}
 							title="Download PDF"
 							style={{ cursor: "pointer" }}
 						>
@@ -281,7 +289,9 @@ Index.Layout = (props) => {
 		<>
 			<Layout
 				title={t("pages:documentsTemplate.SubmittedList.title")}
-				description={t("pages:documentsTemplate.SubmittedList.description")}
+				description={t(
+					"pages:documentsTemplate.SubmittedList.description"
+				)}
 				{...props}
 			/>
 		</>
