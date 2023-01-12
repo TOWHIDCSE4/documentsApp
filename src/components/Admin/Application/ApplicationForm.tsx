@@ -151,7 +151,7 @@ const ApplicationForm = () => {
 						type="inner"
 						title="Form Draft"
 						onClick={() =>
-							redirect("frontend.admin.documentTemplate.draft")
+							redirect("frontend.admin.documents.draft")
 						}
 						extra={
 							<a>{t("pages:application.applicationForm.view")}</a>

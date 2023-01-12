@@ -16,7 +16,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["First Name is required"]
   },
   {
     "fieldName": "lastName",
@@ -31,7 +31,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Last Name is required"]
   },
   {
     "fieldName": "avatar",
@@ -46,7 +46,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["avatar upload"]
   },
   {
     "fieldName": "email",
@@ -61,7 +61,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["E-mail is required"]
   },
   {
     "fieldName": "phone",
@@ -76,7 +76,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Enter Phone number"]
   },
   {
     "fieldName": "birthday",
@@ -91,7 +91,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Select your Birthday"]
   },
   
   {
@@ -110,7 +110,7 @@
 			"xs": 2,
 			"lg": 3
 		},
-		"validation": []
+		"validation": ["Enter street address"]
   },
   {
     "fieldName": "appartment",
@@ -125,7 +125,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Enter appartment address"]
   },
   {
     "fieldName": "zip",
@@ -140,7 +140,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Enter Zip code"]
   },
   {
 		"fieldName": "state",
@@ -158,7 +158,7 @@
 			"xs": 2,
 			"lg": 3
 		},
-		"validation": []
+		"validation": ["Enter state"]
   },
   {
     "fieldName": "companyName",
@@ -173,7 +173,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Enter Company name"]
   },
   {
     "fieldName": "sector",
@@ -188,7 +188,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Enter sector"]
   },
   {
     "fieldName": "compnayLogo",
@@ -203,7 +203,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["upload logo"]
   },
   {
     "fieldName": "officePhone",
@@ -218,7 +218,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Enter office phone no."]
   },
   {
     "fieldName": "officeEmail",
@@ -233,7 +233,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Enter office email"]
   },
   {
 		"fieldName": "officeStreet",
@@ -251,7 +251,7 @@
 			"xs": 2,
 			"lg": 3
 		},
-		"validation": []
+		"validation": [""]
   },
   {
     "fieldName": "officeAppartment",
@@ -266,7 +266,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["Enter appartment address"]
   },
   {
     "fieldName": "officeZip",
@@ -281,7 +281,7 @@
       "xs": 2,
       "lg": 3
     },
-    "validation": []
+    "validation": ["officeZip is required"]
   },
   {
 		"fieldName": "officeState",
@@ -299,6 +299,6 @@
 			"xs": 2,
 			"lg": 3
 		},
-		"validation": []
+		"validation": [""]
   }
 ]

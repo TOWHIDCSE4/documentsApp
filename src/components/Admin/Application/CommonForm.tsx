@@ -8,6 +8,7 @@ import {
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import { Form, Input, DatePicker, Button, Upload } from "antd";
 import { Select } from "antd";
+import axios from 'axios'
 const { TextArea } = Input;
 interface CommonFormProps {
 	formField: any;
@@ -26,18 +27,45 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		list,
 	} = formField || {};
 
+
+	const [uploading, setUploading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File>();
 	// useEffect(() => {
 	// 	setValue(fieldName, defaultValue);
 	// }, [formField, setValue]);
 
-	const onChangeImage = (info) => {}
+	const onChangeImage = async (info) => {
+		try {
+			// if (info.fileList) {
+			// 	const file = info.fileList[0];
+			// 	setSelectedImage(URL.createObjectURL(file));
+			// 	setSelectedFile(file);
+			//   }
+			// const formData = new FormData();
+			// formData.append("myImage", selectedFile);
+			// const { data } = await axios.post("/api/upload", formData);
+			// console.log(data);
+		  } catch (error: any) {
+			console.log(error.response?.data);
+		  }
+	}
 	const onDropImage = (e) => {}
+	const getFile = async (e) => {
+
+	  return e.file.name
+	  };
+
+	const handlePreview = async (file) => {
+		
+	  };
 
 	if (inputType === "textInput") {
 		return (
 			<Form.Item name={fieldName} label={label} rules={[
 				{
 					required: true,
+					message: validation[0]
 				},
 			]}>
 				<Input
@@ -64,6 +92,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 				 rules={[
 					{
 						required: true,
+						message: validation[0]
 					},
 				]}
 				>
@@ -120,6 +149,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 				 rules={[
 					{
 						required: true,
+						message: validation[0]
 					},
 				]}
 				>
@@ -131,21 +161,22 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 
 	else if (inputType === "fileInput") {
 		return (
-			<Form.Item>
+		<>
+			 {/* <img src="/images/default-image.png" alt="my image" style={{height:'50%',width:'100%'}}/> */}
+			  
 				<Form.Item
 					name={fieldName} label={label}
-					// control={control}
-					onRemoveFile={() => { }}
+					getValueFromEvent={getFile}
 					noStyle>
-					<Upload.Dragger name={fieldName} action="/upload.do" onChange={onChangeImage} onDrop={onDropImage}>
+					<Upload.Dragger name={fieldName} onChange={onChangeImage} onDrop={onDropImage} onPreview={handlePreview}>
 						<p className="ant-upload-drag-icon">
 							<InboxOutlined />
 						</p>
 						<p className="ant-upload-text">Upload Picture</p>
-						{/* <p className="ant-upload-hint">Single </p> */}
 					</Upload.Dragger>
 				</Form.Item>
-			</Form.Item>
+				
+				</>
 		);
 	}
 	else {

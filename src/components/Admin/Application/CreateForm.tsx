@@ -49,11 +49,13 @@ const DynamicFormPage = () => {
 		redirect("frontend.admin.application.index");
 
 		return result;
+		console.log(data,'form-data')
 	};
 
 	const onFinishFailed = (errorInfo: any): void => {
 		console.log("Failed:", errorInfo);
 	};
+console.log(formJsonSchema,'sc');
 
 	return (
 		<div className="content-documents">

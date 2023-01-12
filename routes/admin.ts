@@ -17,6 +17,9 @@ Route.group(() => {
   {
     let name = 'documents'
     Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
+    Route.get(`/${name}/draft`, `pages/admin/${name}/draft`).name(
+      `${name}.draft`
+    ).sidebar(`${name}.draft`);
   }
 
   {
