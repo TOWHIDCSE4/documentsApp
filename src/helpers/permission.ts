@@ -1,12 +1,11 @@
 
-const charToNum = { C: 8, R: 4, U: 2, D: 1 }
+const charToNum = {A: 16, C: 8, R: 4, U: 2, D: 1 }
 const crudToDec = (text: any) => {
-  return text.toUpperCase().split("").reduce((total: number, char: 'C' | 'R' | 'U' | 'D') => total + charToNum[char], 0)
-
+  return text.toUpperCase().split("").reduce((total: number, char: 'A' | 'C' | 'R' | 'U' | 'D') => total + charToNum[char], 0)
 }
 const decToCrud = (dec: number) => {
   let result = "";
-  let char: 'C' | 'R' | 'U' | 'D'
+  let char: 'A' | 'C' | 'R' | 'U' | 'D' 
   for (char in charToNum) {
     if ((dec & charToNum[char]) == charToNum[char]) result += char
   }

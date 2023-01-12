@@ -48,6 +48,13 @@ class usersService extends Base {
       data: data,
     });
   };
+
+  getInfo = async () => {
+    return this.request({
+      url: "/api/v1/users/getInfo",
+      method: "GET",
+    });
+  }
 }
 
 export default () => new usersService();

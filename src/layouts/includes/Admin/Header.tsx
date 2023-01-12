@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Avatar from "react-avatar";
 import { Menu, Layout, Button } from "antd";
-import { MenuUnfoldOutlined, MenuFoldOutlined, SettingOutlined, UserSwitchOutlined } from "@ant-design/icons";
+import { MenuUnfoldOutlined, MenuFoldOutlined, SettingOutlined, UserSwitchOutlined,BellOutlined,UserOutlined } from "@ant-design/icons";
 import to from "await-to-js";
 import useBaseHook from "@src/hooks/BaseHook";
 import auth from "@src/helpers/auth";
 import ChangePassword from "@src/components/GeneralComponents/ChangePassword";
+import InfoUser from "@src/components/GeneralComponents/InfoUser";
 import { confirmDialog } from "@src/helpers/dialogs";
 import authService from "@root/src/services/authService";
+import userService from '@root/src/services/userService';
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
@@ -15,6 +17,8 @@ const { SubMenu } = Menu;
 const AdminHeader = (props: any) => {
   const { t, notify, redirect, getData, router } = useBaseHook();
   const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showUser, setshowUser] = useState(false);
+  let user = auth().user
 
   const renderRightContent = () => {
     const firstName = getData(auth(), "user.firstName", "User");
@@ -49,6 +53,16 @@ const AdminHeader = (props: any) => {
                 {t("buttons:changePassword")} <SettingOutlined />
               </Button>
             </Menu.Item>
+            <Menu.Item key="Info-user">
+              <Button
+                onClick={() => {
+                  setshowUser(true);
+                }}
+                type="link"
+              >
+                {t("buttons:info_user")} <UserOutlined />
+              </Button>
+            </Menu.Item>
             <Menu.Item key="signout">
               <Button
                 type="link"
@@ -74,11 +88,6 @@ const AdminHeader = (props: any) => {
     );
   };
 
-  const fetchData = async (values: any) => {
-    if (!values.sorting.length) {
-      values.sorting = [{ field: "messages.id", direction: "desc" }];
-    }
-  };
 
   const onChangePassword = async (data: any): Promise<void> => {
     setShowChangePassword(false);
@@ -103,6 +112,31 @@ const AdminHeader = (props: any) => {
     );
   };
 
+  const onUpdateUser = async (data: any): Promise<void> => {
+    let [error, result]: any[] = await to(userService().withAuth().edit({
+      id: user.id,
+      ...data
+    }));
+    if (error) return notify(t(`errors:${error.code}`), '', 'error')
+    notify(t("messages:message.recordUserUpdated"))
+    setshowUser(false)
+    return result
+  };
+
+  const renderInfoUserDialog = () => {
+    return (
+      <InfoUser
+        onUpdateUser={onUpdateUser}
+        visible={showUser}
+        onCancel={() => {
+          setshowUser(false);
+        }}
+      />
+    );
+  };
+
+  
+
   const { collapsed, onCollapseChange } = props;
   const menuIconProps = {
     className: "trigger",
@@ -123,6 +157,7 @@ const AdminHeader = (props: any) => {
         <div className="right-container">{renderRightContent()}</div>
       </Header>
       {renderPasswordDialog()}
+      {renderInfoUserDialog()}
     </React.Fragment>
   );
 };

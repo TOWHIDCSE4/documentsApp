@@ -14,7 +14,7 @@ const Sidebar = dynamic(() => import('./includes/Admin/Sidebar'), { ssr: false }
 const Header = dynamic(() => import('./includes/Admin/Header'), { ssr: false })
 const BreadCrumb = dynamic(() => import('@src/components/BreadCrumb'), { ssr: false })
 
-const THEME = "light";
+const THEME ="dark";
 const { publicRuntimeConfig } = getConfig()
 const { Title, Text } = Typography;
 const { Content, Footer } = Layout;

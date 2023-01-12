@@ -16,25 +16,49 @@ import {
   CommentOutlined,
   FileTextOutlined,
   DashboardOutlined,
-  PlusSquareOutlined
+  GroupOutlined
 } from "@ant-design/icons";
 import auth from "@src/helpers/auth";
 const user = auth().user;
 
 const sidebar = [
   {
-    routeName: "frontend.admin.documents.index",
+    routeName: "frontend.admin.documentTemplate.index",
     icon: <DashboardOutlined />,
     permissions: {
       dashboard: "R",
     },
   },
   {
-    routeName: "frontend.admin.application.index",
+    routeName: "frontend.admin.application.title",
     icon: <FileTextOutlined />,
     permissions: {
       application: "R",
     },
+    type: "sub",
+    children: [
+      {
+        routeName: "frontend.admin.application.index",
+        icon: <TeamOutlined />,
+        permissions: {
+          users: "R",
+        },
+      },
+      {
+        routeName: "frontend.admin.documents.index",
+        icon: <TeamOutlined />,
+        permissions: {
+          users: "R",
+        },
+      },
+      {
+        routeName: "frontend.admin.documentTemplates.draft",
+        icon: <ApartmentOutlined />,
+        permissions: {
+          roles: "R",
+        },
+      }
+    ]
   },
   {
     routeName: "frontend.admin.documentTemplates.index",
@@ -64,6 +88,13 @@ const sidebar = [
         icon: <ApartmentOutlined />,
         permissions: {
           roles: "R",
+        },
+      },
+      {
+        routeName: "frontend.admin.tenants.index",
+        icon: <GroupOutlined />,
+        permissions: {
+          tenants: "R",
         },
       }
     ]

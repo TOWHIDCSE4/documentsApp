@@ -17,18 +17,14 @@ const Login = (props: any) => {
     </Head>
     <div id="login">
       <Content className="content">
-        <Row>
-          <Col md={{span: 12}}>
-            <div className="background-login"></div>
-          </Col>
-          <Col md={12} xs={24}>
-            <Row gutter={[24, 0]}>
-              <Col md={{span: 12, offset: 6}} xs={24}>
-                {props.children}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+          <div className="background-login"></div>
+          <div >
+            {/* <Row gutter={[24, 0]}> */}
+              {/* <Col md={{span: 12, offset: 8}} xs={24}> */}
+              {props.children}
+              {/* </Col> */}
+            {/* </Row> */}
+          </div>
       </Content>
     </div>
   </Layout>

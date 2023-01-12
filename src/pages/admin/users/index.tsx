@@ -72,20 +72,20 @@ const Index = () => {
       sorter: true,
       filterable: true,
     },
-    // {
-    //   title: t("pages:users.table.tags"),
-    //   dataIndex: "tags",
-    //   key: "users.tags",
-    //   sorter: false,
-    //   render: (text: String) => {
-    //     const items = [];
-    //     let tagsName = [].concat(text);
-    //     tagsName.map((tag: string, index: number) => {
-    //       items.push(<Tag key={index}>{tag}</Tag>);
-    //     });
-    //     return <>{items}</>;
-    //   },
-    // },
+    {
+      title: t("pages:users.table.tenant"),
+      dataIndex: "tenantName",
+      key: "tenants.name",
+      sorter: true,
+      filterable: true,
+    },
+    {
+      title: t("pages:users.table.agUsername"),
+      dataIndex: "agUsername",
+      key: "users.createdBy",
+      sorter: true,
+      filterable: true,
+    },
     {
       title: t("pages:users.table.createdAt"),
       dataIndex: "createdAt",

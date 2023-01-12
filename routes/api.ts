@@ -2,8 +2,9 @@ import Route from '@core/Routes'
 const ExtendMiddleware = require("@app/Middlewares/ExtendMiddleware");
 const AuthApiMiddleware = require('@app/Middlewares/AuthApiMiddleware');
 const multer = require('multer')
+import  PermissionMiddleware  from "@app/Middlewares/PermissionMiddleware"
 const upload = multer();
-//const { permission, permissionResource, permissionMethod } = require('@app/Middlewares/PermissionMiddleware');
+const { permission, permissionResource, permissionMethod } = PermissionMiddleware
 
 Route.group(() => {
   // ---------------------------------- Auth Routes ---------------------------------------//
@@ -11,7 +12,6 @@ Route.group(() => {
   Route.post("/forgotPassword", "AuthController.forgotPassword").name('auth.forgotPassword')
   Route.get("/checkToken/:token", "AuthController.checkToken").name('auth.checkToken')
   Route.post("/resetPassword", "AuthController.resetPassword").name('auth.resetPassword')
-  Route.get("/rasa/test/:type", "RasaController.test").name('rasa.test')
 
   // ---------------------------------- End Auth Routes -----------------------------------//
 
@@ -39,30 +39,55 @@ Route.group(() => {
     Route.post("/AuthTwofa", "AuthController.AuthTwofa").name('auth.AuthTwofa')
     
     // ---------------------------------- User Routes ---------------------------------------//
-    Route.resource("/users", "UserController").name('users') // CRUD
-    Route.get("/users/generateOTP", "UserController.generateOTP").name('users.generateOTP')
+    Route.resource("/users", "UserController").name('users').middleware([
+      permissionResource(['users'])
+    ]) // CRUD
+    Route.get("/users/generateOTP", "UserController.generateOTP").name('users.generateOTP').middleware([
+      permission({ 'users': 'R' })
+    ])
     Route.post("/users/submitOTP", "UserController.submitOTP").name('users.submitOTP')
-    Route.get("/users/getTags", "UserController.getTags").name('users.getTags')
-    Route.get("/users/getInfo", "UserController.getInfo").name('users.getInfo')
+    Route.get("/users/getInfo", "UserController.getInfo").name('users.getInfo').middleware([
+      permission({ 'users': 'R' })
+    ])
     // ---------------------------------- End User Routes -----------------------------------//
     
     // ---------------------------------- Role Permission Routes ---------------------------------------//
-    Route.get("/rolePermissions/getPermissionByGroupId", "RolePermissionController.getPermissionByGroupId").name('rolePermissions.getPermissionByGroupId')
+    Route.get("/rolePermissions/getPermissionByGroupId", "RolePermissionController.getPermissionByGroupId")
+    .name('rolePermissions.getPermissionByGroupId').middleware([
+      permission({ 'roles': 'R' })
+    ])
     // ---------------------------------- End Role Permission Routes -----------------------------------//
 
     // ---------------------------------- Role Group Permission Routes ---------------------------------//
-    Route.put("/rolePermissions/update", "RolePermissionController.update").name('rolePermissions.update')
+    Route.put("/rolePermissions/update", "RolePermissionController.update").name('rolePermissions.update').middleware([
+      permission({ 'adminDecentralization': 'U' })
+    ])
     // ---------------------------------- End Role Group Permission Routes -----------------------------//
 
     // ---------------------------------- Role Group Routes ---------------------------------------//
-    Route.resource("/roles", "RoleController").name('roles')
-    Route.get("/roles/select2", "RoleController.select2").name('roles.select2')
+    Route.resource("/roles", "RoleController").name('roles').middleware([
+      permissionResource(['roles'])
+    ])
+    Route.get("/roles/select2", "RoleController.select2").name('roles.select2').middleware([
+      permission({ 'roles': 'R' })
+    ])
     // Route.get("/roles/selectParent", "RoleController.selectParent").name('roles.selectParent')
     // ---------------------------------- End Role Group Routes -----------------------------------//
 
     // ---------------------------------- Setting Routes ---------------------------------------//
 
     Route.resource("/settings", "SettingController").name('settings')
+
+    // ---------------------------------- tenants Routes ---------------------------------------//
+
+    Route.post("/tenants/active", "TenantController.activeTenants").name('tenants.activeTenants').middleware([
+      permission({ 'tenants': 'A' })
+    ])
+    Route.resource("/tenants", "TenantController").name('tenants').middleware([
+      permissionResource(['tenants'])
+    ])
+
+    // ---------------------------------- End tenants Routes -----------------------------------//
 
     // ---------------------------------- End Routes -----------------------------------//
   }).middleware([AuthApiMiddleware])

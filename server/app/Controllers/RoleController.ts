@@ -1,6 +1,7 @@
 import BaseController from './BaseController'
 import RoleModel from '@root/server/app/Models/RoleModel'
 import UserModel from '@root/server/app/Models/UserModel'
+import TenantsModel from '@root/server/app/Models/TenantsModel'
 import ApiException from '@app/Exceptions/ApiException'
 import constantConfig from '@config/constant'
 import { removeVietnameseTones ,hashNumber} from '@helpers/utils'
@@ -10,20 +11,28 @@ const { roleKey } = constantConfig
 export default class RoleController extends BaseController {
   Model: any = RoleModel
   UserModel: any = UserModel
-
+  TenantsModel: any = TenantsModel
   async index() {
     const inputs = this.request.all();
     const { auth } = this.request;
-    const project = ['roles.*', 'ag.name as parentName']
+    const project = ['roles.*', 'ag.name as parentName','tenants.name as tenantName']
     let ChildrenRoles = await this.Model.getChildrenRoles(auth.roleId)
     let ChildrenRolesIds = ChildrenRoles.map(item => item.id)
+    let role = await this.Model.getById(auth.roleId);
+    let tenantId = await this.UserModel.getTenantId(auth.id)
     let query = this.Model.query()
       .leftJoin('roles as ag', 'roles.parentId', 'ag.id')
+      .leftJoin('tenants', 'roles.tenantId', 'tenants.id')
+      .select(project)
+
+    if(role.key != 'root'){
+      query = query
+      .where('roles.tenantId', tenantId)
       .whereIn("roles.parentId", ChildrenRolesIds)
       .whereNot('roles.key', 'root')
-      .select(project)
-    let result = await query.getForGridTable(inputs);
+    }
 
+    let result = await query.getForGridTable(inputs);
     return result;
   }
 
@@ -55,10 +64,12 @@ export default class RoleController extends BaseController {
     let ChildrenRoles = await this.Model.getChildrenRoles(auth.roleId)
     let ChildrenRolesIds = ChildrenRoles.map(item => item.id)
     let exist = await this.Model.getById(auth.roleId);
+    let tenantId = await this.UserModel.getTenantId(auth.id)
     let query = this.Model.query()
     .whereIn("id", ChildrenRolesIds) 
     if(exist.key != 'root'){
       query.whereNot('roles.key', 'root')
+      .where('roles.tenantId', tenantId)
     }
     if(params.id && params.id != 'undefined'){
       let idDis = await this.Model.getOne({ code: params.id });
@@ -75,10 +86,20 @@ export default class RoleController extends BaseController {
     const allowFields = {
       name: "string!",
       description: "string",
-      parentId: "number"
+      parentId: "number",
+      tenantId: "number"
     }
     let inputs = this.request.all();
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
+    let tenantId = null
+    if(!params.tenantId) {
+      tenantId = await this.UserModel.getTenantId(auth.id)
+      if(!tenantId) throw new ApiException(6000, "Tenant doesn't exist!")
+    }else {
+      let checkTenant = await this.TenantsModel.getById(params.tenantId)
+      if(!checkTenant) throw new ApiException(6000, "Tenant doesn't exist!")
+      tenantId = checkTenant.id
+    }
 
     let name = params.name.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '')
     let exist = await this.Model.findExist(name, 'name')
@@ -87,7 +108,7 @@ export default class RoleController extends BaseController {
     let parentExist = await this.Model.getById(params.parentId);
     if (!parentExist) throw new ApiException(6000, "Role doesn't exist!")
     let key = removeVietnameseTones(params.name)
-    let result = await this.Model.insertOne({ ...params, createdBy: auth.id,key });
+    let result = await this.Model.insertOne({ ...params,tenantId, createdBy: auth.id,key });
     let code = hashNumber(String(result.id));
     let resultUpdate = await this.Model.updateOne(result.id, { code: code });
     return resultUpdate

@@ -24,6 +24,9 @@ const ApplicationForm = () => {
 	const { t, redirect, notify } = useBaseHooks();
 	const status = useStatusCount();
 	const [documentTemplateFrom, setDocumentTemplateFrom] = useState(null);
+	const [currentpage, setCurrentPage] = useState(0);
+	const [pageSize, setPageSize] = useState(4);
+	const [total, setTotal] = useState(0);
 	const [loading, setLoading] = useState(false);
 
 	const onSearch = async (value: string) => {
@@ -43,8 +46,8 @@ const ApplicationForm = () => {
 		// 		},
 		// 	},
 		// ];
-		values.filter = [
-			{ field: "document_templates.name", operator: "like", value: `%${value}%` },
+		values.filters = [
+			{ field: "document_templates.name", operator: "contains", value: value }
 		];
 
 		values.pageSize = 4;
@@ -57,14 +60,25 @@ const ApplicationForm = () => {
 		setDocumentTemplateFrom(documentTemplateFromObject?.data);
 	};
 
-	const fetchData = async () => {
+	/**
+	 * page change on pagination
+	 * @params {page,pageSize}
+	 * @returns 
+	 */
+
+	const onPageChange = async (page, pageSize) => {
+		await fetchData(page, pageSize)
+	}
+
+	const fetchData = async (page=2, pageSize=4) => {
 		const values: any = {};
 
 		values.sorting = [
 			{ field: "document_templates.id", direction: "desc" },
 		];
 
-		values.pageSize = 4;
+		values.page = page;
+		values.pageSize = pageSize;
 
 		let [error, documentTemplateFromObject]: [any, any] = await to(
 			documentTemplateService().withAuth().index(values)
@@ -72,6 +86,10 @@ const ApplicationForm = () => {
 
 		if (error) return notify(t(`errors:${error.code}`), "", "error");
 		setDocumentTemplateFrom(documentTemplateFromObject?.data);
+		setTotal(parseInt(documentTemplateFromObject.total))
+		setCurrentPage(parseInt(documentTemplateFromObject.page));
+		setPageSize(parseInt(documentTemplateFromObject.pageSize));
+
 	};
 
 	useEffect(() => {
@@ -86,7 +104,7 @@ const ApplicationForm = () => {
 						type="inner"
 						title="Form List"
 						onClick={() =>
-							redirect("frontend.admin.documentTemplate")
+							redirect("frontend.admin.documents.index")
 						}
 						extra={
 							<a>{t("pages:application.applicationForm.view")}</a>
@@ -161,7 +179,7 @@ const ApplicationForm = () => {
 				/>
 			</Card>
 			<Card>
-				<Row justify="space-between">
+				<Row gutter={8} justify="center" style={{gap:'20px'}}>
 					{documentTemplateFrom?.map((documentTemplate: any) => {
 						return (
 							<Card
@@ -201,9 +219,11 @@ const ApplicationForm = () => {
 			<br />
 			<div className="text-center">
 				<Pagination
-					total={85}
-					defaultPageSize={20}
+					total={total}
 					defaultCurrent={1}
+					pageSize={pageSize}
+					current={currentpage}
+					onChange={onPageChange}
 				/>
 			</div>
 		</>

@@ -1,4 +1,4 @@
-const charToNum = { C: 8, R: 4, U: 2, D: 1 }
+const charToNum = {A: 16, C: 8, R: 4, U: 2, D: 1 }
 
 const crudToDec = (text) => {
   return text.toUpperCase().split("").reduce((total, char) => { return total + charToNum[char] || 0 }, 0)
@@ -39,7 +39,6 @@ const PermissionMiddleware = (permissions = {}) => (request, response, next) => 
     }
 
   }
-
   next();
 }
 
@@ -50,7 +49,7 @@ const PermissionMethodMiddleware = (methods) => (request, response, next) => {
 }
 
 const PermissionResourceMiddleware = (permissions) => (request, response, next) => {
-  let methods = { "POST": "C", "GET": "R", "PUT": "U", "DELETE": "D" };
+  let methods = { "POST": "C", "GET": "R", "PUT": "U", "DELETE": "D"};
   let newPermissions = {
     GET: {}, PUT: {}, POST: {}, DELETE: {}
   }

@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt")
 const authConfig = require("@config/auth")
 import redis from '@app/Services/Redis/index'
 const speakeasy = require('speakeasy');
+import TenantsModel from "./TenantsModel"
 class UserModel extends BaseModel {
   static tableName = "users"
 
@@ -118,6 +119,15 @@ class UserModel extends BaseModel {
 
 
     return results;
+  }
+
+  static async getTenantId(userId) {
+    if (!userId) return null;
+    let current = await this.getById(userId);
+    if (!current || !current.tenantId) return null;
+    let checkTenant = await TenantsModel.query().where('id', current.tenantId).first();
+    if (!checkTenant) return null;
+    return checkTenant.id;
   }
 }
 

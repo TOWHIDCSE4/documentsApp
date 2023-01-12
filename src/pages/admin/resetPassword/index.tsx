@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '@src/layouts/Login'
 import { LockOutlined, SendOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Row, Col } from 'antd'
+import { Button, Form, Input, Row, Col,Tag } from 'antd'
 import authService from '@src/services/authService'
 import to from 'await-to-js'
 import useBaseHook from '@src/hooks/BaseHook';
@@ -19,7 +19,10 @@ const Index = () => {
 
   const fetchData = async() => {
     let [userError, user]: any[] = await to(authService().checkToken({data: query}))
-    if(userError) return notify(t(`errors:${userError.code}`), '', 'error')
+    if(userError) {
+      notify(t(`errors:${userError.code}`), '', 'error')
+      return redirect('frontend.admin.forgotPassword')
+    }
     setToken(query.token)
     return user
   }
@@ -41,12 +44,17 @@ const Index = () => {
 
   return <>
     <div className="content-form">
-      <div className="logo">
+    <div className="logo">
         <div className="img">
           <img src={publicRuntimeConfig.LOGO}></img>
         </div>
-        <div className="sitename">{t('pages:resetPassword.content')}</div>
+        <div className="sitename">{t('pages:forgotPassword.content')}</div>
       </div>
+      <div className='form-login'>
+        <div className="content-form-login">
+          <div className="sitename-title">Reset Password!!</div>
+          <div className="sitename">Reset password with KDDI</div>
+        </div>
       <Form
         onFinish={onFinish}
         form={form}
@@ -58,6 +66,7 @@ const Index = () => {
         }}
       >
         <Col md={24} sm={24} xs={24}>
+          <div style={{ marginBottom: 5, fontWeight: 600 }}>New Password</div>
           <Form.Item
             name="newPassword"
             rules={[
@@ -72,13 +81,14 @@ const Index = () => {
             ]}
           >
             <Input.Password
-              placeholder={t('pages:resetPassword.newPassword')}
+              placeholder={"Enter " + t('pages:resetPassword.newPassword')}
               prefix={<LockOutlined />}
               autoComplete="off"
             />
           </Form.Item>
         </Col>
         <Col md={24} sm={24} xs={24}>
+        <div style={{ marginBottom: 5, fontWeight: 600 }}>Re-New Password</div>
           <Form.Item
             name="reNewPassword"
             rules={[
@@ -91,7 +101,7 @@ const Index = () => {
             ]}
           >
             <Input.Password
-              placeholder={t('pages:resetPassword.reNewPassword')}
+              placeholder={"Enter " +t('pages:resetPassword.reNewPassword')}
               prefix={<LockOutlined />}
               autoComplete="off"
             />
@@ -100,25 +110,26 @@ const Index = () => {
         <Col md={24} sm={24} xs={24}>
           <Form.Item>
             <Row gutter={12}>
+            <Col md={12} sm={12} xs={12}>
+                <Button
+                  className="btn home"
+                  type="default"
+                  onClick={() => redirect("frontend.admin.login")}
+                >
+                  {t('buttons:login')}
+                </Button>
+              </Col>
               <Col md={12} sm={12} xs={12}>
                 <Button className="btn login" type="primary" htmlType="submit" loading={loading}>
                   <SendOutlined />
                   {t('buttons:resetPassword')}
                 </Button>
               </Col>
-              <Col md={12} sm={12} xs={12}>
-                <Button
-                  className="btn home"
-                  type="default"
-                  onClick={() => redirect("frontend.admin.login")}
-                >
-                  {t('buttons:cancel')}
-                </Button>
-              </Col>
             </Row>
           </Form.Item>
         </Col>
       </Form>
+      </div>
     </div>
   </>
 }

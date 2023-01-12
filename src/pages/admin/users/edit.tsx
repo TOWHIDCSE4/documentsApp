@@ -23,6 +23,10 @@ const Edit = () => {
     "users": "D"
   }) && auth().user.id != query.id
 
+  const updatePer = checkPermission({
+    "users": "U"
+  })
+
 
   const fetchData = async() => {
     let idError: any = null;
@@ -36,6 +40,7 @@ const Edit = () => {
     let [adminError, admin]: [any, User] = await to(userService().withAuth().detail({ id: query.id }));
     admin.twofa = admin.twofa ? true : false
     if(adminError) return notify(t(`errors:${adminError.code}`), '', 'error')
+    console.log("admin", admin)
     setAdmin(admin)
   }
 
@@ -46,15 +51,17 @@ const Edit = () => {
   //submit form
   const onFinish = async (values: any): Promise<void> => {
     setLoading(true)
-    let [error, result]: any[] = await to(userService().withAuth().edit({
-      id: admin.id,
-      ...values
-    }));
-    setLoading(false)
-    if (error) return notify(t(`errors:${error.code}`), '', 'error')
-    notify(t("messages:message.recordUserUpdated"))
-    redirect("frontend.admin.users.index")
-    return result
+    if(updatePer){
+      let [error, result]: any[] = await to(userService().withAuth().edit({
+        id: admin.id,
+        ...values
+      }));
+      setLoading(false)
+      if (error) return notify(t(`errors:${error.code}`), '', 'error')
+      notify(t("messages:message.recordUserUpdated"))
+      redirect("frontend.admin.users.index")
+      return result
+    }
   }
 
   const onDelete = async (): Promise<void> => {
@@ -77,6 +84,7 @@ const Edit = () => {
           lastName: admin.lastName,
           username: admin.username,
           email: admin.email,
+          tenantId: admin.tenantId
         }}
         onFinish={onFinish}
         scrollToFirstError
@@ -88,7 +96,7 @@ const Edit = () => {
               <Button onClick={() => router.back()} className="btn-margin-right">
                 <LeftCircleFilled /> {t('buttons:back')}
               </Button>
-              <Button type="primary" htmlType="submit" className="btn-margin-right" loading={loading}>
+              <Button hidden={!updatePer} type="primary" htmlType="submit" className="btn-margin-right" loading={loading}>
                 <SaveFilled /> {t('buttons:submit')}
               </Button>
               <Button hidden={!deletePer} danger
@@ -120,7 +128,7 @@ Edit.Layout = (props) => {
 }
 
 Edit.permissions = {
-  "users": "U"
+  "users": "R"
 }
 
 export default Edit

@@ -30,6 +30,9 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 	// 	setValue(fieldName, defaultValue);
 	// }, [formField, setValue]);
 
+	const onChangeImage = (info) => {}
+	const onDropImage = (e) => {}
+
 	if (inputType === "textInput") {
 		return (
 			<Form.Item name={fieldName} label={label} rules={[
@@ -57,7 +60,13 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 	} else if (inputType === "numberInput") {
 		return (
 			<div>
-				<Form.Item name={fieldName} label={label}>
+				<Form.Item name={fieldName} label={label}
+				 rules={[
+					{
+						required: true,
+					},
+				]}
+				>
 					<Input
 						// control={control}
 						name={"data.numberInput"}
@@ -107,7 +116,13 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 	} else if (inputType === "dateTimeInput") {
 		return (
 			<div>
-				<Form.Item name={fieldName} label={label}>
+				<Form.Item name={fieldName} label={label}
+				 rules={[
+					{
+						required: true,
+					},
+				]}
+				>
 					<DatePicker name={"data.dateTimeInput"} style={{ display: 'flex', padding: '10px 5px' }} />
 				</Form.Item>
 			</div>
@@ -122,7 +137,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 					// control={control}
 					onRemoveFile={() => { }}
 					noStyle>
-					<Upload.Dragger name={fieldName} action="/upload.do">
+					<Upload.Dragger name={fieldName} action="/upload.do" onChange={onChangeImage} onDrop={onDropImage}>
 						<p className="ant-upload-drag-icon">
 							<InboxOutlined />
 						</p>

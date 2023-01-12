@@ -125,7 +125,7 @@ Create.Layout = (props) => {
 };
 
 Create.permissions = {
-  documentTemplates: "C",
+  "document_templates": "C",
 };
 
 export default Create;

@@ -189,4 +189,8 @@ DocumentPDF.Layout = (props) => {
     );
 };
 
+DocumentPDF.permissions = {
+    "application": "R"
+}
+
 export default DocumentPDF;

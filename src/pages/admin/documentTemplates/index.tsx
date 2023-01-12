@@ -174,7 +174,7 @@ Index.Layout = (props) => {
 }
 
 Index.permissions = {
-  "roles": "R"
+  "document_templates": "R"
 };
 
 export default Index

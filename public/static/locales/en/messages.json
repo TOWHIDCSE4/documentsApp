@@ -28,17 +28,20 @@
   "message": {
 		"loginSuccess": "Login successfully",
 		"loginFailed": "Login failed",
+    "forgotPasswordFailed": "Forgot password failed",
 		"signoutConfirm": "Do you want to log out?",
 		"foundErr": "An error occurred. Please try again!",
 		"forgotPasswordSuccess": "Request successful! We've just sent a password reset link to your email.",
 		"resetPasswordSuccess": "Reset password successfully!",
 		"changePasswordSuccess": "Change password successfully!",
 		"signoutSuccess": "Logged out successfully!",
+    "verify2FaSuccess": "Verified 2FA successfully!",
 
 		"recordCreated": "The data has been created successfully!",
 		"recordUpdated": "The data has been updated successfully!",
 		"recordDeleted": "The data has been deleted successfully!",
 		"deleteConfirm": "Are you sure you want to delete this record?",
+    "activeConfirm": "Are you sure you want to active this record?",
 
 		"recordUserCreated": "The user has been created successfully!",
 		"recordUserUpdated": "The user has updated successfully!",
@@ -47,6 +50,11 @@
 		"recordAgentCreated": "The agent has been created successfully!",
 		"recordAgentUpdated": "The agent has updated successfully!",
 		"recordAgentDeleted": "The agent has deleted successfully!",
+
+    "recordTenantsCreated": "The tenant has been created successfully!",
+    "recordTenantsUpdated": "The tenant has updated successfully!",
+    "recordTenantsDeleted": "The tenant has deleted successfully!",
+    "recordTenantsactived": "The tenant has actived successfully!",
 
 		"recordRoleCreated": "The role has been added successfully!",
 		"recordRoleUpdated": "The role has been updated successfully!",

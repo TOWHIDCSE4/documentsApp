@@ -35,6 +35,41 @@ exports.seed = function (knex, Promise) {
       "description": "dashboard",
       "value": "4",
       "key": "dashboard",
+    },
+    {
+      "id": "6",
+      "name": "active tenants",
+      "description": "Approve tenants",
+      "value": "4",
+      "key": "active_tenants",
+    },
+    {
+      "id": "7",
+      "name": "tenants",
+      "description": "tenants",
+      "value": "4",
+      "key": "tenants",
+    },
+    {
+      "id": "8",
+      "name": "overView",
+      "description": "overView",
+      "value": "4",
+      "key": "overView",
+    },
+    {
+      "id": "9",
+      "name": "documentTemplates",
+      "description": "documentTemplates",
+      "value": "4",
+      "key": "documentTemplates",
+    },
+    {
+      "id": "10",
+      "name": "documents",
+      "description": "documents",
+      "value": "4",
+      "key": "documents",
     }
   ]
 

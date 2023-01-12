@@ -9,16 +9,11 @@ Route.group(() => {
   Route.get("/", "pages/admin/users").name("users.index").sidebar('users.index')
   {
     let name = 'documentTemplate'
-    Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}`).parent(`${name}.index`)
+    Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
     Route.get(`/${name}/draft`, `pages/admin/${name}/draft`).name(
 		`${name}.draft`
 	);
   }
-  {
-    let name = 'documents'
-    Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
-  }
-
   {
     let name = 'documents'
     Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
@@ -51,5 +46,14 @@ Route.group(() => {
     Route.get(`/${name}/:id/edit`, `pages/admin/${name}/edit`).name(`${name}.edit`).parent(`${name}.index`).sidebar(`${name}.index`)
     Route.get(`/${name}/:id/role`, `pages/admin/${name}/role`).name(`${name}.role`).parent(`${name}.index`).sidebar(`${name}.index`)
   }
+
+  {
+    let name = 'tenants'
+    Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
+    Route.get(`/${name}/create`, `pages/admin/${name}/create`).name(`${name}.create`).parent(`${name}.index`).sidebar(`${name}.index`)
+    Route.get(`/${name}/:id/edit`, `pages/admin/${name}/edit`).name(`${name}.edit`).parent(`${name}.index`).sidebar(`${name}.index`)
+  }
+
+  
 
 }).name("frontend.admin").prefix("/admin").middleware([AuthAdminMiddleware])

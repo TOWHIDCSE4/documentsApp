@@ -8,6 +8,8 @@ import authConfig from '@config/auth'
 import to from 'await-to-js'
 import redis from '@app/Services/Redis/index'
 const speakeasy = require('speakeasy');
+import MailService from '@root/server/app/Services/Mail'
+import { removeVietnameseTones, hashNumber, makeKey } from '@helpers/utils'
 
 export default class AuthController extends BaseController {
   Model: any = Model
@@ -70,6 +72,7 @@ export default class AuthController extends BaseController {
           token,
           user: {
             code: user.code,
+            username: user.username,
             twofa: user.twofa,
             twofaKey: user.twofaKey,
             isFirst: user.isFirst,
@@ -81,6 +84,7 @@ export default class AuthController extends BaseController {
           token,
           user: {
             code: user.code,
+            username: user.username,
             twofa: user.twofa,
             isFirst: user.isFirst,
             permissions
@@ -143,24 +147,60 @@ export default class AuthController extends BaseController {
 
   async forgotPassword() {
     const allowFields = {
-      email: "string!"
+      email: "string!",
     }
     let inputs = this.request.all()
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
 
     let exist = await this.Model.getOne({ email: params.email })
-    if (!exist) throw new ApiException(6006, "User does't exist!")
-
-    //sent email
-    let variables = {
-      resetPasswordLink: this.makeForgotPasswordLink(exist),
-      name: exist.name,
-      email: exist.email,
+    // throw new ApiException(6006, "User does't exist!")
+    if (exist) {
+      //sent email
+      let variables = {
+        resetPasswordLink: this.makeForgotPasswordLink(exist),
+        name: exist.firstName + " " + exist.lastName,
+        email: exist.email,
+      }
+      let subject = "KDDI Account — Reset your password"
+      let content = `<div style="width: 100%;
+      height: 300px;
+      text-align: center;
+      color: rgb(255, 255, 255);
+      padding: 3px;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #364574;
+      ">
+  <h1>Application-Platform</h1>
+  <div style="
+          max-width: 640px;
+          height: 180px;
+          text-align: center;
+          background-color: #fff;
+          border: solid 1px rgb(218, 218, 218);
+          color: #364574;
+          padding: 5px;
+          margin: auto;">
+    <h2>Reset your KDDI Account password</h2>
+    <a href="{{resetPasswordLink}}" style="
+                  text-align: center;
+                  text-decoration: none;
+                  display:inline-block;
+                  padding: 14px 25px;
+                  font-weight: bold;
+                  background-color: #0AB39C;
+                  color: #ffffff">
+      Reset Password</a>
+    <br />
+    <h4>This password reset will expire in ${authConfig['JWT_EXPIRE_VERYFY_EMAIL'] / 60} minutes.</h4>
+  </div>
+</div>
+      `
+      MailService.send(exist.email, subject, content, variables)
+      return exist
     }
-    //MailService.send(exist.email, subject, content, variables)
-
-    return exist
+    return
   }
+
 
   makeForgotPasswordLink(user) {
     let token = Auth.generateJWT({
@@ -172,7 +212,7 @@ export default class AuthController extends BaseController {
       key: authConfig['SECRET_KEY_ADMIN'],
       expiresIn: authConfig['JWT_EXPIRE_VERYFY_EMAIL']
     })
-
+    redis.set(`ForgotPassword:${user.id}`, `${token}`, "EX", authConfig['JWT_EXPIRE_VERYFY_EMAIL'])
     return `${this.request.get('origin')}/reset-password/${token}`
   }
 
@@ -203,18 +243,25 @@ export default class AuthController extends BaseController {
     }
     let inputs = this.request.all()
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
-
     let [error, auth] = await to(Auth.verify(params.token, {
       key: authConfig['SECRET_KEY_ADMIN']
     }))
+    let TokenInRedis
     if (error) throw new ApiException(6012, "The token has expired")
-
+    await redis.get(`ForgotPassword:${auth.id}`).then(res => {
+      TokenInRedis = res
+    })
+    if (TokenInRedis != params.token) throw new ApiException(7004, "Please use the latest link")
     let user = await this.Model.getById(auth.id);
     if (!user) throw new ApiException(6006, "User doesn't exist!")
 
     let hash = await this.Model.hash(params.newPassword)
+    let twofaKey = makeKey(32);
+    do {
+      twofaKey = makeKey(32);
+    } while (!!await this.Model.getOne({ twofaKey: twofaKey }))
 
-    return await this.Model.updateOne(user.id, { password: hash })
+    return await this.Model.updateOne(user.id, { password: hash, isFirst: 1, twofaKey: twofaKey })
   }
 
   async changePassword() {

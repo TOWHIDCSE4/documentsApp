@@ -14,11 +14,17 @@
   "6021": "Email already exists!",
   "6022": "You can not remove your account.",
   "6023": "Code verify is not correct",
-  
+  "6026": "Email user already exists!",
+  "6027": "Email tenant already exist!",
+  "6028": "Tenant does't exist!",
+  "6029": "Tenant is active!",
+  "6030": "Tenant contains user cannot be deleted!",
+  "6031": "Tenant contains role cannot be deleted!",
 
   "7000": "The account or password is incorrect",
   "7002": "The data does not exist",
   "7003": "The data is not correct",
+  "7004": "Please use the latest link!!",
 
 
   "9994": "Missing parameters",

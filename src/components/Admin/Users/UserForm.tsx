@@ -1,19 +1,35 @@
 import React from "react";
-import { Form, Input, Row, Col, Select,Switch } from "antd";
+import { Form, Input, Row, Col, Select,Button } from "antd";
 import useBaseHook from "@src/hooks/BaseHook";
 import validatorHook from "@src/hooks/ValidatorHook";
-import { LockOutlined } from "@ant-design/icons";
+import { LockOutlined,SyncOutlined } from "@ant-design/icons";
 import roleService from "@src/services/roleService";
+import tenantService from "@src/services/tenantService";
 import useSWR from "swr";
-
+const { Search } = Input;
 const { Option } = Select;
+import auth from '@src/helpers/auth'
+import _  from 'lodash'
 
-const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
+const UserForm = ({ form, isEdit,isTenant = false }: { form: any; isEdit: boolean; isTenant?: boolean}) => {
   const { t, getData } = useBaseHook();
   const { validatorRePassword, CustomRegex } = validatorHook();
   const { data: dataT } = useSWR("groupSelect2", () =>
     roleService().withAuth().select2({ pageSize: -1 })
   );
+  const { data: dataC } = useSWR("tenants", () =>
+  tenantService().withAuth().index({ pageSize: -1 })
+  );
+  let tenant = _.get(dataC, 'data', [])
+  const randompass = () => {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for ( let i = 0; i < 8; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    form.setFieldsValue({ password: result });
+  }
 
   const roles = getData(dataT, "data", []);
 
@@ -54,7 +70,7 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
       </Col> */}
       {!isEdit ? (
         <>
-          <Col md={12}>
+          <Col md={24}>
             <Form.Item
               label={t("pages:users.form.password")}
               name="password"
@@ -62,14 +78,14 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
                 { required: true, message: t("messages:form.required", { name: t("pages:users.form.password") }) },
               ]}
             >
-              <Input.Password
+              <Input                 
                 placeholder={t("pages:users.form.password")}
-                prefix={<LockOutlined />}
                 autoComplete="off"
-              />
+                addonBefore={<div style={{width:" 100%"}} onClick={() => randompass()}><SyncOutlined /></div>}
+                disabled/>
             </Form.Item>
           </Col>
-          <Col md={12}>
+          {/* <Col md={12}>
             <Form.Item
               label={t("pages:users.form.rePassword")}
               name="rePassword"
@@ -88,10 +104,9 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
                 autoComplete="off"
               />
             </Form.Item>
-          </Col>
+          </Col> */}
         </>
       ) : null}
-
       <Col md={12}>
         <Form.Item
           label={t("pages:users.form.lastName")}
@@ -136,7 +151,7 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
           />
         </Form.Item>
       </Col>
-      {!isEdit ? (
+      {!isEdit && !isTenant ? (
         <>
           <Col md={24}>
             <Form.Item
@@ -161,6 +176,32 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
           </Col>
         </>
       ) : null}
+      
+      {
+        auth().user.permissions.root && !isTenant ? (
+          <Col md={24}>
+            <Form.Item
+              label={t("pages:users.form.tenant")}
+              name="tenantId"
+              rules={[
+                { required: true, message: t("messages:form.required", { name: t("pages:users.form.tenant") }) },
+              ]}
+            >
+              <Select
+                placeholder={t("pages:users.form.tenant")}
+                allowClear
+                showSearch
+              >
+                {tenant.map((item: any) => (
+                  <Option value={item.id} key={item.name}>
+                    {item.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        ) :''
+      }
     </Row>
   );
 };

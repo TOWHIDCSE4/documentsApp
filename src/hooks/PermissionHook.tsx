@@ -3,8 +3,7 @@ import auth from '@src/helpers/auth'
 
 const PermissionHook = () => {
   const { user } = auth()
-  const botObj = auth().getCookie('botObj') || {}
-  const userPermissions = user ? { ...user.permissions, ...botObj } : {}
+  const userPermissions = user ? { ...user.permissions} : {}
 
   const getUserPermission = () => {
     return userPermissions

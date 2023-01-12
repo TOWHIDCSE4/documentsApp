@@ -2,7 +2,7 @@
   "frontend": {
     "admin": {
       "documents": {
-        "index": "Overview"
+        "index": "List Of Documents"
       },
       "users": {
         "title": "Account Management",
@@ -24,12 +24,21 @@
         "staffInsurance": "Staff Insurance 2022",
         "createModel": "Create Model"
       },
-
+      "documentTemplate": {
+        "index": "Overview"
+      },
       "documentTemplates": {
         "index": "List of Document Template",
         "title": "Document Templates",
         "create": "Create Document Templates",
         "draft": "List of Draft"
+      },
+
+      "tenants" : {
+        "index": "Tenants",
+        "title": "Tenants",
+        "create": "Create Tenants",
+        "edit": "Edit Tenants"
       }
     }
   }

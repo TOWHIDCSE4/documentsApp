@@ -14,7 +14,7 @@ const Layout = dynamic(() => import('@src/layouts/Admin'), { ssr: false })
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 4 },
+    sm: { span: 4 }, 
   },
   wrapperCol: {
     xs: { span: 24 },
@@ -32,6 +32,10 @@ const Edit = () => {
 
   const deletePer = checkPermission({
     "roles": "D"
+  })
+
+  const updatePer = checkPermission({
+    "roles": "U"
   })
 
   const fetchData = async () => {
@@ -103,7 +107,7 @@ const Edit = () => {
           <Button onClick={() => router.back()} className="btn-margin-right">
             <LeftCircleFilled /> {t('buttons:back')}
           </Button>
-          <Button type="primary" htmlType="submit" className="btn-margin-right" loading={loading}>
+          <Button hidden={!updatePer} type="primary" htmlType="submit" className="btn-margin-right" loading={loading}>
             <SaveFilled /> {t('buttons:submit')}
           </Button>
           <Button hidden={!deletePer} danger
@@ -134,7 +138,7 @@ Edit.Layout = (props) => {
 }
 
 Edit.permissions = {
-  "roles": "U"
+  "roles": "R"
 }
 
 export default Edit

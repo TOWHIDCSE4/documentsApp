@@ -19,7 +19,7 @@ const DynamicFormPage = () => {
 	const onFinish = async (data: any): Promise<void> => {
 		setLoading(true);
 		const templateReqBody = {
-			name: "Staff Insurance FormStaff Insurance 2022",
+			name: "Staff Insurance",
 			description: null,
 			content: JSON.stringify(schemaData),
 			locale: null,
@@ -28,7 +28,7 @@ const DynamicFormPage = () => {
 		};
 
 		const documentReqBody = {
-			name: "Staff Insurance FormStaff Insurance 2022",
+			name: "Staff Insurance",
 			content: JSON.stringify(data),
 			status: buttonId,
 			documentTemplateId: null,

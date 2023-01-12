@@ -24,5 +24,8 @@ Index.Layout = (props) => {
   />
 }
 
+Index.permissions = {
+  "application": "R"
+}
 
 export default Index

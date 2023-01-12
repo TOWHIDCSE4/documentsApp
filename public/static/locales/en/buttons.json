@@ -22,6 +22,7 @@
   "coppied": "Coppied",
   "decentralization": "Decentralization",
   "deleteItem": "Delete record",
+  "active": "Active record",
   "send": "Send",
   "next": "Next",
   "prev": "Previous",
@@ -38,5 +39,7 @@
   "text": "Text",
   "image": "Image",
   "addButton": "+ Add Button",
-  "verify": "Verify"
+  "verify": "Verify",
+  "info_user": "User Info",
+  "approve_reject": "Approve/Reject"
 }

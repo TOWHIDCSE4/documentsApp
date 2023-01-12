@@ -35,7 +35,7 @@ const Create = () => {
     if (error) return notify(t(`errors:${error.code}`), '', 'error')
 
     notify(t("messages:message.recordRoleCreated"))
-    redirect("frontend.admin.roles.index")
+    redirect("frontend.admin.roles.role", { id: result.code })
   }
 
   return (

@@ -40,7 +40,6 @@ const MenuComponent = (props: any) => {
 
   const generateMenus = (data: any) => {
     return data.map((item: any) => {
-      console.log(item.routeName , "sliderbar")
       if (item.children) {
         if (item.type === "group") {
           let children = generateMenus(item.children)

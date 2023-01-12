@@ -28,4 +28,8 @@ Create.Layout = (props) => {
   );
 };
 
+Create.permissions = {
+  "application": "C"
+}
+
 export default Create;

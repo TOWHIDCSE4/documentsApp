@@ -12,10 +12,6 @@ class TenantsModel extends BaseModel {
   address: string;
   state: string;
   others: any;
-  createdBy: number;
-  updatedBy: number;
-
-
 }
 
 export default TenantsModel

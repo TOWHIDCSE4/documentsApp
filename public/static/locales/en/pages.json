@@ -19,6 +19,9 @@
     "content": "Enter your email and we will send you a password reset link.",
     "email": "Email"
   },
+  "infoUser": {
+    "title": "User Information"
+  },
   "resetPassword": {
     "title": "Reset Password",
     "description": "",
@@ -86,6 +89,7 @@
     "password": "Password",
     "rePassword": "Re-password"
   },
+
   "users": {
     "index": {
       "title": "List Of Accounts",
@@ -122,7 +126,9 @@
       "email": "Email",
       "createdAt": "Created At",
       "role": "Role",
-      "twofa": "2FA"
+      "twofa": "2FA",
+      "tenant": "Tenant",
+      "agUsername": "User created"
     },
     "form": {
       "username": "Username",
@@ -138,7 +144,49 @@
       "enable2fa": "Enable",
       "enterCode": "Enter Code",
       "role": "Role",
-      "twofa":"2FA"
+      "twofa":"2FA",
+      "tenant": "Tenant"
+    }
+  },
+
+  "tenants": {
+    "index": {
+      "title": "List Of Tenants",
+      "description": ""
+    },
+    "create": {
+      "title": "Create a new tenant",
+      "description": "Fill out the information to create a new tenant"
+    },
+    "edit": {
+      "title": "Edit tenant",
+      "description": ""
+    },
+    "table": {
+      "code": "code",
+      "name": "Name",
+      "phone": "Phone Number",
+      "address": "Address",
+      "email": "Email",
+      "state": "State",
+      "others": "Others",
+      "createdAt": "Created At",
+      "actions": "Actions",
+      "account": "Account administration",
+      "tenant": "Tenant"
+    },
+    "form": {
+      "code": "code",
+      "name": "Name",
+      "phone": "Phone Number",
+      "address": "Address",      
+      "email": "Email",
+      "state": "State",
+      "others": "Others",
+      "createdAt": "Created At",
+      "account": "Account administration",
+      "actions": "Actions",
+      "tenant": "Tenant"
     }
   },
 
@@ -238,7 +286,7 @@
       "description": "Draft List"
     },
     "SubmittedList": {
-      "title": "Submitted Form List",
+      "title": "List Of Documents",
       "description": "View submitted forms"
     }
   },
@@ -290,7 +338,7 @@
       "title": "Edit Role",
       "description": ""
     },
-    "roles": {
+    "role": {
       "title": "Decentralize the role of accounts",
       "description": "Choose the right permissions for the role of accounts."
     },
@@ -299,12 +347,14 @@
       "description": "Description",
       "decentralization": "Decentralization",
       "parent": "Parent",
-      "createdAt": "Created At"
+      "createdAt": "Created At",
+      "tenant": "Tenant"
     },
     "form": {
       "name": "Name",
       "description": "Description",
-      "parent": "Parent"
+      "parent": "Parent",
+      "tenant": "Tenant"
     }
   },
   "groups": {

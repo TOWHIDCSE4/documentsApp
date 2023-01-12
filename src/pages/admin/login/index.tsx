@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { LeftOutlined } from '@ant-design/icons';
+import { RightOutlined } from '@ant-design/icons';
 import authService from '@src/services/authService'
 import to from 'await-to-js'
 import useBaseHook from '@src/hooks/BaseHook';
@@ -34,9 +34,9 @@ const Login = () => {
   return <LoginComponent
     onSubmit={onFinish}
     loading={loading}
-    link="frontend.admin.documents"
-    icon={<LeftOutlined />}
-    text="home"
+    link="frontend.admin.forgotPassword"
+    icon={<RightOutlined />}
+    text="forgotPassword"
   />
 }
 

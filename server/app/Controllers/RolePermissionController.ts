@@ -3,11 +3,12 @@ import RolePermissionModel from "@root/server/app/Models/RolePermissionModel";
 import PermissionModel from "@root/server/app/Models/PermissionModel";
 import RoleModel from "@root/server/app/Models/RoleModel";
 import ApiException from '@app/Exceptions/ApiException'
-
+import UserModel from "@root/server/app/Models/UserModel";
 export default class PermissionController extends BaseController {
   Model: any = PermissionModel;
   RolePermissionModel: any = RolePermissionModel;
   RoleModel: any = RoleModel;
+  UserModel: any = UserModel;
 
   async update() {
     const allowFields = {
@@ -16,7 +17,6 @@ export default class PermissionController extends BaseController {
     let inputs = this.request.all();
     let auth = this.request.auth;
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
-
     const { roleCode } = params;
     const { permissions } = inputs
 
@@ -24,6 +24,7 @@ export default class PermissionController extends BaseController {
 
     let rolecheck = await this.RoleModel.getOne({ code: roleCode });
     if (!rolecheck) throw new ApiException(6000, "User role doesn't exist!")
+    if(rolecheck.tenantId != await this.UserModel.getTenantId(auth.id)) throw new ApiException(6000, "tenant is not correct!")
 
     for (let key in permissions) {
       const value = permissions[key]
@@ -56,17 +57,20 @@ export default class PermissionController extends BaseController {
     const allowFields = {
       roleCode: "string!"
     }
+    const { auth } = this.request
     let inputs = this.request.all();
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
     let role = await this.RoleModel.getOne({ code: params.roleCode });
     if (!role) throw new ApiException(6000, "User role doesn't exist!")
     let permissions = []
-    if(role.key  == 'root' || !role.parentId){
+    if(role.key  == 'root'){
       permissions = await this.Model.query().whereNot({key : 'root'})
     }else {
       let roleParent = await this.RoleModel.getById(role.parentId);
-      if(roleParent.key  == 'root'){
-        permissions = await this.Model.query().whereNot({key : 'root'})
+      if(!roleParent){
+        let rolePermisstionParent = await this.RolePermissionModel.query().where({roleId: role.id}) || [];
+        let idPer = rolePermisstionParent.map(item => item.permissionId);
+        permissions = await this.Model.query().whereNot({key : 'root'}).whereIn("id", idPer) 
       }else {
         let rolePermisstionParent = await this.RolePermissionModel.query().where({roleId:roleParent.id}) || [];
         let idPer = rolePermisstionParent.map(item => item.permissionId);

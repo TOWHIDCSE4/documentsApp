@@ -73,4 +73,8 @@ Edit.Layout = (props) => {
 	);
 };
 
+Edit.permissions = {
+    "application": "U"
+}
+
 export default Edit;

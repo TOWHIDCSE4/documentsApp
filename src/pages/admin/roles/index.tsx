@@ -57,6 +57,13 @@ const Index = () => {
       filterable: true,
     },
     {
+      title: t("pages:roles.table.tenant"),
+      dataIndex: 'tenantName',
+      key: 'tenants.name',
+      sorter: true,
+      filterable: true,
+    },
+    {
       title: t("pages:roles.table.parent"),
       dataIndex: 'parentName',
       key: 'roles.parentId',

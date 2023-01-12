@@ -3,10 +3,12 @@ import UserModel from '@root/server/app/Models/UserModel'
 import RoleModel from '@app/Models/RoleModel'
 import ApiException from '@app/Exceptions/ApiException'
 import { removeVietnameseTones ,hashNumber ,makeKey} from '@helpers/utils'
+import TenantsModel from '@app/Models/TenantsModel'
 const speakeasy = require('speakeasy');
 export default class AdminController extends BaseController {
   Model: typeof UserModel = UserModel
   RoleModel: any = RoleModel
+  TenantsModel: any = TenantsModel
 
   async index() {
     const { auth } = this.request;
@@ -19,18 +21,32 @@ export default class AdminController extends BaseController {
       "users.roleId",
       "users.code",
       "users.id",
+      "tenants.name as tenantName",
       "roles.name as roleName",
-      "users.createdAt"
+      "users.createdAt",
+      "ag.username as agUsername",
     ]
-    let getAccountsItCreated = await this.Model.getAccountsItCreated(auth.id)
-    let getAccountsItCreatedId = getAccountsItCreated.map(item => item.id)
-    let result = await this.Model.query()
+    // let getAccountsItCreated = await this.Model.getAccountsItCreated(auth.id)
+    let tenantId = await this.Model.getTenantId(auth.id)
+    // let getAccountsItCreatedId = getAccountsItCreated.map(item => item.id)
+
+    let role = await this.RoleModel.getById(auth.roleId);
+    let query = this.Model.query()
+      .leftJoin('users as ag', 'users.createdBy', 'ag.id')
       .leftJoin('roles', 'users.roleId', 'roles.id')
+      .leftJoin('tenants', 'users.tenantId', 'tenants.id')
+      .whereNot('users.id', auth.id)
+
+    if(role.key != 'root'){
+      query = query
+      .where('users.tenantId', tenantId)
       .whereNot('roles.key', 'root')
-      .whereIn('users.id',getAccountsItCreatedId)
+      // .whereIn('users.id',getAccountsItCreatedId)
+    }
+
+    let result = await query
       .select(project)
       .getForGridTable(inputs)
-
     return result;
   }
 
@@ -60,12 +76,21 @@ export default class AdminController extends BaseController {
       password: "string!",
       roleId: "number!",
       email: "string!",
-      twofa: "boolean"
+      twofa: "boolean",
+      tenantId: "number"
     }
 
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
     let twoFa = typeof params.twofa === 'undefined' ? 1 : params.twofa ? 1 : 0;
-
+    let tenantId = null
+    if(!params.tenantId) {
+      tenantId = await this.Model.getTenantId(auth.id)
+      if(!tenantId) throw new ApiException(6000, "Tenant doesn't exist!")
+    }else {
+      let checkTenant = await this.TenantsModel.getById(params.tenantId)
+      if(!checkTenant) throw new ApiException(6000, "Tenant doesn't exist!")
+      tenantId = checkTenant.id
+    }
     let username = params.username.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '')
     let usernameExist = await this.Model.findExist(username, 'username')
     if (usernameExist) throw new ApiException(6007, "Username already exists!")
@@ -88,7 +113,8 @@ export default class AdminController extends BaseController {
       createdBy: auth.id,
       twofaKey: twofaKey,
       twofa: twoFa,
-      isFirst: 1
+      isFirst: 1,
+      tenantId: tenantId
     }
     let result = await this.Model.insertOne(params);
     let code = hashNumber(String(result.id));
@@ -124,6 +150,7 @@ export default class AdminController extends BaseController {
       ...params,
       twofa: twoFa 
     }
+
     let result = await this.Model.updateOne(id, { ...dataUpdate });
     delete result['password']
     delete result['twofaKey']

@@ -42,7 +42,18 @@ const numberInMonthProfit = {
   "12": 31
 }
 
+const default_premission = {
+  users: 15,
+  roles: 15,
+  adminDecentralization: 2,
+  dashboard: 4,
+  tenants: 31
+  // overView: 15,
+  // documentTemplates: 15,
+  // documents: 15
+}
+
 export default {
-  roleKey, numberInMonth, numberInMonthProfit,documentStatus
+  roleKey, numberInMonth, numberInMonthProfit,documentStatus,default_premission
 }
 

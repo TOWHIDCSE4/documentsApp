@@ -36,7 +36,6 @@ const Role = () => {
 
     let [permissionError, permissions]: any[] = await to(permissionService().withAuth().getPermissionByRoleCode({ roleCode: roleCode}));
     if (permissionError) return notify(t(`errors:${permissionError.code}`), '', 'error')
-
     setState({
       ...state,
       permissions: permissions
@@ -75,7 +74,8 @@ const Role = () => {
     if(!updatePer){
       disabled = true
     } 
-    return <Checkbox defaultChecked={checked} disabled={disabled} onChange={onChange}></Checkbox>
+    if(disabled) return <div></div>
+    return <Checkbox defaultChecked={checked} onChange={onChange}></Checkbox>
   }
 
   const renderPermissionCategory = (category: any) => {
@@ -121,6 +121,14 @@ const Role = () => {
         width: '10%',
         align: 'center' as 'center',
         render: (value: any, row: any) => renderCheckbox(row, 1)
+      },
+      {
+        title: t("buttons:approve_reject"),
+        dataIndex: 'value',
+        key: 'valueAR',
+        width: '10%',
+        align: 'center' as 'center',
+        render: (value: any, row: any) => renderCheckbox(row, 16)
       }
     ];
 

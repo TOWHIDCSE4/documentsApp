@@ -25,6 +25,16 @@ const Create = () => {
     return result
   }
 
+  const randompass = () => {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for ( let i = 0; i < 8; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   return <>
     <div className="content">
       <Form
@@ -33,8 +43,7 @@ const Create = () => {
         layout="vertical"
         initialValues={{
           username: "",
-          password: "",
-          rePassword: "",
+          password: randompass(),
           email: "",
           groupId: undefined,
           firstName: "",

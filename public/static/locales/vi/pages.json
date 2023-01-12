@@ -120,7 +120,8 @@
       "parent": "Nhóm chính",
       "email": "Email",
       "createdAt": "Ngày tạo",
-      "tags": "Tags"
+      "tags": "Tags",
+      "tenant": "Tenant"
     },
     "form": {
       "username": "Tên đăng nhập",
@@ -135,7 +136,8 @@
       "qrcode": "QR Code",
       "enable2fa": "Enable",
       "enterCode": "Enter Code",
-      "tags": "Tags"
+      "tags": "Tags",
+      "tenant": "Tenant"
     }
   },
   "QnA": {

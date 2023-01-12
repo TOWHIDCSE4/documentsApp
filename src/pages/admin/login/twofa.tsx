@@ -25,7 +25,7 @@ const Twofa = () => {
     if (user.twofaKey) {
       let dataImage = speakeasy.otpauthURL({
         secret: user.twofaKey,
-        label: publicRuntimeConfig.LABEL2FA || "App_platform",
+        label: `${publicRuntimeConfig.LABEL2FA || "App_platform"} - ${user.username}`,
       });
       QRCode.toCanvas(
         canvasRef.current,
@@ -40,7 +40,6 @@ const Twofa = () => {
       tokenVerify: String(values.tokenVerify),
       code: user.code,
     };
-    console.log(value);
     setLoading(true);
     let [error, result]: any[] = await to(
       authService().withAuth().AuthTwofa(value)
@@ -53,104 +52,114 @@ const Twofa = () => {
         "error"
       );
     auth().setAuth(result);
-    notify(t("messages:message.loginSuccess"));
+    notify(t("messages:message.verify2FaSuccess"));
     redirect("frontend.admin.documents.index");
     return result;
   };
 
   return (
     <div className="content-form">
-      <div className="logo">
-        <div className="img">
-          {user && user.isFirst && user.twofaKey ? (
+      {user && user.isFirst && user.twofaKey ? (
+        <div className="logo">
+          <div>
             <div>
-                <div>
-                <div className="title">
-                  {t("pages:users.twofa.link.title")}
-                </div>
-                <div className="title">
-                  {t("pages:users.twofa.link.link")}
-                </div>
-                <div className="title">
-                  Android:{" "}
-                  <a
-                    href={t("pages:users.twofa.link.android")}
-                    className="title"
-                  >
-                    Link here!
-                  </a>
-                </div>
-                <div className="title">
-                  Ios:{" "}
-                  <a
-                    href={t("pages:users.twofa.link.ios")}
-                    className="title"
-                  >
-                    Link here!
-                  </a>
-                </div>
+              <div className="title">
+                {t("pages:users.twofa.link.title")}
               </div>
-              <div className="title">{t("pages:login.titleVerify")}</div>
-              <canvas ref={canvasRef} />
+              <div className="title">
+                {t("pages:users.twofa.link.link")}
+              </div>
+              <div className="title">
+                Android:{" "}
+                <a
+                  href={t("pages:users.twofa.link.android")}
+                  className="title"
+                >
+                  Link here!
+                </a>
+              </div>
+              <div className="title">
+                Ios:{" "}
+                <a
+                  href={t("pages:users.twofa.link.ios")}
+                  className="title"
+                >
+                  Link here!
+                </a>
+              </div>
             </div>
-          ) : (
-            ""
-          )}
+            <div className="title" style={{marginBottom:5}}>{t("pages:login.titleVerify")}</div>
+            <canvas ref={canvasRef} />
+          </div>
         </div>
-        <div className="sitename">{t("pages:login.Verify")}</div>
-      </div>
-      <Form
-        onFinish={onFinish}
-        form={form}
-        name="tokenVerifyForm"
-        layout="horizontal"
-        initialValues={{
-          tokenVerify: "",
-        }}
-      >
-        <Col md={24} sm={24} xs={24}>
-          <Form.Item
-            name="tokenVerify"
-            rules={[
-              {
-                required: true,
-                message: t("messages:form.required", {
-                  name: t("pages:login.tokenVerify"),
-                }),
-              },
-            ]}
+      ) : (
+        <div className="logo">
+          <div className="img">
+            <img src={publicRuntimeConfig.LOGO}></img>
+          </div>
+          <div className="sitename">Welcome! Please verify to your account.</div>
+        </div>
+      )}
+      <div className='form-login'>
+        <div className="content-form-login">
+          <div className="sitename-title">Verify Google Authenticator!</div>
+          <div className="sitename">Enter Code to continue to KDDI</div>
+        </div>
+        <Form
+          onFinish={onFinish}
+          form={form}
+          name="tokenVerifyForm"
+          layout="horizontal"
+          initialValues={{
+            tokenVerify: "",
+          }}
+        >
+          <Col md={24} sm={24} xs={24}>
+            <div style={{ marginBottom: 5, fontWeight: 600 }}>Code</div>
+            <Form.Item
+              name="tokenVerify"
+              rules={[
+                {
+                  required: true,
+                  message: t("messages:form.required", {
+                    name: t("pages:login.tokenVerify"),
+                  }),
+                },
+              ]}
+            >
+              <Input placeholder={t("pages:login.tokenVerify")} />
+            </Form.Item>
+          </Col>
+          <Col md={24} sm={24} xs={24}>
+            <Form.Item>
+              <Row>
+                <Col md={24} sm={24} xs={24}>
+                  <Button
+                    className="btn login"
+                    type="primary"
+                    htmlType="submit"
+                    loading={loading}
+                  >
+                    {t("buttons:verify")}
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
+          </Col>
+        </Form>
+        <div style={{ textAlign: 'center', paddingTop: 20 }}>
+          Wait, I mistyped my account...
+          <a
+            onClick={() => {
+              auth().logout();
+              redirect("frontend.admin.login");
+            }}
+            style={{ color: "#405189" }}
           >
-            <Input placeholder={t("pages:login.tokenVerify")} />
-          </Form.Item>
-        </Col>
-        <Col md={24} sm={24} xs={24}>
-          <Form.Item>
-            <Row>
-              <Col md={6} sm={6} xs={6}>
-                <Button
-                  onClick={() => {
-                    auth().logout();
-                    redirect("frontend.admin.login");
-                  }}
-                  className="btn-margin-right"
-                >
-                  <LeftCircleFilled /> {t("buttons:login")}
-                </Button>
-              </Col>
-              <Col md={18} sm={18} xs={18}>
-                <Button
-                  className="btn login"
-                  type="primary"
-                  htmlType="submit"
-                  loading={loading}
-                >
-                  {t("buttons:verify")}
-                </Button>
-              </Col>
-            </Row>
-          </Form.Item>
-        </Col>
-      </Form>
+            Click here
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

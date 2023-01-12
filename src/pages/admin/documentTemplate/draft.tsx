@@ -36,12 +36,6 @@ import moment from "moment";
 import to from "await-to-js";
 import auth from "@src/helpers/auth";
 import React, { useState, useRef, useEffect } from "react";
-import knex from "knex";
-import { checkStatusByName, checkStatusColor } from "@root/src/helpers/utils";
-
-interface jsPDFWithPlugin extends jsPDF {
-	autoTable: (options: UserOptions) => jsPDF;
-}
 
 function checkStatus(status: string) {
 	let colorObj = {
@@ -80,9 +74,6 @@ function checkStatus(status: string) {
 
 const Index = () => {
 	const { redirect, t, notify } = useBaseHook();
-	const { Title } = Typography;
-	const { Search } = Input;
-	const ButtonGroup = Button.Group;
 	const tableRef = useRef(null);
 	const [selectedIds, setSelectedIds] = useState([]);
 	const [documents, setDocuments] = useState(null);
@@ -108,6 +99,10 @@ const Index = () => {
 
 		if (documents) {
 			const resultObj = JSON.parse(JSON.stringify(documents));
+			documents.data = documents.data.filter(
+				(item: any) => item.status === 7
+			);
+			documents.total = documents.data.length;
 			let result = _.countBy(resultObj.data, "status");
 			setStatusCount(result);
 			setDocuments(resultObj);
@@ -130,30 +125,9 @@ const Index = () => {
 	};
 
 	const generatePdf = (rowInfo: any) => {
-		const doc = new jsPDF("portrait", "px", "a4") as jsPDFWithPlugin;
-		const tableTitle = [
-			"Form Name",
-			"Form ID",
-			"Issued By",
-			"Issued Date",
-			"Status",
-			"Updated Date",
-		];
-		const tableRow = [
-			rowInfo.formName,
-			rowInfo.formId,
-			rowInfo.issuedBy,
-			moment(rowInfo.issuedDate).format("LL"),
-			rowInfo.status,
-			moment(rowInfo.updatedDate).format("LL"),
-		];
-
-		doc.autoTable({
-			head: [tableTitle],
-			body: [tableRow],
+		return redirect("frontend.admin.application.documentpdf", {
+			id: rowInfo.id,
 		});
-
-		doc.save(rowInfo.formId);
 	};
 
 	const columns = [
@@ -174,7 +148,7 @@ const Index = () => {
 			sorter: true,
 			filterable: true,
 			render: (text, record) => {
-				return <strong>{record?.firstName} {record?.lastName}</strong>;
+				return <strong>{record?.content.firstName} {record?.content.lastName}</strong>;
 			}
 		},
 		{
@@ -189,20 +163,6 @@ const Index = () => {
 				<FilterDatePicker column={column} confirm={confirm} ref={ref} />
 			),
 		},
-		// {
-		// 	title: t("pages:documents.table.status"),
-		// 	dataIndex: "status",
-		// 	key: "documents.status",
-		// 	sorter: true,
-		// 	filterable: true,
-		// 	render: (text, record) => {
-		// 		return (
-		// 			<div style={checkStatusColor(text)}>
-		// 				{checkStatusByName(text)}
-		// 			</div>
-		// 		);
-		// 	},
-		// },
 		{
 			title: t("pages:documents.table.updatedDate"),
 			dataIndex: "updatedAt",
@@ -222,7 +182,10 @@ const Index = () => {
 				return (
 					<Space size="middle">
 						<span
-							onClick={() => generatePdf(record)}
+							onClick={(e) => {
+								e.stopPropagation();
+								generatePdf(record);
+							}}
 							title="Download PDF"
 							style={{ cursor: "pointer" }}
 						>
@@ -251,6 +214,15 @@ const Index = () => {
 						selectedRowKeys: selectedIds,
 						onChange: (data: any[]) => onChangeSelection(data),
 						...rowSelection,
+					}}
+					onRow={(record, rowIndex) => {
+						return {
+							onClick: (event) => {
+								redirect("frontend.admin.application.edit", {
+									id: record.id,
+								});
+							},
+						};
 					}}
 					addIndexCol={false}
 					selectableRowsHighlight

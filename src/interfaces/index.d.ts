@@ -1,17 +1,22 @@
-interface Role {
+interface Tenant {
   id: number;
+  code: string;
   name: string;
-  description: string;
-  parentId: number;
-  key: string;
-  createdAt: string;
+  email: string;
+  phone: number;
+  address: string;
+  state: string;
+  others: User;
 }
+
+
 
 interface User {
   id: number;
   firstName: string;
   lastName: string;
   username: string;
+  password: string;
   email: string;
   roleId: number;
   createdAt: string;
