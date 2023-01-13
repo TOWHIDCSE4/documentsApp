@@ -72,13 +72,14 @@
         "source": "List source",
         "templatesName": "Templates Name",
         "language": "Language",
-        "lable": "Label",
+        "label": "Label",
         "position": "Position",
         "groupTitle": "Group Title",
-        "col-xs": "Col-xs",
-        "col-sm": "Col-sm",
-        "col-lg": "Col-lg",
-        "col-md": "Col-md",
+        "col": "Col",
+        "xs": "xs",
+        "sm": "sm",
+        "lg": "lg",
+        "md": "md",
         "validations": "Validations"
       }
     }

@@ -8,15 +8,15 @@ Route.get("/reset-password/:token", "pages/admin/resetPassword").name("frontend.
 Route.group(() => {
   Route.get("/", "pages/admin/users").name("users.index").sidebar('users.index')
   {
-    let name = 'documentTemplate'
-    Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
-    Route.get(`/${name}/draft`, `pages/admin/${name}/draft`).name(
-		`${name}.draft`
-	);
+    let name = 'documentTemplates'
+    Route.get(`/${name}/create`, `pages/admin/${name}/create`).name(`${name}.create`).parent(`application.index`).sidebar(`application.index`)
   }
   {
     let name = 'documents'
     Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
+    Route.get(`/${name}/draft`, `pages/admin/${name}/draft`).name(
+      `${name}.draft`
+    ).sidebar(`${name}.draft`);
   }
 
   {

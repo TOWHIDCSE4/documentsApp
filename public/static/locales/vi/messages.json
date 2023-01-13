@@ -42,6 +42,9 @@
     "notSelectStep": "Bạn cần chọn bước trước!",
     "notFoundStep": "Không tìm thấy bước đã chọn. Mời bạn chọn lại!",
 
+    "recordDocumentTemplatesCreated": "The document  has been added successfully!",
+		"recordDocumentTemplatesUpdated": "The document has been updated successfully!",
+
     "recordCreated": "Tạo mới dữ liệu thành công!",
     "recordUpdated": "Cập nhật dữ liệu thành công!",
     "recordDeleted": "Xóa dữ liệu thành công!",

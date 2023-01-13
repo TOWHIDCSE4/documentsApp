@@ -52,20 +52,13 @@ const sidebar = [
         },
       },
       {
-        routeName: "frontend.admin.documentTemplates.draft",
+        routeName: "frontend.admin.documents.draft",
         icon: <ApartmentOutlined />,
         permissions: {
           roles: "R",
         },
       }
     ]
-  },
-  {
-    routeName: "frontend.admin.documentTemplates.index",
-    icon: <HomeOutlined />,
-    permissions: {
-      documentTemplates: "R",
-    },
   },
   {
     routeName: "frontend.admin.users.title",

@@ -1,4 +1,4 @@
-import { AlignCenterOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { AlignCenterOutlined, ArrowRightOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import useBaseHooks from "@root/src/hooks/BaseHook";
 import {
 	Button,
@@ -39,15 +39,12 @@ const ApplicationForm = () => {
 			{ field: "document_templates.id", direction: "desc" },
 		];
 
-		// values.filter = [
-		// 	{
-		// 		name: {
-		// 			like: `%${value}%`,
-		// 		},
-		// 	},
-		// ];
 		values.filters = [
-			{ field: "document_templates.name", operator: "contains", value: value }
+			{
+				field: "document_templates.name",
+				operator: "contains",
+				value: value,
+			},
 		];
 
 		values.pageSize = 4;
@@ -63,14 +60,14 @@ const ApplicationForm = () => {
 	/**
 	 * page change on pagination
 	 * @params {page,pageSize}
-	 * @returns 
+	 * @returns
 	 */
 
 	const onPageChange = async (page, pageSize) => {
-		await fetchData(page, pageSize)
-	}
+		await fetchData(page, pageSize);
+	};
 
-	const fetchData = async (page=2, pageSize=4) => {
+	const fetchData = async (page = 2, pageSize = 4) => {
 		const values: any = {};
 
 		values.sorting = [
@@ -86,7 +83,7 @@ const ApplicationForm = () => {
 
 		if (error) return notify(t(`errors:${error.code}`), "", "error");
 		setDocumentTemplateFrom(documentTemplateFromObject?.data);
-		setTotal(parseInt(documentTemplateFromObject.total))
+		setTotal(parseInt(documentTemplateFromObject.total));
 		setCurrentPage(parseInt(documentTemplateFromObject.page));
 		setPageSize(parseInt(documentTemplateFromObject.pageSize));
 
@@ -151,7 +148,7 @@ const ApplicationForm = () => {
 						type="inner"
 						title="Form Draft"
 						onClick={() =>
-							redirect("frontend.admin.documentTemplate.draft")
+							redirect("frontend.admin.documents.draft")
 						}
 						extra={
 							<a>{t("pages:application.applicationForm.view")}</a>
@@ -170,6 +167,9 @@ const ApplicationForm = () => {
 					<Button>
 						<AlignCenterOutlined /> More Filter
 					</Button>
+					<Button type="primary" onClick={() => redirect("frontend.admin.documentTemplates.create")}>
+						<PlusCircleOutlined /> Create Document Templates
+					</Button>
 				</Space>
 				<Search
 					placeholder="Search"
@@ -179,7 +179,7 @@ const ApplicationForm = () => {
 				/>
 			</Card>
 			<Card>
-				<Row gutter={8} justify="center" style={{gap:'20px'}}>
+				<Row gutter={8} justify="center" style={{ gap: "20px" }}>
 					{documentTemplateFrom?.map((documentTemplate: any) => {
 						return (
 							<Card
@@ -213,7 +213,7 @@ const ApplicationForm = () => {
 							</Card>
 						);
 					})}
-					
+
 				</Row>
 			</Card>
 			<br />

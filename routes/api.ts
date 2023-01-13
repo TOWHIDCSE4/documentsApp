@@ -25,9 +25,9 @@ Route.group(() => {
 
   // ---------------------------------- Route DocumentTemplate Routes ---------------------------------------//
   Route.resource("/document_templates", "DocumentTemplateController").name('document_templates')
-// Route.group(() => {
+  // Route.group(() => {
 
-// })
+  // })
   // ---------------------------------- End Route Document Routes -----------------------------------//
 
   Route.group(() => {
@@ -50,7 +50,7 @@ Route.group(() => {
       permission({ 'users': 'R' })
     ])
     // ---------------------------------- End User Routes -----------------------------------//
-    
+
     // ---------------------------------- Role Permission Routes ---------------------------------------//
     Route.get("/rolePermissions/getPermissionByGroupId", "RolePermissionController.getPermissionByGroupId")
     .name('rolePermissions.getPermissionByGroupId').middleware([

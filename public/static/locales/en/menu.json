@@ -2,7 +2,8 @@
   "frontend": {
     "admin": {
       "documents": {
-        "index": "List Of Documents"
+        "index": "List Of Documents",
+        "draft": "List Of Draft"
       },
       "users": {
         "title": "Account Management",

@@ -100,6 +100,9 @@ const DynamicFormPage = ({ documentData }) => {
         <div className="ToHide">
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button style={{backgroundColor:"black"}} type="primary" onClick={() => router.back()}>
+						{t("buttons:back")}
+					</Button>
             <Button
               onClick={exportPdf}
               style={{ marginLeft: 10 }}

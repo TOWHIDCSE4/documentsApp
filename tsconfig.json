@@ -50,5 +50,5 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ]
+, "src/pages/api/upload/index.ts"  ]
 }

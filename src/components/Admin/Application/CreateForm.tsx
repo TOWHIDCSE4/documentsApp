@@ -110,13 +110,13 @@ const DynamicFormPage = () => {
 				</div>
 
 				<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-					<Button type="primary" onClick={() => router.back()}>
+					<Button style={{backgroundColor:"black"}} type="primary" onClick={() => router.back()}>
 						{t("buttons:back")}
 					</Button>
 
 					<Button
 						type="primary"
-						style={{ marginLeft: 10 }}
+						style={{ marginLeft: 10,backgroundColor:"green"}}
 						htmlType="submit"
 					>
 						Submit
@@ -124,7 +124,7 @@ const DynamicFormPage = () => {
 
 					<Button
 						onClick={() => (buttonId = 7)}
-						style={{ marginLeft: 10 }}
+						style={{ marginLeft: 10,backgroundColor:"purple"}}
 						type="primary"
 						htmlType="submit"
 					>

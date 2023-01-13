@@ -1,21 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import documentTemplateService from '@src/services/documentTemplateService';
+import to from 'await-to-js'
 import dynamic from "next/dynamic";
 import { Button, Form, Col, Row, Input, Space, Select } from "antd";
 import useBaseHook from "@src/hooks/BaseHook";
 import FieldDefinition from "@root/src/components/Admin/documentTemplates/FieldDefinition";
 import {
-  MinusCircleOutlined,
-  PlusOutlined,
   SendOutlined,
 } from "@ant-design/icons";
-
 const Layout = dynamic(() => import("@src/layouts/Admin"), { ssr: false });
 
-const languageTypes = ["EN", "VN"]
+const languageTypes = [
+  {
+    label: "English",
+    value: "en"
+  },
+  {
+    label: "Vietnamese",
+    value: "vi"
+  }
+]
 
 const Create = () => {
 
-  const { t } = useBaseHook()
+  const [loading, setLoading] = useState(false);
+  const { t, notify, redirect } = useBaseHook()
   const [form] = Form.useForm();
   let selectedRowKeys: string[] = [];
   let selectedActiveRowKeys: string[] = [];
@@ -31,80 +40,82 @@ const Create = () => {
 
   const init = async () => { };
 
-  const submitForm = async () => {
-    console.log(form.getFieldsValue())
+  const submitForm = async (values: any) => {
+    setLoading(true)
+    if (!values || !values.createDocumentTemplates || (Array.isArray(values.createDocumentTemplates) && !values.createDocumentTemplates.length)) return
+    
+    for (let tem in values.createDocumentTemplates) {
+      for (let validate in values.createDocumentTemplates[tem].validations) {
+        switch (values.createDocumentTemplates[tem].validations[validate]) {
+          case 'required' : case 'whitespace': {
+            values.createDocumentTemplates[tem].validations[validate] = `{ required: true, message: t('messages:form.required', { name: ${values.createDocumentTemplates[tem].label} }) }`
+          }
+          break;
+          case 'max': {
+            values.createDocumentTemplates[tem].validations[validate] = `{ max: 255, message: t('messages:form.maxLength', { name: ${values.createDocumentTemplates[tem].label}, length: 255 }) }`
+          }
+          break;
+        }
+      }
+    }
+
+    let [error, result]: any[] = await to(documentTemplateService().withAuth().create(values));
+
+    setLoading(false)
+
+    if (error) return notify(t(`errors:${error.code}`), '', 'error')
+
+    notify(t("messages:message.recordDocumentTemplatesCreated"))
+    redirect("frontend.admin.application.index")
   };
 
   return (
     <div className="content">
       <Form
         form={form}
-        onFinish={async () => {
-          await submitForm();
-        }}
+        onFinish={submitForm}
       >
-        <Row gutter={[16, 16]}>
+        <Row gutter={[32, 0]}>
           <Col span={12}>
             <Form.Item
               labelAlign={"right"}
-              name={["templatesName"]}
+              name={["name"]}
               label={t("pages:documentTemplates.create.fieldInformation.templatesName")}
               rules={[
                 { required: true, message: t('messages:form.required', { name: t("pages:documentTemplates.create.fieldInformation.templatesName") }) },
               ]}
             >
-              <Input placeholder={t("pages:documentTemplates.create.fieldInformation.templatesName")} />
+              <Input placeholder={t("pages:documentTemplates.create.fieldInformation.templatesName")} style={{ width: "100%" }} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               labelAlign={"right"}
-              name={["language"]}
+              name={["locale"]}
               label={t("pages:documentTemplates.create.fieldInformation.language")}
               rules={[
                 { required: true, message: t('messages:form.required', { name: t("pages:documentTemplates.create.fieldInformation.language") }) },
               ]}
             >
               <Select placeholder={t("pages:documentTemplates.create.fieldInformation.language")} style={{ width: "100%" }}>
-                {languageTypes.map(languageTypes => <Select.Option key={languageTypes} value={languageTypes}>{languageTypes}</Select.Option>)}
+                {
+                  languageTypes.map((dataLang, index) =>
+                    <Select.Option key={index} value={dataLang.value}>{dataLang.label}</Select.Option>
+                  )}
               </Select>
             </Form.Item>
           </Col>
         </Row>
-        <Form.List name="createDocumentTemplates" >
-          {(fields, { add, remove }) => (
-            <div>
-              {fields.map((key, name, ...restField) => {
-                return (
-                  <div key={String(key)} >
-                    <Form.Item className="btn-right">
-                      <MinusCircleOutlined onClick={() => remove(name)} />
-                    </Form.Item> <br />
-                    <FieldDefinition name={name} restField={restField} />
-                  </div>
-                );
-              })}
-              <Form.Item className="text-center">
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  icon={<PlusOutlined />}
-                  style={{ width: "100%" }}
-                >
-                  Add field
-                </Button>
-              </Form.Item>
-            </div>
-          )}
-        </Form.List>
+        <FieldDefinition />
         <div style={{ textAlign: "center" }}>
           <Space>
             <Button
               type="primary"
               htmlType="submit"
-              className="custom-icon-button"
+              icon={<SendOutlined />}
+              loading={loading}
             >
-              <SendOutlined style={{ marginBottom: "5px" }} /> Submit
+              Submit
             </Button>
           </Space>
         </div>

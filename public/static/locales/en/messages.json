@@ -62,6 +62,9 @@
 		"staffInsuranceFormSuccess": "The data has been created successfully!",
 		"staffInsuranceFormUpdateSuccess": "The data has been updated successfully!",
 
+    "recordDocumentTemplatesCreated": "The document has been added successfully!",
+		"recordDocumentTemplatesUpdated": "The document has been updated successfully!",
+
 		"enable2FaSuccess": "2FA has been installed successfully. You will need to re-login to continue."
   },
   "confirm": {

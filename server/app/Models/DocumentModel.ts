@@ -14,4 +14,5 @@ class DocumentModel extends BaseModel {
   createdAt: Date;
   updatedAt: Date;
 }
+
 export default DocumentModel

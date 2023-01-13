@@ -1,7 +1,7 @@
 import BaseModel from './BaseModel'
 
 class DocumentTemplateModel extends BaseModel {
-	static tableName = "document_templates";
+  static tableName = "document_templates";
 
 	//fields
 	id: number;
