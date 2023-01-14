@@ -8,7 +8,9 @@ import {
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import { Form, Input, DatePicker, Button, Upload } from "antd";
 import { Select } from "antd";
-import axios from 'axios'
+import axios from 'axios';
+import formidable from "formidable";
+import fs from "fs";
 const { TextArea } = Input;
 interface CommonFormProps {
 	formField: any;
@@ -21,7 +23,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		inputType,
 		// options,
 		defaultValue,
-		validation,
+		validations,
 		col,
 		position,
 		list,
@@ -37,37 +39,40 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 
 	const onChangeImage = async (info) => {
 		try {
-			// if (info.fileList) {
-			// 	const file = info.fileList[0];
-			// 	setSelectedImage(URL.createObjectURL(file));
-			// 	setSelectedFile(file);
-			//   }
-			// const formData = new FormData();
-			// formData.append("myImage", selectedFile);
-			// const { data } = await axios.post("/api/upload", formData);
-			// console.log(data);
+			
+			
 		  } catch (error: any) {
 			console.log(error.response?.data);
 		  }
 	}
+	
 	const onDropImage = (e) => {}
 	const getFile = async (e) => {
-
-	  return e.file.name
+		const result = await toBase64(e.file.originFileObj).then(res => res)
+		setSelectedImage(JSON.stringify(result))
+		console.log(selectedImage);
+		
+	    return result
 	  };
 
 	const handlePreview = async (file) => {
 		
 	  };
 
+	  const toBase64 = (file: File) => new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () => resolve(reader.result);
+		reader.onerror = error => reject(error);
+	  })
+
 	if (inputType === "textInput") {
 		return (
-			<Form.Item name={fieldName} label={label} rules={[
-				{
-					required: true,
-					message: validation[0]
-				},
-			]}>
+			<Form.Item name={fieldName} label={label} rules={validations.map(element => ({
+				required: true,
+				message: element.message
+				
+			}))}>
 				<Input
 					// control={control}
 					name={"data.firstName"}
@@ -89,12 +94,11 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		return (
 			<div>
 				<Form.Item name={fieldName} label={label}
-				 rules={[
-					{
-						required: true,
-						message: validation[0]
-					},
-				]}
+				 rules={validations.map(element => ({
+					required: true,
+					message: element.message
+					
+				}))}
 				>
 					<Input
 						// control={control}
@@ -146,12 +150,11 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		return (
 			<div>
 				<Form.Item name={fieldName} label={label}
-				 rules={[
-					{
-						required: true,
-						message: validation[0]
-					},
-				]}
+				 rules={validations.map(element => ({
+					required: true,
+					message: element.message
+					
+				}))}
 				>
 					<DatePicker name={"data.dateTimeInput"} style={{ display: 'flex', padding: '10px 5px' }} />
 				</Form.Item>

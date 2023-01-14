@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CommonForm } from "./CommonForm";
 import schemaData from "../../../../config/Application_schema.json";
 import useBaseHook from "@src/hooks/BaseHook";
@@ -11,21 +11,21 @@ import clsx from 'clsx';
 
 const DynamicFormPage = () => {
 	const { t, notify, redirect, router } = useBaseHook();
-	const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
+	const [formJsonSchema, setFormJsonSchema] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [form] = Form.useForm();
 	let buttonId = 6;
 
 	const onFinish = async (data: any): Promise<void> => {
 		setLoading(true);
-		const templateReqBody = {
-			name: "Staff Insurance",
-			description: null,
-			content: JSON.stringify(schemaData),
-			locale: null,
-			createdBy: null,
-			updatedBy: null,
-		};
+		// const templateReqBody = {
+		// 	name: "Staff Insurance",
+		// 	description: null,
+		// 	content: JSON.stringify(schemaData),
+		// 	locale: 'en',
+		// 	createdBy: null,
+		// 	updatedBy: null,
+		// };
 
 		const documentReqBody = {
 			name: "Staff Insurance",
@@ -38,7 +38,7 @@ const DynamicFormPage = () => {
 
 
 		let [error, result]: any[] = await to(
-			documentTemplateService().create(templateReqBody),
+			// documentTemplateService().create(templateReqBody),
 			documentsService().create(documentReqBody)
 		);
 
@@ -54,6 +54,13 @@ const DynamicFormPage = () => {
 	const onFinishFailed = (errorInfo: any): void => {
 		console.log("Failed:", errorInfo);
 	};
+
+	useEffect(() => {
+		const template = JSON.parse(localStorage.getItem('template'));
+		if (template) {
+			setFormJsonSchema(template.content);
+		}
+	  }, []);
 
 	return (
 		<div className="content-documents">

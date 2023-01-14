@@ -10,7 +10,7 @@ const NextAppConfig = {
   },
   useFileSystemPublicRoutes: true,
   target: 'server',
-  pageExtensions: ['tsx'],
+  pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
   webpack: (config, options) => {
     config.resolve.alias = {
       ...config.resolve.alias,
