@@ -197,13 +197,21 @@
       "title": "List Of Documents",
       "description": ""
     },
+    "draftList": {
+      "title": "Draft List",
+      "description": "Draft List"
+    },
     "create": {
       "title": "Create a new document",
       "description": "Fill out the information to add a new document"
     },
     "edit": {
-      "title": "Edit Document",
-      "description": ""
+      "title": "Update Documents Form",
+      "description": "Update Documents Form"
+    },
+    "details": {
+      "title": "Details Documents Form",
+      "description": "Details Documents Form"
     },
     "twofa": {
       "title": "2-FA Settings",
@@ -281,10 +289,6 @@
       "issuedDate": "Issued Date",
       "status": "Satus",
       "updatedAt": "Updated Date"
-    },
-    "draftList": {
-      "title": "Draft List",
-      "description": "Draft List"
     },
     "SubmittedList": {
       "title": "List Of Documents",

@@ -21,8 +21,8 @@ Create.Layout = (props) => {
 
   return (
     <Layout
-      title={t("pages:application.staffInsuranceForm.title")}
-      description={t("pages:application.staffInsuranceForm.description")}
+      title={t("pages:documents.create.title")}
+      description={t("pages:documents.create.description")}
       {...props}
     />
   );

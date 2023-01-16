@@ -237,8 +237,8 @@ Index.Layout = (props) => {
 	return (
 		<>
 			<Layout
-				title={t("pages:documents.index.title")}
-				description={t("pages:documents.index.description")}
+				title={t("pages:documents.draftList.title")}
+				description={t("pages:documents.draftList.description")}
 				{...props}
 			/>
 		</>

@@ -22,7 +22,7 @@
       "application": {
         "index": "Application Form",
         "title": "Application",
-        "staffInsurance": "Staff Insurance 2022",
+        "staffInsurance": "",
         "createModel": "Create Model"
       },
       "documentTemplate": {

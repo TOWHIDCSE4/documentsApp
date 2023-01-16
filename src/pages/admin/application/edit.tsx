@@ -6,6 +6,7 @@ import to from "await-to-js";
 import UpdateForm from "@root/src/components/Admin/Application/UpdateForm";
 import documentsService from "@root/src/services/documentService";
 import dayjs from 'dayjs';
+import documentTemplateService from "@root/src/services/documentTemplateService";
 
 const Layout = dynamic(() => import("@src/layouts/Admin"), { ssr: false });
 
@@ -29,6 +30,11 @@ const Edit = () => {
 		let [error, document]: [any, any] = await to(
 			documentsService().withAuth().detail({ id: query.id })
 		);
+		let [errortemplate, documentTemplateFromObject]: [any, any] = await to(
+			documentTemplateService().withAuth().detail({ id: parseInt(document?.documentTemplateId) })
+		);
+
+		if (error) return notify(t(`errors:${error.code}`), "", "error");
 
 		if (error) return notify(t(`errors:${error.code}`), "", "error");
 		const documentDataObject = document && {
@@ -46,6 +52,7 @@ const Edit = () => {
 		
 		documentDataObject.birthday = dayjs(documentDataObject?.["birthday"]);
 		setDocumentData(documentDataObject);
+		localStorage.setItem("updatetemplate",JSON.stringify(documentTemplateFromObject));
 	};
 
 	useEffect(() => {
@@ -66,8 +73,8 @@ Edit.Layout = (props) => {
 
 	return (
 		<Layout
-			title={t("pages:application.staffInsuranceForm.title")}
-			description={t("pages:application.staffInsuranceForm.description")}
+			title={t("pages:documents.edit.title")}
+			description={t("pages:documents.edit.description")}
 			{...props}
 		/>
 	);

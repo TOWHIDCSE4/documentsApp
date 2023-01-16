@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CommonForm } from "./CommonForm";
 import schemaData from "../../../../config/Application_schema.json";
 import useBaseHook from "@src/hooks/BaseHook";
@@ -13,7 +13,7 @@ import clsx from "clsx";
 const DynamicFormPage = ({ documentData }) => {
   const { t, notify, redirect, router } = useBaseHook();
   const { query } = router;
-  const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
+	const [formJsonSchema, setFormJsonSchema] = useState('');
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   let buttonId = 6;
@@ -45,7 +45,14 @@ const DynamicFormPage = ({ documentData }) => {
     });
 
   };
-
+  useEffect(() => {
+		const updatetemplate = localStorage.getItem("updatetemplate")
+		let template= JSON.parse(localStorage.getItem('updatetemplate'));
+		
+		if (template) {
+			setFormJsonSchema(template.content);
+		}
+	  }, []);
   if (!documentData) return <></>;
 
   return (

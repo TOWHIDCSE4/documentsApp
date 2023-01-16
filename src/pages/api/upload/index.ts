@@ -1,43 +1,46 @@
-import { NextApiHandler, NextApiRequest } from "next";
-import formidable from "formidable";
-import path from "path";
-import fs from "fs/promises";
+import nextConnect from "next-connect";
+import multer from "multer";
+import { v4 as uuidv4 } from "uuid";
+
+let filename = uuidv4() + "-" + new Date().getTime();
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: "./public/uploads/profiles", // destination folder
+    filename: (req, file, cb) => cb(null, getFileName(file)),
+  }),
+});
+
+const getFileName = (file) => {
+  filename +=
+    "." +
+    file.originalname.substring(
+      file.originalname.lastIndexOf(".") + 1,
+      file.originalname.length
+    );
+  return filename;
+};
+
+const apiRoute = nextConnect({
+  onError(error, req, res) {
+    res
+      .status(501)
+      .json({ error: `Sorry something Happened! ${error.message}` });
+  },
+  onNoMatch(req, res) {
+    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
+  },
+});
+
+apiRoute.use(upload.array("file")); // attribute name you are sending the file by
+
+apiRoute.post((req, res) => {
+  res.status(200).json({ data: `/uploads/profiles/${filename}` }); // response
+});
+
+export default apiRoute;
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: false, // Disallow body parsing, consume as stream
   },
 };
-
-const readFile = (
-  req: NextApiRequest,
-  saveLocally?: boolean
-): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
-  const options: formidable.Options = {};
-  if (saveLocally) {
-    options.uploadDir = path.join(process.cwd(), "/public/images");
-    options.filename = (name, ext, path, form) => {
-      return Date.now().toString() + "_" + path.originalFilename;
-    };
-  }
-  options.maxFileSize = 4000 * 1024 * 1024;
-  const form = formidable(options);
-  return new Promise((resolve, reject) => {
-    form.parse(req, (err, fields, files) => {
-      if (err) reject(err);
-      resolve({ fields, files });
-    });
-  });
-};
-
-const handler: NextApiHandler = async (req, res) => {
-  try {
-    await fs.readdir(path.join(process.cwd() + "/public", "/images"));
-  } catch (error) {
-    await fs.mkdir(path.join(process.cwd() + "/public", "/images"));
-  }
-  await readFile(req, true);
-  res.json({ done: "ok" });
-};
-
-export default handler;

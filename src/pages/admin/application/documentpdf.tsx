@@ -41,6 +41,9 @@ const DocumentPDF = () => {
         let [error, document]: [any, any] = await to(
             documentsService().withAuth().detail({ id: query.id })
         );
+        let [errortemplate, documentTemplateFromObject]: [any, any] = await to(
+			documentTemplateService().withAuth().detail({ id: parseInt(document?.documentTemplateId) })
+		);
 
         if (error) return notify(t(`errors:${error.code}`), "", "error");
         const documentDataObject = document && {
@@ -58,6 +61,7 @@ const DocumentPDF = () => {
 
         documentDataObject.birthday = dayjs(documentDataObject?.["birthday"]);
         setDocumentData(documentDataObject);
+		localStorage.setItem("updatetemplate",JSON.stringify(documentTemplateFromObject));
     };
 
     const exportPdf = async () => {
@@ -182,8 +186,8 @@ DocumentPDF.Layout = (props) => {
 
     return (
         <Layout
-            title={t("pages:application.staffInsuranceForm.title")}
-            description={t("pages:application.staffInsuranceForm.description")}
+            title={t("pages:documents.details.title")}
+            description={t("pages:documents.details.description")}
             {...props}
         />
     );
