@@ -11,6 +11,7 @@ import { Select } from "antd";
 import axios from 'axios';
 import formidable from "formidable";
 import fs from "fs";
+import documentService from "@root/src/services/documentService";
 const { TextArea } = Input;
 interface CommonFormProps {
 	formField: any;
@@ -38,12 +39,20 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 	// }, [formField, setValue]);
 
 	const onChangeImage = async (info) => {
-		try {
-			
-			
-		  } catch (error: any) {
-			console.log(error.response?.data);
-		  }
+		// try {
+		// 	const data = new FormData();
+		// 	console.log(document.cookie)
+		// 	data.append('name','myimage');
+		// 	data.append('image-file', info.file.originFileObj)
+		// 	axios.post('http://localhost:3333/api/v1/file/uploads', data, {
+		// 		headers:{
+		// 			"Content-Type":'multipart/form-data',
+		// 			'Authorization': `token ${access_token}`
+		// 		}
+		// 	}).then(res => console.log(res))
+		//   } catch (error: any) {
+		// 	console.log(error.response?.data);
+		//   }
 	}
 	
 	const onDropImage = (e) => {}
@@ -68,7 +77,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 
 	if (inputType === "textInput") {
 		return (
-			<Form.Item name={fieldName} label={label} rules={validations.map(element => ({
+			<Form.Item name={fieldName} label={label} rules={validations?.map(element => ({
 				required: true,
 				message: element.message
 				
@@ -94,7 +103,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		return (
 			<div>
 				<Form.Item name={fieldName} label={label}
-				 rules={validations.map(element => ({
+				 rules={validations?.map(element => ({
 					required: true,
 					message: element.message
 					
@@ -128,7 +137,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		let options: any = [];
 
 		if (list?.sourceType === "manual") {
-			const optionData = list?.listSource?.split(", ");
+			const optionData = list?.source?.split(", ");
 			options = optionData?.map((item: any) => {
 				return { label: item, value: item };
 			});
@@ -150,7 +159,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		return (
 			<div>
 				<Form.Item name={fieldName} label={label}
-				 rules={validations.map(element => ({
+				 rules={validations?.map(element => ({
 					required: true,
 					message: element.message
 					

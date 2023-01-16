@@ -12,6 +12,7 @@ import clsx from 'clsx';
 const DynamicFormPage = () => {
 	const { t, notify, redirect, router } = useBaseHook();
 	const [formJsonSchema, setFormJsonSchema] = useState('');
+	const [templateId, setTemplateId] = useState(0);
 	const [loading, setLoading] = useState(false);
 	const [form] = Form.useForm();
 	let buttonId = 6;
@@ -31,7 +32,7 @@ const DynamicFormPage = () => {
 			name: "Staff Insurance",
 			content: JSON.stringify(data),
 			status: buttonId,
-			documentTemplateId: null,
+			documentTemplateId: templateId,
 			createdBy: null,
 			updatedBy: null,
 		};
@@ -58,6 +59,7 @@ const DynamicFormPage = () => {
 	useEffect(() => {
 		const template = JSON.parse(localStorage.getItem('template'));
 		if (template) {
+			setTemplateId(template.id)
 			setFormJsonSchema(template.content);
 		}
 	  }, []);

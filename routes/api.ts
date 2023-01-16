@@ -3,8 +3,25 @@ const ExtendMiddleware = require("@app/Middlewares/ExtendMiddleware");
 const AuthApiMiddleware = require('@app/Middlewares/AuthApiMiddleware');
 const multer = require('multer')
 import  PermissionMiddleware  from "@app/Middlewares/PermissionMiddleware"
-const upload = multer();
+import { v4 as uuidv4 } from "uuid";
+const fs = require('fs')
+const path = require('path')
+const express = require('express')
+const app = express()
 const { permission, permissionResource, permissionMethod } = PermissionMiddleware
+
+const storage = multer.diskStorage({
+  destination: function (req,file,cb) {
+    cb(null, path.join(__dirname,'/public/uploads'))
+  },
+  filename: function(req,file,cb) {
+    cb(null,file.fieldname+"-"+Date.now()+path.extname(file.originalname))
+  }
+})
+
+const upload = multer({storage:storage})
+const fileUpload = upload.fields([{name:'image-file', maxCount: 1}])
+
 
 Route.group(() => {
   // ---------------------------------- Auth Routes ---------------------------------------//
