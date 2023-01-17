@@ -69,7 +69,7 @@ const ApplicationForm = () => {
     await fetchData(page, pageSize);
   };
 
-  const fetchData = async (page = 2, pageSize = 4) => {
+  const fetchData = async (page = 1, pageSize = 4) => {
     const values: any = {};
 
     values.sorting = [{ field: "document_templates.id", direction: "desc" }];
@@ -164,7 +164,7 @@ const ApplicationForm = () => {
           style={{ width: 300 }}
         />
       </Card>
-      <Card>
+      <Card style={{display:'flex', justifyContent:'center'}}>
         <Row gutter={8} style={{ gap: "20px" }}>
           {documentTemplateFrom?.map((documentTemplate: any) => {
             return (
@@ -205,7 +205,6 @@ const ApplicationForm = () => {
       <div className="text-center">
         <Pagination
           total={total}
-          defaultCurrent={1}
           pageSize={pageSize}
           current={currentpage}
           onChange={onPageChange}

@@ -98,8 +98,11 @@ export const checkStatusByName = (status: any) => {
 		case 2:
 			return documentStatus[status];
 		case "Rejected":
-    case 3:
-      return documentStatus[status];
+    	case 3:
+			return documentStatus[status];
+		case "Submitted":
+		case 6:
+     		return documentStatus[status];
 		default:
 			return "";
 	}

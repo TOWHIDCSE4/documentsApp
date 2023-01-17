@@ -140,6 +140,7 @@ const DynamicFormPage = ({ documentData }) => {
 						Submit
 					</Button>
 
+					{documentData.status !== 7 && (
 					<Button
 						onClick={() => setButtonId(1)}
 						style={{ marginLeft: 10, backgroundColor:"blue" }}
@@ -148,7 +149,9 @@ const DynamicFormPage = ({ documentData }) => {
 					>
 						Approve
 					</Button>
+					)}
 
+					{documentData.status !== 7 && (
 					<Button
 						onClick={() => (setButtonId(3))}
 						style={{ marginLeft: 10, backgroundColor:"red"}}
@@ -157,7 +160,8 @@ const DynamicFormPage = ({ documentData }) => {
 					>
 						Rejected
 					</Button>
-
+					)}
+					{documentData.status !== 7 && (
 					<Button
 						onClick={() => (setButtonId(2))}
 						style={{ marginLeft: 10,backgroundColor:"orange"}}
@@ -166,6 +170,7 @@ const DynamicFormPage = ({ documentData }) => {
 					>
 						To Be Reviewed
 					</Button>
+					)}
 				</Form.Item>
 			</Form>
 		</div>

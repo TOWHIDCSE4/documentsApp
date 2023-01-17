@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { CommonForm } from "./CommonForm";
-import schemaData from "../../../../config/Application_schema.json";
 import useBaseHook from "@src/hooks/BaseHook";
 import { Button, Row, Col, Tabs, Form } from "antd";
 import to from "await-to-js";
@@ -75,6 +74,7 @@ const DynamicFormPage = () => {
 			>
 				{Object.entries(_.groupBy(formJsonSchema, "groupTitle")).map(
 					(item, i) => {
+						console.log(item,'form item')
 						return (
 							<>
 								<div className="form-group">

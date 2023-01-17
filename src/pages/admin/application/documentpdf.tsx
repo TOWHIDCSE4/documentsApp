@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import useBaseHook from "@src/hooks/BaseHook";
 import React, { useEffect, useState } from "react";
-import schemaData from "../../../../config/Application_schema.json";
 import { Button, Row, Col, Tabs, Form } from "antd";
 import to from "await-to-js";
 import documentTemplateService from "@root/src/services/documentTemplateService";
@@ -18,7 +17,7 @@ const Layout = dynamic(() => import("@src/layouts/Admin"), { ssr: false });
 
 const DocumentPDF = () => {
     const { t, notify, redirect, router } = useBaseHook();
-    const [formJsonSchema, setFormJsonSchema] = useState(schemaData);
+    const [formJsonSchema, setFormJsonSchema] = useState('');
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     let buttonId = 6;
