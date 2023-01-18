@@ -24,6 +24,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 		inputType,
 		// options,
 		defaultValue,
+		isDisabled,
 		validations,
 		col,
 		position,
@@ -125,6 +126,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 					<TextArea
 						showCount
 						maxLength={100}
+						disabled={isDisabled}
 						style={{
 							height: 120,
 							marginBottom: 24,

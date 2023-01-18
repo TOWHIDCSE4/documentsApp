@@ -16,7 +16,7 @@ const DynamicFormPage = ({ documentData }) => {
 	const [loading, setLoading] = useState(0);
 	const [form] = Form.useForm();
 	const [buttonId, setButtonId] = useState(6);
-
+	
 	const onFinish = async (data: any): Promise<void> => {
 		setLoading(true);
 		let idError: any = null;
@@ -123,7 +123,7 @@ const DynamicFormPage = ({ documentData }) => {
 
 				<div style={{ paddingTop: 10, paddingBottom: 10 }}>
 					<fieldset className="fieldset">
-						<TabComment />
+						<TabComment item={documentData}/>
 					</fieldset>
 				</div>
 
@@ -191,6 +191,7 @@ const TabComment = (item) => {
 									inputType: "textAreaInput",
 									position: 6,
 									defaultValue: "",
+									isDisabled: false,
 									list: {},
 									col: {
 										xs: 2,
@@ -212,6 +213,7 @@ const TabComment = (item) => {
 									inputType: "textAreaInput",
 									position: 6,
 									defaultValue: "",
+									isDisabled: item.item.issueComment ? true : false,
 									list: {},
 									col: {
 										xs: 2,
@@ -233,6 +235,7 @@ const TabComment = (item) => {
 									inputType: "textAreaInput",
 									position: 6,
 									defaultValue: "",
+									isDisabled: item.item.issueComment ? true : false,
 									list: {},
 									col: {
 										xs: 2,
