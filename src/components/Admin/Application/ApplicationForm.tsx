@@ -62,6 +62,7 @@ const ApplicationForm = () => {
 
     if (error) return notify(t(`errors:${error.code}`), "", "error");
     setDocumentTemplateFrom(documentTemplateFromObject?.data);
+    setTotal(parseInt(documentTemplateFromObject.total));
     setTimeout(() => {
       setLoading(false);
     }, 1000);
