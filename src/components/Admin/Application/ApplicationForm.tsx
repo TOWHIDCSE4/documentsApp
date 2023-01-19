@@ -74,15 +74,16 @@ const ApplicationForm = () => {
    */
 
   const onPageChange = async (page, pageSize) => {
-    await fetchData(page, pageSize);
+    setCurrentPage(page);
+    setPageSize(pageSize);
   };
 
-  const fetchData = async (page = 1, pageSize = 4) => {
+  const fetchData = async () => {
     const values: any = {};
 
-    values.sorting = [{ field: "document_templates.id", direction: "desc" }];
+    // values.sorting = [{ field: "document_templates.id", direction: "desc" }];
 
-    values.page = page;
+    values.page = currentpage === 0 ? currentpage : currentpage -1;
     values.pageSize = pageSize;
 
     let [error, documentTemplateFromObject]: [any, any] = await to(
@@ -92,28 +93,13 @@ const ApplicationForm = () => {
     if (error) return notify(t(`errors:${error.code}`), "", "error");
     setDocumentTemplateFrom(documentTemplateFromObject?.data);
     setTotal(parseInt(documentTemplateFromObject.total));
-    setCurrentPage(parseInt(documentTemplateFromObject.page));
-    setPageSize(parseInt(documentTemplateFromObject.pageSize));
+    
   };
 
-  const fetchAllData = async () => {
-    const values: any = {};
-    let [error, documentTemplateFromObject]: [any, any] = await to(
-      documentTemplateService().withAuth().index(values)
-    );
-
-    if (error) return notify(t(`errors:${error.code}`), "", "error");
-    setDocumentTemplateFrom(documentTemplateFromObject?.data);
-    setTotal(parseInt(documentTemplateFromObject.total));
-    setCurrentPage(parseInt(documentTemplateFromObject.page));
-    setPageSize(parseInt(documentTemplateFromObject.pageSize));
-  };
 
   useEffect(() => {
-    // fetchData();
-    fetchAllData();
-    console.log(status)
-  }, []);
+    fetchData();
+  }, [currentpage]);
 
   return (
     <>

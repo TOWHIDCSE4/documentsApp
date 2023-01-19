@@ -122,6 +122,7 @@ const FieldDefinition = ({ }) => {
                         <Select
                           placeholder={t("pages:documentTemplates.create.fieldInformation.inputType")}
                           style={{ width: "100%" }}
+                          id={Math.random()}
                           onChange={(value) => {
                             if (value == 'selectInput') setIsNeedList(true)
                             else setIsNeedList(false)
