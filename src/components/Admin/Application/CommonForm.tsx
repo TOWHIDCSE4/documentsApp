@@ -6,7 +6,7 @@ import {
 	DragDrop,
 } from "@src/components/controls";
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import { Form, Input, DatePicker, Button, Upload } from "antd";
+import { Form, Input, DatePicker, Button, Upload, message } from "antd";
 import { Select } from "antd";
 import axios from 'axios';
 import formidable from "formidable";
@@ -15,8 +15,9 @@ import documentService from "@root/src/services/documentService";
 const { TextArea } = Input;
 interface CommonFormProps {
 	formField: any;
+	form: any;
 }
-export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
+export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
 	// const { control, setValue } = useFormContext();
 	const {
 		fieldName,
@@ -32,28 +33,37 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 	} = formField || {};
 
 
-	const [uploading, setUploading] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedFile, setSelectedFile] = useState<File>();
-	// useEffect(() => {
-	// 	setValue(fieldName, defaultValue);
-	// }, [formField, setValue]);
 
-	const onChangeImage = async (info) => {
-		// try {
-		// 	const data = new FormData();
-		// 	console.log(document.cookie)
-		// 	data.append('name','myimage');
-		// 	data.append('image-file', info.file.originFileObj)
-		// 	axios.post('http://localhost:3333/api/v1/file/uploads', data, {
-		// 		headers:{
-		// 			"Content-Type":'multipart/form-data',
-		// 			'Authorization': `token ${access_token}`
-		// 		}
-		// 	}).then(res => console.log(res))
-		//   } catch (error: any) {
-		// 	console.log(error.response?.data);
-		//   }
+  const handleImagePreview = (e) => {
+	e.preventDefault();
+	setIsUploaded(false)
+  }
+
+  const onChangeImage = async (info, field) => {
+		try {
+			const formData = new FormData();
+			const { status } = info.file;
+			if (status !== 'uploading') {
+			}
+			if (status === 'done') {
+			message.success(`${info.file.name} file uploaded successfully.`);
+			} else if (status === 'error') {
+			message.error(`${info.file.name} file upload failed.`);
+			}
+			formData.append('profileImg', info.file.originFileObj)
+			const res = await axios.post("http://localhost:3333/upload", formData, {
+			}).then(res => {
+				return res.data.profileImg
+			})
+			
+			console.log(res, field, form.getFieldsValue())
+			form.setFieldsValue({ [field]: res });
+		  } catch (error: any) {
+			console.error(error.response?.data);
+		  }
 	}
 	
 	const onDropImage = (e) => {}
@@ -176,13 +186,19 @@ export const CommonForm: FC<CommonFormProps> = ({ formField }) => {
 	else if (inputType === "fileInput") {
 		return (
 		<>
-			 {/* <img src="/images/default-image.png" alt="my image" style={{height:'50%',width:'100%'}}/> */}
-			  
+		
+		
+				{/* {isUploaded && (<div className="container">
+				<img src={selectedImage} alt="my image" className="image" />
+				<div className="middle">
+					<button className="button-text" onClick={handleImagePreview}>&#10060;</button>
+				</div>
+				</div>)} */}
+							
 				<Form.Item
 					name={fieldName} label={label}
-					getValueFromEvent={getFile}
 					noStyle>
-					<Upload.Dragger name={fieldName} onChange={onChangeImage} onDrop={onDropImage} onPreview={handlePreview}>
+					<Upload.Dragger name={fieldName} onChange={(info) => onChangeImage(info, fieldName)} onDrop={onDropImage} onPreview={handlePreview} maxCount={1} showUploadList={false} listType="picture-card">
 						<p className="ant-upload-drag-icon">
 							<InboxOutlined />
 						</p>

@@ -48,8 +48,9 @@ const DynamicFormPage = () => {
 		setLoading(false);
 		notify(t("messages:message.staffInsuranceFormSuccess"));
 		redirect("frontend.admin.application.index");
+		console.log(data)
 
-		return result;
+		 return result;
 	};
 
 	const onFinishFailed = (errorInfo: any): void => {
@@ -100,6 +101,7 @@ const DynamicFormPage = () => {
 															formField={
 																fieldValue
 															}
+															form={form}
 														/>
 													</Col>
 												</>
