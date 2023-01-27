@@ -244,7 +244,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
 				</div>
 				</div>)} */}
 
-        <Form.Item name={fieldName} label={label} noStyle>
+        <Form.Item name={fieldName} label={label} noStyle getValueProps={(value) =>setImageUrl(value)}>
           <Upload.Dragger
             name={fieldName}
             onChange={(info) => onChangeImage(info, fieldName)}

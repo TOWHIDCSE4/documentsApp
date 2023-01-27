@@ -52,6 +52,7 @@ const Edit = () => {
 		
 		documentDataObject.birthday = dayjs(documentDataObject?.["birthday"]);
 		setDocumentData(documentDataObject);
+		
 		localStorage.setItem("updatetemplate",JSON.stringify(documentTemplateFromObject));
 	};
 
