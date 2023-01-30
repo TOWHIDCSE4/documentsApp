@@ -35,7 +35,10 @@ import _ from "lodash";
 import moment from "moment";
 import to from "await-to-js";
 import auth from "@src/helpers/auth";
+import Cookies from "universal-cookie";
 import React, { useState, useRef, useEffect } from "react";
+
+const cookies = new Cookies();
 
 function checkStatus(status: string) {
 	let colorObj = {
@@ -148,7 +151,8 @@ const Index = () => {
 			sorter: true,
 			filterable: true,
 			render: (text, record) => {
-				return <strong>{record?.content.firstName} {record?.content.lastName}</strong>;
+				const user = cookies.get('user');
+				return <strong>{user?.firstName} {user?.lastName}</strong>;
 			}
 		},
 		{

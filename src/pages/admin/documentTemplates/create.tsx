@@ -106,7 +106,7 @@ const Create = () => {
             </Form.Item>
           </Col>
         </Row>
-        <FieldDefinition />
+        <FieldDefinition formValue={form}/>
         <div style={{ textAlign: "center" }}>
           <Space>
             <Button

@@ -84,6 +84,14 @@ export const checkStatusColor = (status: any) => {
 				backgroundColor: "#fff6f6",
 				width: "75px",
 			};
+	  case "Submitted":
+		case 6:
+			return {
+				...colorObj,
+				color: "#17B169",
+				backgroundColor: "#f7e8e8",
+				width: "85px",
+			};
     default:
 			return {};
 	}
@@ -98,8 +106,11 @@ export const checkStatusByName = (status: any) => {
 		case 2:
 			return documentStatus[status];
 		case "Rejected":
-    case 3:
-      return documentStatus[status];
+    	case 3:
+			return documentStatus[status];
+		case "Submitted":
+		case 6:
+     		return documentStatus[status];
 		default:
 			return "";
 	}

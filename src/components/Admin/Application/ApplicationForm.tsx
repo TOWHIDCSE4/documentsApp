@@ -15,6 +15,7 @@ import {
   Table,
   PaginationProps,
   Pagination,
+  Skeleton,
 } from "antd";
 import Meta from "antd/lib/card/Meta";
 import React, { useEffect, useState } from "react";
@@ -33,6 +34,10 @@ const ApplicationForm = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  const onInputChange = async (e) => {
+    e.preventDefault();
+    await onSearch(e.target.value);
+  };
   const onSearch = async (value: string) => {
     setLoading(true);
     setDocumentTemplateFrom(null);
@@ -57,6 +62,10 @@ const ApplicationForm = () => {
 
     if (error) return notify(t(`errors:${error.code}`), "", "error");
     setDocumentTemplateFrom(documentTemplateFromObject?.data);
+    setTotal(parseInt(documentTemplateFromObject.total));
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   /**
@@ -66,15 +75,16 @@ const ApplicationForm = () => {
    */
 
   const onPageChange = async (page, pageSize) => {
-    await fetchData(page, pageSize);
+    setCurrentPage(page);
+    setPageSize(pageSize);
   };
 
-  const fetchData = async (page = 2, pageSize = 4) => {
+  const fetchData = async () => {
     const values: any = {};
 
-    values.sorting = [{ field: "document_templates.id", direction: "desc" }];
+    // values.sorting = [{ field: "document_templates.id", direction: "desc" }];
 
-    values.page = page;
+    values.page = currentpage === 0 ? currentpage : currentpage -1;
     values.pageSize = pageSize;
 
     let [error, documentTemplateFromObject]: [any, any] = await to(
@@ -84,13 +94,13 @@ const ApplicationForm = () => {
     if (error) return notify(t(`errors:${error.code}`), "", "error");
     setDocumentTemplateFrom(documentTemplateFromObject?.data);
     setTotal(parseInt(documentTemplateFromObject.total));
-    setCurrentPage(parseInt(documentTemplateFromObject.page));
-    setPageSize(parseInt(documentTemplateFromObject.pageSize));
+    
   };
+
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentpage]);
 
   return (
     <>
@@ -106,7 +116,7 @@ const ApplicationForm = () => {
               <Col span={6}>
                 <Statistic
                   title={t("pages:application.applicationForm.submitted")}
-                  value={status.total}
+                  value={status["Submitted"]}
                 />
               </Col>
               <Col span={6}>
@@ -161,55 +171,65 @@ const ApplicationForm = () => {
           placeholder="Search"
           className="btn-right"
           onSearch={onSearch}
+          onChange={onInputChange}
           style={{ width: 300 }}
         />
       </Card>
       <Card>
-        <Row gutter={8} style={{ gap: "20px" }}>
-          {documentTemplateFrom?.map((documentTemplate: any) => {
-            return (
-              <Card
-                hoverable
-                style={{ width: 240 }}
-                cover={
-                  <img
-                    alt="anh-nen"
-                    src="https://img.freepik.com/free-vector/vibrant-summer-ombre-background-vector_53876-105765.jpg?w=2000"
-                  />
-                }
-              >
-                <Meta
-                  title={documentTemplate?.name}
-                  description={documentTemplate?.description}
-                />
-                <br />
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    localStorage.setItem(
-                      "template",
-                      JSON.stringify(documentTemplate)
-                    );
-                    redirect("frontend.admin.application.create");
-                  }}
+        {loading ? (
+          <Skeleton />
+        ) : (
+          <Row gutter={8} style={{ gap: "20px" }}>
+            {documentTemplateFrom?.map((documentTemplate: any) => {
+              return (
+                <Card
+                  hoverable
+                  style={{ width: 240 }}
+                  cover={
+                    <img
+                      alt="anh-nen"
+                      src="https://img.freepik.com/free-vector/vibrant-summer-ombre-background-vector_53876-105765.jpg?w=2000"
+                    />
+                  }
                 >
-                  {t("pages:application.applicationForm.apply")}{" "}
-                  <ArrowRightOutlined />
-                </Button>
-              </Card>
-            );
-          })}
-        </Row>
+                  <Meta
+                    title={documentTemplate?.name}
+                    description={documentTemplate?.description}
+                  />
+                  <br />
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      localStorage.setItem(
+                        "template",
+                        JSON.stringify(documentTemplate)
+                      );
+                      redirect("frontend.admin.application.create");
+                    }}
+                  >
+                    {t("pages:application.applicationForm.apply")}{" "}
+                    <ArrowRightOutlined />
+                  </Button>
+                </Card>
+              );
+            })}
+          </Row>
+        )}
       </Card>
       <br />
+
       <div className="text-center">
-        <Pagination
-          total={total}
-          defaultCurrent={1}
-          pageSize={pageSize}
-          current={currentpage}
-          onChange={onPageChange}
-        />
+        {loading ? (
+          <Skeleton.Button />
+        ) : (
+          <Pagination
+            total={total}
+            defaultCurrent={1}
+            pageSize={pageSize}
+            current={currentpage}
+            onChange={onPageChange}
+          />
+        )}
       </div>
     </>
   );

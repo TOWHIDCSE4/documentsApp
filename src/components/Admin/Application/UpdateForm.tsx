@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { CommonForm } from "./CommonForm";
-import schemaData from "../../../../config/Application_schema.json";
 import useBaseHook from "@src/hooks/BaseHook";
 import { Button, Row, Col, Tabs, Form } from "antd";
 import to from "await-to-js";
@@ -109,6 +108,7 @@ const DynamicFormPage = ({ documentData }) => {
 															formField={
 																fieldValue
 															}
+															form={form}
 														/>
 													</Col>
 												</>
@@ -123,7 +123,7 @@ const DynamicFormPage = ({ documentData }) => {
 
 				<div style={{ paddingTop: 10, paddingBottom: 10 }}>
 					<fieldset className="fieldset">
-						<TabComment />
+						<TabComment item={documentData}/>
 					</fieldset>
 				</div>
 
@@ -140,6 +140,7 @@ const DynamicFormPage = ({ documentData }) => {
 						Submit
 					</Button>
 
+					{documentData.status !== 7 && (
 					<Button
 						onClick={() => setButtonId(1)}
 						style={{ marginLeft: 10, backgroundColor:"blue" }}
@@ -148,7 +149,9 @@ const DynamicFormPage = ({ documentData }) => {
 					>
 						Approve
 					</Button>
+					)}
 
+					{documentData.status !== 7 && (
 					<Button
 						onClick={() => (setButtonId(3))}
 						style={{ marginLeft: 10, backgroundColor:"red"}}
@@ -157,7 +160,8 @@ const DynamicFormPage = ({ documentData }) => {
 					>
 						Rejected
 					</Button>
-
+					)}
+					{documentData.status !== 7 && (
 					<Button
 						onClick={() => (setButtonId(2))}
 						style={{ marginLeft: 10,backgroundColor:"orange"}}
@@ -166,6 +170,7 @@ const DynamicFormPage = ({ documentData }) => {
 					>
 						To Be Reviewed
 					</Button>
+					)}
 				</Form.Item>
 			</Form>
 		</div>
@@ -191,6 +196,7 @@ const TabComment = (item) => {
 									inputType: "textAreaInput",
 									position: 6,
 									defaultValue: "",
+									isDisabled: false,
 									list: {},
 									col: {
 										xs: 2,
@@ -212,6 +218,7 @@ const TabComment = (item) => {
 									inputType: "textAreaInput",
 									position: 6,
 									defaultValue: "",
+									isDisabled: item.item.issueComment ? true : false,
 									list: {},
 									col: {
 										xs: 2,
@@ -233,6 +240,7 @@ const TabComment = (item) => {
 									inputType: "textAreaInput",
 									position: 6,
 									defaultValue: "",
+									isDisabled: item.item.issueComment ? true : false,
 									list: {},
 									col: {
 										xs: 2,

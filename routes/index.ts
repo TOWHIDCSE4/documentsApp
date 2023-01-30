@@ -1,4 +1,6 @@
-import Route from '@core/Routes'
+import Route from '@core/Routes';
+const multer  = require('multer')
+import { v4 as uuidv4 } from "uuid";
 /**
  * Route:
  * Function:
@@ -14,13 +16,45 @@ import Route from '@core/Routes'
  *        require("./setting") //load all router in ./setting.js
  *    }).prefix("/api/v1").middleware([auth])
  */
- var multer  = require('multer')
- var upload = multer({ dest: '@root/../public/upload/' })
- Route.router.post('/upload', upload.single('file'), function (req, res, next) {
+
+
+//  var upload = multer({ dest: '@root/../public/upload/' })
+const DIR = './public/upload/';
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, uuidv4() + '-' + fileName)
+    }
+});
+var upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
+ Route.router.post('/upload', upload.single('profileImg'), function (req, res, next) {
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any
-  const file = req.file
-  res.send(file)
+  const url = req.protocol + '://' + req.get('host');
+  //url + '/public/' + req.file.filename
+  res.status(201).json({
+    message: "User profile image upload successfully!",
+    profileImg: url + '/public/upload/' + req.file.filename
+  })
+})
+Route.router.get('/upload/test', function (req, res, next) {
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+  
+  res.status(200).send("OK");
 })
 require("./arena")
 require("./api")

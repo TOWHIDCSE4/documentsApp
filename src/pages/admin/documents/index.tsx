@@ -22,11 +22,13 @@ import {
 	checkStatusColor,
 	getCountByStatus,
 } from "@root/src/helpers/utils";
+import Cookies from "universal-cookie";
 const { documentStatus } = constantConfig;
 
 interface jsPDFWithPlugin extends jsPDF {
 	autoTable: (options: UserOptions) => jsPDF;
 }
+const cookies = new Cookies();
 
 const Index = () => {
 	const { redirect, t, notify } = useBaseHook();
@@ -39,7 +41,8 @@ const Index = () => {
 	const [document, setDocuments] = useState(null);
 	const [statusCount, setStatusCount] = useState(null);
 	const [hiddenDeleteBtn, setHiddenDeleteBtn] = useState(true);
-
+	const user = cookies.get('user');
+	
 	const onSearch = (value: string) => console.log(value);
 
 	const fetchData = async (values: any) => {
@@ -117,7 +120,7 @@ const Index = () => {
 			sorter: true,
 			filterable: true,
 			render: (text, record) => {
-				return <strong>{record?.content.firstName} {record?.content.lastName}</strong>;
+				return <strong>{user?.firstName} {user?.lastName}</strong>;
 			}
 		},
 		{
