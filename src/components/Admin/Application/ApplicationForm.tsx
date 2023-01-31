@@ -4,24 +4,22 @@ import {
   PlusCircleOutlined,
 } from "@ant-design/icons";
 import useBaseHooks from "@root/src/hooks/BaseHook";
+import useStatusCount from "@root/src/hooks/StatusCount";
+import documentTemplateService from "@root/src/services/documentTemplateService";
 import {
   Button,
   Card,
   Col,
+  Input,
+  Pagination,
   Row,
+  Skeleton,
   Space,
   Statistic,
-  Input,
-  Table,
-  PaginationProps,
-  Pagination,
-  Skeleton,
 } from "antd";
 import Meta from "antd/lib/card/Meta";
-import React, { useEffect, useState } from "react";
-import useStatusCount from "@root/src/hooks/StatusCount";
 import to from "await-to-js";
-import documentTemplateService from "@root/src/services/documentTemplateService";
+import { useEffect, useState } from "react";
 
 const { Search } = Input;
 
@@ -81,11 +79,10 @@ const ApplicationForm = () => {
 
   const fetchData = async () => {
     const values: any = {};
-
-    // values.sorting = [{ field: "document_templates.id", direction: "desc" }];
-
-    values.page = currentpage === 0 ? currentpage : currentpage -1;
+    values.page = currentpage === 0 ? currentpage : currentpage - 1;
     values.pageSize = pageSize;
+    
+    values.sorting = [{ field: "document_templates.id", direction: "desc" }];
 
     let [error, documentTemplateFromObject]: [any, any] = await to(
       documentTemplateService().withAuth().index(values)
@@ -94,9 +91,7 @@ const ApplicationForm = () => {
     if (error) return notify(t(`errors:${error.code}`), "", "error");
     setDocumentTemplateFrom(documentTemplateFromObject?.data);
     setTotal(parseInt(documentTemplateFromObject.total));
-    
   };
-
 
   useEffect(() => {
     fetchData();

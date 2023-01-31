@@ -1,22 +1,7 @@
-import React, { FC, useState, useEffect } from "react";
-import {
-  InputNumber,
-  FieldLabel,
-  ImageUploader,
-  DragDrop,
-} from "@src/components/controls";
-import {
-  InboxOutlined,
-  UploadOutlined,
-  PlusOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
-import { Form, Input, DatePicker, Button, Upload, message } from "antd";
-import { Select } from "antd";
+import { InboxOutlined, LoadingOutlined } from "@ant-design/icons";
+import { DatePicker, Form, Input, message, Select, Upload } from "antd";
 import axios from "axios";
-import formidable from "formidable";
-import fs from "fs";
-import documentService from "@root/src/services/documentService";
+import { FC, useState } from "react";
 const { TextArea } = Input;
 interface CommonFormProps {
   formField: any;
@@ -132,6 +117,8 @@ export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
     });
 
   if (inputType === "textInput") {
+    validations.map((validate) => console.log(validate));
+
     return (
       <Form.Item
         name={fieldName}
@@ -140,6 +127,13 @@ export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
           required: true,
           message: element.message,
         }))}
+        // rules={validations.map((rule) => {
+        //   // message: 'test field',
+        //   validator: (_, value) =>
+        //     value
+        //       ? Promise.resolve()
+        //       : Promise.reject(new Error("Should accept agreement"));
+        // })}
       >
         <Input
           // control={control}
@@ -244,7 +238,12 @@ export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
 				</div>
 				</div>)} */}
 
-     <Form.Item name={fieldName} label={label} noStyle getValueProps={(value) =>setImageUrl(value)}>
+        <Form.Item
+          name={fieldName}
+          label={label}
+          noStyle
+          getValueProps={(value) => setImageUrl(value)}
+        >
           <Upload.Dragger
             name={fieldName}
             onChange={(info) => onChangeImage(info, fieldName)}
@@ -261,7 +260,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
                 alt="avatar"
                 style={{
                   width: "100px",
-				  height: '100px'
+                  height: "100px",
                 }}
               />
             ) : (
