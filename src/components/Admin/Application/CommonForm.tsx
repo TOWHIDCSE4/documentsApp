@@ -116,6 +116,45 @@ export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
       reader.onerror = (error) => reject(error);
     });
 
+  const customValidation = (rules, fieldName) => {
+    console.log(rules.map((rule) => JSON.parse(JSON.stringify(rule))));
+
+    // if (currentvalue.trim().length !== 0) {
+    //   return Promise.resolve();
+    // } else {
+    //   return Promise.reject("Some message here");
+    // }
+    if (rules) {
+      return [
+        // { required: rules[0], message: `${fieldName} is required` },
+        { required: true, message: `${fieldName} is required` },
+        // { max: 5, message: "is required" },
+        {
+          message: "white-space is not valid",
+          validator: (_, value) => {
+            if (value.trim().length !== 0) {
+              return Promise.resolve();
+            } else {
+              return Promise.reject("");
+            }
+            // return customValidation(validations, value);
+          },
+        },
+        {
+          message: `${fieldName} length is exceed`,
+          validator: (_, value) => {
+            if (value.length > 0 && value.length < 255) {
+              return Promise.resolve();
+            } else {
+              return Promise.reject("");
+            }
+            // return customValidation(validations, value);
+          },
+        },
+      ];
+    }
+  };
+
   if (inputType === "textInput") {
     validations.map((validate) => console.log(validate));
 
@@ -123,17 +162,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
       <Form.Item
         name={fieldName}
         label={label}
-        rules={validations?.map((element) => ({
-          required: true,
-          message: element.message,
-        }))}
-        // rules={validations.map((rule) => {
-        //   // message: 'test field',
-        //   validator: (_, value) =>
-        //     value
-        //       ? Promise.resolve()
-        //       : Promise.reject(new Error("Should accept agreement"));
-        // })}
+        rules={customValidation(validations, fieldName)}
       >
         <Input
           // control={control}
@@ -158,10 +187,7 @@ export const CommonForm: FC<CommonFormProps> = ({ formField, form }) => {
         <Form.Item
           name={fieldName}
           label={label}
-          rules={validations?.map((element) => ({
-            required: true,
-            message: element.message,
-          }))}
+          rules={customValidation(validations, fieldName)}
         >
           <Input
             // control={control}

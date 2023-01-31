@@ -1,31 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { CommonForm } from "./CommonForm";
-import useBaseHook from "@src/hooks/BaseHook";
-import { Button, Row, Col, Tabs, Form } from "antd";
-import to from "await-to-js";
-import documentTemplateService from "@root/src/services/documentTemplateService";
 import documentsService from "@root/src/services/documentService";
+import useBaseHook from "@src/hooks/BaseHook";
+import { Button, Col, Form, Row, Tabs } from "antd";
+import to from "await-to-js";
+import clsx from "clsx";
 import _ from "lodash";
-import clsx from 'clsx';
+import { useEffect, useState } from "react";
+import { CommonForm } from "./CommonForm";
 
 const DynamicFormPage = () => {
-	const { t, notify, redirect, router } = useBaseHook();
-	const [formJsonSchema, setFormJsonSchema] = useState('');
-	const [templateId, setTemplateId] = useState(0);
-	const [loading, setLoading] = useState(false);
-	const [form] = Form.useForm();
-	let buttonId = 6;
+  const { t, notify, redirect, router } = useBaseHook();
+  const [formJsonSchema, setFormJsonSchema] = useState("");
+  const [templateId, setTemplateId] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
+  let buttonId = 6;
 
-	const onFinish = async (data: any): Promise<void> => {
-		setLoading(true);
-		const documentReqBody = {
-			name: "Staff Insurance",
-			content: JSON.stringify(data),
-			status: buttonId,
-			documentTemplateId: templateId,
-			createdBy: null,
-			updatedBy: null,
-		};
+  const onFinish = async (data: any): Promise<void> => {
+    setLoading(true);
+    const documentReqBody = {
+      name: "Staff Insurance",
+      content: JSON.stringify(data),
+      status: buttonId,
+      documentTemplateId: templateId,
+      createdBy: null,
+      updatedBy: null,
+    };
 
     let [error, result]: any[] = await to(
       // documentTemplateService().create(templateReqBody),
@@ -69,14 +68,16 @@ const DynamicFormPage = () => {
               <>
                 <div className="form-group">
                   <h2>{item[0]}</h2>
-                  <Row className="form-container">
+                  <Row gutter={[6,6]}>
                     {item[1].map((fieldValue, i) => {
                       return (
                         <>
                           <Col
                             key={i}
-                            xs="field.Col.xs"
-                            lg="field.Col.lg"
+                            xs={fieldValue.col.xs}
+                            sm={fieldValue.col.sm}
+                            md={fieldValue.col.md}
+                            lg={fieldValue.col.lg}
                             order={fieldValue.position}
                             className={clsx({
                               "row-span-2":
@@ -161,7 +162,7 @@ const TabComment = (item, form) => {
                   },
                   validation: [],
                 }}
-				form={form}
+                form={form}
               />
             ),
           },
@@ -183,7 +184,7 @@ const TabComment = (item, form) => {
                   },
                   validation: [],
                 }}
-				form={form}
+                form={form}
               />
             ),
           },
@@ -205,7 +206,7 @@ const TabComment = (item, form) => {
                   },
                   validation: [],
                 }}
-				form={form}
+                form={form}
               />
             ),
           },
