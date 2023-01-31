@@ -69,58 +69,40 @@ const DynamicFormPage = () => {
 							<>
 								<div className="form-group">
 									<h2>{item[0]}</h2>
-									<Row className="form-container">
-										<Col span={24}>
-											{item[1].map(
-												(fieldValue: any, i) => {
-													return (
-														<>
-															<Col
-																key={i}
-																xs={
-																	fieldValue
-																		.col.xs
-																}
-																lg={
-																	fieldValue
-																		.col.lg
-																}
-																md={
-																	fieldValue
-																		.col.md
-																}
-																sm={
-																	fieldValue
-																		.col.sm
-																}
-																order={
-																	fieldValue.position
-																}
-																className={clsx(
-																	{
-																		"row-span-2":
-																			fieldValue.inputType ===
-																			"fileInput",
-																		"col-span-full":
-																			fieldValue.fieldName ===
-																				"street" ||
-																			fieldValue.fieldName ===
-																				"officeStreet",
-																	}
-																)}
-															>
-																<CommonForm
-																	formField={
-																		fieldValue
-																	}
-																	form={form}
-																/>
-															</Col>
-														</>
-													);
-												}
-											)}
-										</Col>
+									<Row>
+										{item[1].map((fieldValue: any, i) => {
+											return (
+												<>
+													<Col
+														key={i}
+														xs={fieldValue.col.xs}
+														lg={fieldValue.col.lg}
+														md={fieldValue.col.md}
+														sm={fieldValue.col.sm}
+														order={
+															fieldValue.position
+														}
+														className={clsx({
+															"row-span-2":
+																fieldValue.inputType ===
+																"fileInput",
+															"col-span-full":
+																fieldValue.fieldName ===
+																	"street" ||
+																fieldValue.fieldName ===
+																	"officeStreet",
+														})}
+													>
+														<CommonForm
+															formField={
+																fieldValue
+															}
+															form={form}
+														/>
+													</Col>
+												</>
+											);
+										})}
 									</Row>
 								</div>
 							</>
