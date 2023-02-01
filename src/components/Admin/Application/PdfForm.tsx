@@ -68,14 +68,16 @@ const DynamicFormPage = ({ documentData }) => {
               <>
                 <div className="form-group">
                   <h2>{item[0]}</h2>
-                  <Row className="form-container">
+                  <Row gutter={[6,6]}>
                     {item[1].map((fieldValue, i) => {
                       return (
                         <>
                           <Col
                             key={i}
-                            xs="field.Col.xs"
-                            lg="field.Col.lg"
+                            xs={fieldValue.col.xs}
+                            sm={fieldValue.col.sm}
+                            md={fieldValue.col.md}
+                            lg={fieldValue.col.lg}
                             order={fieldValue.position}
                             className={clsx({
                               "row-span-2":
