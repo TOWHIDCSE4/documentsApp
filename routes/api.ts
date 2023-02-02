@@ -10,17 +10,37 @@ const express = require('express')
 const app = express()
 const { permission, permissionResource, permissionMethod } = PermissionMiddleware
 
+const DIR = './public/';
 const storage = multer.diskStorage({
-  destination: function (req,file,cb) {
-    cb(null, path.join(__dirname,'/public/uploads'))
-  },
-  filename: function(req,file,cb) {
-    cb(null,file.fieldname+"-"+Date.now()+path.extname(file.originalname))
-  }
+    destination: (req, file, cb) => {
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, Date.now()+ '-' + fileName)
+    }
+});
+var upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
+ Route.router.post('/upload', upload.single('profileImg'), function (req, res, next) {
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+  const url = req.protocol + '://' + req.get('host');
+  //url + '/public/' + req.file.filename
+  res.status(201).json({
+    message: "User profile image upload successfully!",
+    profileImg: url + '/public/' + req.file.filename
+  })
 })
-const upload = multer({storage:storage})
-const fileUpload = upload.fields([{name:'image-file', maxCount: 1}])
-
 
 Route.group(() => {
   // ---------------------------------- Auth Routes ---------------------------------------//

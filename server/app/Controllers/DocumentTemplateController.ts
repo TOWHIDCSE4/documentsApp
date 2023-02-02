@@ -62,4 +62,13 @@ export default class DocumentTemplateController extends BaseController {
 
     return await this.Model.query().patchAndFetchById(id, data)
   }
+
+  async uploadImage({ allowFields = true } = {}) {
+  //     const url = this.request.protocol + '://' + this.request.get('host');
+  // //url + '/public/' + req.file.filename
+  // this.response.status(201).json({
+  //   message: "User profile image upload successfully!",
+  //   profileImg: url + '/public/' + this.response.file.filename
+  // })
+  }
 }
